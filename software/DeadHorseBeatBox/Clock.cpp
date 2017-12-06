@@ -6,13 +6,29 @@ Clock::Clock(float bpm) {
 
 Clock::~Clock(){ }
 
-void Clock::SetTempo(float bpm){ 
-	bpm_ = bpm; 
+void Clock::SetTempo(float bpm) {
+	bpm_ = bpm;
+	bpm_changed_ = true;
 	Serial.print("Clock tempo is:");
 	Serial.println(bpm_);
 	Serial.print("Clock period is:");
 	Serial.println(GetPeriod());
 }
+
+void Clock::OffsetTempo(float bpm_offset) {
+	// Divide by 4 here because each click of the encoder sends 4 messages
+	bpm_ += (bpm_offset / 4);
+	bpm_changed_ = true;
+
+	// Clip bpm within our min and max
+	if (bpm_ > kMaxBpm) {
+		bpm_ = kMaxBpm;
+	}
+	else if (bpm_ < kMinBpm) {
+		bpm_ = kMinBpm;
+	}
+}
+
 
 void Clock::UpdateTargetPulse(){
 	//Clock is getting it's pulse value incremented by the timer interrupt

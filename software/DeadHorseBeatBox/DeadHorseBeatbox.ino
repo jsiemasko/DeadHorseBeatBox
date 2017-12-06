@@ -20,7 +20,6 @@ Display display;
 TempoLed tempo_led;
 Pattern pattern(&midi_manager);
 Grid grid;
-long clock_period = 0;
 
 void setup(void) {
 	//Serial for debugging
@@ -42,9 +41,9 @@ void setup(void) {
 	grid.SetClock(&clock);
 
 	//Set up the time timer interupt
-	clock_period = clock.GetPeriod();
-	Timer3.initialize(clock_period);
+	Timer3.initialize(clock.GetPeriod());
 	Timer3.attachInterrupt(clockPulse);
+	clock.SetBpmUnchanged();
 }
 
 void clockPulse(void) {	clock.IncrementPulse(); }
@@ -52,8 +51,9 @@ void clockPulse(void) {	clock.IncrementPulse(); }
 void loop(void) {
 	clock.UpdateTargetPulse();
 
-	if (clock.GetPeriod() != clock_period) {
+	if (clock.IsChangedBpm()) {
 		Timer3.setPeriod(clock.GetPeriod());
+		clock.SetBpmUnchanged();
 	}
 
 	//Check grid for button presses, grid class handles internal throttling so we 
@@ -69,12 +69,15 @@ void loop(void) {
 		midi_manager.ProcessPulse(current_pulse);
 
 		//Update all displays unless we are lagging
-		if (clock.GetLag() < 2) {
+		if (clock.GetLag() < 10) {
 			if (current_pulse % PULSE_PER_STEP == 0) { display.UpdateDisplay(current_pulse); }
+
 			tempo_led.UpdateTempoLed(current_pulse);
 		}
 		if (clock.GetLag() < 10) {
-			grid.UpdateDisplay(current_pulse);
+			if (current_pulse % 4 == 0) {
+				grid.UpdateDisplay(current_pulse);
+			}
 		}
 	}
 	clock.UpdateCurrentPulse();

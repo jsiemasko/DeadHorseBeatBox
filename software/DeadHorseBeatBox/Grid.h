@@ -49,13 +49,24 @@ enum GridMode {
 class Grid
 {
  private:
-	 Display * p_display_ = 0; 		//Display pointer, for changing OLED modes to match grid mode
-	 Pattern * p_pattern_ = 0;		//Pointer to the current pattern object
-	 Clock * p_clock_ = 0;			//Pointer to the current clock object
-	 ULONG current_pulse_ = 0;		//Current pulse that is being processed
-	 bool trellis_led_buffer_[32];	//Holds the current state of the LEDs before writing
-	 long throttle_previous_ms_ = 0; //Throttle counter for trellis button reads
-
+	 Display * p_display_ = 0; 			//Display pointer, for changing OLED modes to match grid mode
+	 Pattern * p_pattern_ = 0;			//Pointer to the current pattern object
+	 Clock * p_clock_ = 0;				//Pointer to the current clock object
+	 ULONG current_pulse_ = 0;			//Current pulse that is being processed
+	 bool trellis_led_buffer_[32];		//Holds the current state of the LEDs before writing
+	 long throttle_previous_ms_ = 0;	//Throttle counter for trellis button reads
+	 USHORT button_renumber_[32] = {	//Used to fix the button numbering for our Trellis arrangement
+		  0,  1,  2,  3,  8,  9, 10, 11,
+		 16, 17, 18, 19, 24, 25, 26, 27,
+		  4,  5,  6,  7, 12, 13, 14, 15,
+		 20, 21, 22, 23, 28, 29, 30, 31
+	 };
+	 USHORT led_renumber_[32] = {		//Used to fix the LED numbering for our Trellis arrangement
+		 0,  1,  2,  3, 16, 17, 18, 19,
+		 4,  5,  6,  7, 20, 21, 22, 23,
+		 8,  9, 10, 11, 24, 25, 26, 27,
+		12, 13, 14, 15, 28, 29, 30, 31
+	 };
 	 //Trellis Setup
 	 Adafruit_Trellis trellis_matrix0_ = Adafruit_Trellis();
 	 Adafruit_Trellis trellis_matrix1_ = Adafruit_Trellis();
@@ -87,8 +98,6 @@ class Grid
 	 void WriteCurrentPattern();
 	 void UpdateSelectButtonDisplay();
 	 bool LedLightPattern(USHORT LightParam);
-	 USHORT ButtonRenumber(USHORT button_num);
-	 USHORT LedRenumber(USHORT button_num);
 
  public:
 	Grid();

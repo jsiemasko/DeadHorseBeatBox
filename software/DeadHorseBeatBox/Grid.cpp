@@ -63,20 +63,6 @@ bool Grid::LedLightPattern(USHORT LightParam) {
 	return led_lit;
 }
 
-USHORT Grid::ButtonRenumber(USHORT button_num) {
-	bool is_second_grid = (button_num >= 16);
-	if (is_second_grid) { button_num -= 16; }
-	USHORT new_button_num = ((button_num / 4) * 8) + (button_num % 4);
-	if (is_second_grid) { new_button_num += 4; }
-	return new_button_num;
-}
-
-USHORT Grid::LedRenumber(USHORT led_num) {
-	bool is_second_grid = ((led_num / 4) % 2 == 0);
-	USHORT new_led_num = is_second_grid ? ((led_num / 4) * 2) + (led_num % 4) : (((led_num / 4) -1) * 2) + (led_num % 4) + 16;
-	return new_led_num;
-}
-
 void Grid::DisplayFunctionSelectMenu() {
 	ClearGrid();
 	trellis_led_buffer_[0] = true;
@@ -108,10 +94,10 @@ void Grid::DisplayPlayingTracks() {
 void Grid::WriteCurrentPattern() {
 	for (int current_led = 0; current_led < TRELLIS_NUM_OF_BUTTONS; current_led++) {
 		if (trellis_led_buffer_[current_led]) {
-			trellis_.setLED(LedRenumber(current_led));
+			trellis_.setLED(led_renumber_[current_led]);
 		}
 		else {
-			trellis_.clrLED(LedRenumber(current_led));
+			trellis_.clrLED(led_renumber_[current_led]);
 		}
 	}
 	trellis_.writeDisplay();
@@ -129,11 +115,12 @@ void Grid::UpdateDisplay(ULONG pulse) {
 		case kGridModeSelectFunction:	DisplayFunctionSelectMenu(); break;
 		default:						DisplaySingleTrackEditMode(); break;
 	}
+
 	WriteCurrentPattern();
 }
 
 void Grid::ProcessGridButton(USHORT button_num){
-	button_num = ButtonRenumber(button_num);
+	button_num = button_renumber_[button_num];
 	if (current_grid_mode_ == kGridModeSingleTrackEdit) { //Step Toggle
 		if (button_num < TRELLIS_BUTTONS_PER_ROW) {
 			p_pattern_->ToggleEnableState(p_pattern_->GetCurrentTrack(), button_num);

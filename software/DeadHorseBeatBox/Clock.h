@@ -11,12 +11,14 @@ typedef unsigned int UINT;
 class Clock {
  private:
 	 float bpm_ = DEFAULT_TEMPO;
-	 volatile ULONG pulse_ = 0; //Volitile pulse updated by the interupt
-	 ULONG target_pulse_ = 0; //Non-volitile copy of pulse.
-	 ULONG current_pulse_ = 0; //Pulse that is currently being processed
-	 ULONG previous_pulse_ = 0; //Last pulse that was processed
-	 static const UINT kPulsePerQuarterNote = STEPS_PER_QUARTER_NOTE * PULSE_PER_STEP;
+	 bool bpm_changed_ = 0;			//Flag to mark bpm as changed so that Timer can update
+	 volatile ULONG pulse_ = 0;		//Volitile pulse updated by the interupt
+	 ULONG target_pulse_ = 0;		//Non-volitile copy of pulse.
+	 ULONG current_pulse_ = 0;		//Pulse that is currently being processed
+	 ULONG previous_pulse_ = 0;		//Last pulse that was processed
 	 static const UINT kMicrosecPerMin = 60000000;
+	 static const UINT kMinBpm = 50;
+	 static const UINT kMaxBpm = 250;
 
  public:
 	 //Constructors
@@ -25,9 +27,11 @@ class Clock {
 
 	 //Tempo
 	 void SetTempo(float bpm);
-	 inline void OffsetTempo(float bpm_offset) { bpm_ += (bpm_offset / 4); }
+	 void OffsetTempo(float bpm_offset);
+	 inline bool IsChangedBpm() { return bpm_changed_; }
+	 inline void SetBpmUnchanged() { bpm_changed_ = false; }; //indicate that the timer is in sync with the current BPM
 	 inline float GetTempo() const { return bpm_; }
-	 inline long GetPeriod() const { return kMicrosecPerMin / (kPulsePerQuarterNote * bpm_); }
+	 inline long GetPeriod() const { return kMicrosecPerMin / (PULSE_PER_QUARTER_NOTE * bpm_); }
 	 
 	 //Timing
 	 inline void IncrementPulse() { pulse_++; }
