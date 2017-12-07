@@ -41,7 +41,14 @@ class Pattern
 
 	inline USHORT GetCurrentTrack() { return _currentTrack; }
 	inline void SetCurrentTrack(USHORT currentTrack) { _currentTrack = currentTrack; }
-
+	inline void IncrementCurrentTrack() { _currentTrack = (_currentTrack + 1) % NUM_OF_TRACKS; }
+	inline void DecrementCurrentTrack() {
+		if (_currentTrack == 0) {
+			_currentTrack = NUM_OF_TRACKS - 1;
+		} else {
+			_currentTrack = _currentTrack - 1;
+		}
+	}
 private:
 	MidiManager * p_midi_manager_ = 0;
 	Track _tracks[NUM_OF_TRACKS] = { 

@@ -92,6 +92,7 @@
     <ClInclude Include="Led.h" />
     <ClInclude Include="MidiManager.h" />
     <ClInclude Include="Pattern.h" />
+    <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="TempoLed.h" />
     <ClInclude Include="Track.h" />
     <ClInclude Include="__vm\.DeadHorseBeatbox.vsarduino.h" />

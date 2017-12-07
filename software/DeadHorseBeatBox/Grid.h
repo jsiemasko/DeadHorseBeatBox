@@ -5,7 +5,6 @@
 #include "Button.h"
 #include <Encoder.h>
 #include "Led.h"
-#include "Display.h"
 #include "arduino.h"
 #include <Wire.h>
 #include "Adafruit_Trellis.h"
@@ -16,6 +15,11 @@
 typedef unsigned short int USHORT;
 typedef unsigned int ULONG;
 typedef unsigned int UINT;
+
+enum ParamMenuItem {
+	kParamMenuItemTrack,
+	kParamMenuItemBpm
+};
 
 enum GridMode {
 	//Select Modes
@@ -49,7 +53,9 @@ enum GridMode {
 class Grid
 {
  private:
-	 Display * p_display_ = 0; 			//Display pointer, for changing OLED modes to match grid mode
+	 ParamMenuItem current_param_ = kParamMenuItemBpm;
+	 bool param_edit_ = true;
+
 	 Pattern * p_pattern_ = 0;			//Pointer to the current pattern object
 	 Clock * p_clock_ = 0;				//Pointer to the current clock object
 	 ULONG current_pulse_ = 0;			//Current pulse that is being processed
@@ -102,7 +108,6 @@ class Grid
  public:
 	Grid();
 	~Grid();
-	inline void SetDisplay(Display * p_display) { p_display_ = p_display; }
 	inline void SetPattern(Pattern * p_pattern) { p_pattern_ = p_pattern; }
 	inline void SetClock(Clock * p_clock) { p_clock_ = p_clock; }
 	inline void SetGridMode(GridMode grid_mode) { current_grid_mode_ = grid_mode; }

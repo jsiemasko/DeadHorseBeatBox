@@ -29,16 +29,16 @@ void setup(void) {
 	
 	//Setup the OLED
 	display.GraphicsSetup();
-	display.SplashHorse(5000);
+	display.SplashHorse();
 	
-	//Display needs referances to pattern and clock
+	//Grid needs referances to pattern and clock
+	grid.SetPattern(&pattern);
+	grid.SetClock(&clock);
+
+	//Display needs referances to grid, pattern and clock
+	display.SetGrid(&grid);
 	display.SetPattern(&pattern);
 	display.SetClock(&clock);
-
-	//Grid needs referances to pattern, display and clock
-	grid.SetPattern(&pattern);
-	grid.SetDisplay(&display);
-	grid.SetClock(&clock);
 
 	//Set up the time timer interupt
 	Timer3.initialize(clock.GetPeriod());

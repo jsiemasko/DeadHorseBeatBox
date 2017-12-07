@@ -166,9 +166,12 @@ void Grid::ReadSwitches()
 		//Refresh buttons
 		track_select_button_.CheckForPress();
 		function_select_button_.CheckForPress();
+		encoder_button_.CheckForPress();
+
+		//Switch in and out of param edit mode
+		if (encoder_button_.JustPressed()) { param_edit_ = !param_edit_; }
 
 		//Check if we need to switch modes
-		if (encoder_button_.IsPressed()) { Serial.println("Encoder Button"); }
 		if (track_select_button_.IsPressed() && function_select_button_.IsPressed()) {
 			current_grid_mode_ = kGridModeSelectTrackFunction;
 		} else if (track_select_button_.IsPressed()) {
@@ -189,8 +192,24 @@ void Grid::ReadSwitches()
 	//Check for encoder change
 	long current_encoder_position_ = encoder_.read();
 	if (current_encoder_position_ != 0) {
-		encoder_change_amount_ = current_encoder_position_;
-		p_clock_->OffsetTempo(encoder_change_amount_);
+		if (param_edit_ == true) {
+			if (current_param_ == kParamMenuItemBpm) {
+				p_clock_->OffsetTempo(current_encoder_position_);
+			} else if (current_param_ == kParamMenuItemTrack) {
+				if (current_encoder_position_ > 0) {
+					p_pattern_->IncrementCurrentTrack();
+				} else {
+					p_pattern_->DecrementCurrentTrack();
+				}
+			}
+		} else { //We are in param select, not param edit
+			if (current_param_ == kParamMenuItemTrack) {
+				current_param_ = kParamMenuItemBpm; 
+			} else { 
+				current_param_ = kParamMenuItemTrack; 
+				Serial.println("?");
+			}
+		}
 		encoder_.write(0);
 	}
 }
