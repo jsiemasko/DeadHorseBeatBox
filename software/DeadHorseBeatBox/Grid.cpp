@@ -192,22 +192,29 @@ void Grid::ReadSwitches()
 	//Check for encoder change
 	long current_encoder_position_ = encoder_.read();
 	if (current_encoder_position_ != 0) {
-		if (param_edit_ == true) {
-			if (current_param_ == kParamMenuItemBpm) {
-				p_clock_->OffsetTempo(current_encoder_position_);
-			} else if (current_param_ == kParamMenuItemTrack) {
-				if (current_encoder_position_ > 0) {
-					p_pattern_->IncrementCurrentTrack();
-				} else {
-					p_pattern_->DecrementCurrentTrack();
+		encoder_count = (encoder_count + 1) % 4;
+		if (encoder_count == 3) { // Encode produces 4 events every time it turns a click.  Only process every forth event
+			if (param_edit_ == true) {
+				if (current_param_ == kParamMenuItemBpm) {
+					p_clock_->OffsetTempo(current_encoder_position_);
+				}
+				else if (current_param_ == kParamMenuItemTrack) {
+					if (current_encoder_position_ > 0) {
+						p_pattern_->IncrementCurrentTrack();
+					}
+					else {
+						p_pattern_->DecrementCurrentTrack();
+					}
 				}
 			}
-		} else { //We are in param select, not param edit
-			if (current_param_ == kParamMenuItemTrack) {
-				current_param_ = kParamMenuItemBpm; 
-			} else { 
-				current_param_ = kParamMenuItemTrack; 
-				Serial.println("?");
+			else { //We are in param select, not param edit
+				if (current_param_ == kParamMenuItemTrack) {
+					current_param_ = kParamMenuItemBpm;
+				}
+				else {
+					current_param_ = kParamMenuItemTrack;
+					Serial.println("?");
+				}
 			}
 		}
 		encoder_.write(0);

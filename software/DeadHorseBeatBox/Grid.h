@@ -88,6 +88,7 @@ class Grid
 	 Button encoder_button_ = Button(ENCODER_BTN_PIN);
 	 Encoder encoder_ =  Encoder(ENCODER_PIN_1, ENCODER_PIN_2);
 	 long encoder_change_amount_ = 0;
+	 USHORT encoder_count = 0;
 
 	 //Current grid mode and grid mode to return to after an action
 	 GridMode default_grid_mode_ = kGridModeFourTrackEdit;
