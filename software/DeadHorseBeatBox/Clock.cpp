@@ -16,8 +16,7 @@ void Clock::SetTempo(float bpm) {
 }
 
 void Clock::OffsetTempo(float bpm_offset) {
-	// Divide by 4 here because each click of the encoder sends 4 messages
-	bpm_ += (bpm_offset / 4);
+	bpm_ += (bpm_offset);
 	bpm_changed_ = true;
 
 	// Clip bpm within our min and max

@@ -11,8 +11,7 @@
 /* -- CLOCK -- */
 #define DEFAULT_TEMPO 98
 #define PULSE_PER_STEP 12
-//(PULSE_PER_STEP * STEPS_PER_QUARTER_NOTE)
-#define PULSE_PER_QUARTER_NOTE 48
+#define PULSE_PER_QUARTER_NOTE 48 // (PULSE_PER_STEP * STEPS_PER_QUARTER_NOTE)
 
 /* -- DISPLAY -- */
 #define DISPLAY_SPLASH_SCREEN_DISPLAY_TIME 5000
@@ -28,11 +27,9 @@
 #define TRELLIS_ADDRESS_2 0x70
 #define TRELLIS_BUTTONS_PER_GRID 16
 #define TRELLIS_NUM_OF_ROWS 4
-#define TRELLIS_READ_THROTTLE_IN_MS 30 //MS to wait between reads of Trellis buttons.  Too fast and things get wonky, per Adafruit's example code
-//(TRELLIS_NUM_OF_GRIDS * TRELLIS_BUTTONS_PER_GRID)
-#define TRELLIS_NUM_OF_BUTTONS 32
-//(TRELLIS_NUM_OF_BUTTONS / TRELLIS_NUM_OF_ROWS)
-#define TRELLIS_BUTTONS_PER_ROW 8
+#define TRELLIS_READ_THROTTLE_IN_MS 30	// MS to wait between reads of Trellis buttons.  Too fast and things get wonky, per Adafruit's example code
+#define TRELLIS_NUM_OF_BUTTONS 32		// (TRELLIS_NUM_OF_GRIDS * TRELLIS_BUTTONS_PER_GRID)
+#define TRELLIS_BUTTONS_PER_ROW 8		// (TRELLIS_NUM_OF_BUTTONS / TRELLIS_NUM_OF_ROWS)
 
 /* -- Track Select Button -- */
 #define TRACK_SELECT_BTN_PIN 9

@@ -22,10 +22,11 @@ void Grid::DisplaySingleTrackEditMode() {
 	for (USHORT currentStep = 0; currentStep < STEPS_PER_PATTERN; currentStep++) {
 		USHORT accent = p_pattern_->GetAccent(current_track, currentStep);
 		USHORT probability = p_pattern_->GetProbability(current_track, currentStep);
+		USHORT burst_multiplier = p_pattern_->GetBurstMultiplier(current_track, currentStep);
 		trellis_led_buffer_[GetGridNumber(0, currentStep)] = p_pattern_->GetEnableState(current_track, currentStep);
 		trellis_led_buffer_[GetGridNumber(1, currentStep)] = LedLightPattern(accent);
 		trellis_led_buffer_[GetGridNumber(2, currentStep)] = LedLightPattern(probability);
-		trellis_led_buffer_[GetGridNumber(3, currentStep)] = p_pattern_->GetTriggerState(current_track, currentStep);
+		trellis_led_buffer_[GetGridNumber(3, currentStep)] = LedLightPattern(burst_multiplier);
 	}
 	//Display Cursor
 	int current_led = p_pattern_->GetCursorPosition(current_track);
@@ -45,7 +46,9 @@ void Grid::DisplayFourTrackEditMode() {
 	//Display Cursors
 	for (USHORT track_to_display_cursor = min_track; track_to_display_cursor < min_track + TRELLIS_NUM_OF_ROWS; track_to_display_cursor++) {
 		USHORT current_cursor_position = p_pattern_->GetCursorPosition(track_to_display_cursor);
-		trellis_led_buffer_[GetGridNumber(track_to_display_cursor - min_track, current_cursor_position)] = (current_pulse_ / (PULSE_PER_STEP / 2) % 2 == 0);
+		USHORT led_buffer_pos_ = GetGridNumber(track_to_display_cursor - min_track, current_cursor_position);
+		boolean flip_led = (current_pulse_ / (PULSE_PER_STEP / 2) % 2 == 0); // Determine if we should flip the current state of the LED based on the flash pattern
+		trellis_led_buffer_[led_buffer_pos_] = flip_led ? trellis_led_buffer_[led_buffer_pos_] : !trellis_led_buffer_[led_buffer_pos_];
 	}
 }
 
@@ -132,7 +135,7 @@ void Grid::ProcessGridButton(USHORT button_num){
 			p_pattern_->ToggleProbability(p_pattern_->GetCurrentTrack(), button_num - (TRELLIS_BUTTONS_PER_ROW * 2));
 		}
 		else {
-			p_pattern_->ToggleTriggerState(p_pattern_->GetCurrentTrack(), button_num - (TRELLIS_BUTTONS_PER_ROW * 3));
+			p_pattern_->ToggleBurstMultiplier(p_pattern_->GetCurrentTrack(), button_num - (TRELLIS_BUTTONS_PER_ROW * 3));
 		}
 	} else if (current_grid_mode_ == kGridModeFourTrackEdit) { //Step Toggle
 		USHORT current_track = p_pattern_->GetCurrentTrack();
@@ -193,28 +196,29 @@ void Grid::ReadSwitches()
 	long current_encoder_position_ = encoder_.read();
 	if (current_encoder_position_ != 0) {
 		encoder_count = (encoder_count + 1) % 4;
-		if (encoder_count == 3) { // Encode produces 4 events every time it turns a click.  Only process every forth event
-			if (param_edit_ == true) {
-				if (current_param_ == kParamMenuItemBpm) {
-					p_clock_->OffsetTempo(current_encoder_position_);
-				}
-				else if (current_param_ == kParamMenuItemTrack) {
-					if (current_encoder_position_ > 0) {
-						p_pattern_->IncrementCurrentTrack();
-					}
-					else {
-						p_pattern_->DecrementCurrentTrack();
-					}
-				}
+
+		// Encode produces 4 events every time it turns a click.  Only process every forth event
+		if (encoder_count != 3) { return;  }
+
+		if (param_edit_ == true) {
+			if (current_param_ == kParamMenuItemBpm) {
+				p_clock_->OffsetTempo(current_encoder_position_);
 			}
-			else { //We are in param select, not param edit
-				if (current_param_ == kParamMenuItemTrack) {
-					current_param_ = kParamMenuItemBpm;
+			else if (current_param_ == kParamMenuItemTrack) {
+				if (current_encoder_position_ > 0) {
+					p_pattern_->IncrementCurrentTrack();
 				}
 				else {
-					current_param_ = kParamMenuItemTrack;
-					Serial.println("?");
+					p_pattern_->DecrementCurrentTrack();
 				}
+			}
+		}
+		else { //We are in param select, not param edit
+			if (current_param_ == kParamMenuItemTrack) {
+				current_param_ = kParamMenuItemBpm;
+			}
+			else {
+				current_param_ = kParamMenuItemTrack;
 			}
 		}
 		encoder_.write(0);

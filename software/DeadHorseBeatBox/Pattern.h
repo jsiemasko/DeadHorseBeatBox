@@ -19,25 +19,30 @@ class Pattern
 
 	inline bool GetTrackNotePlaying(USHORT track) { return p_midi_manager_->EventPlaying(track); }
 
-	//Trigger State
-	inline bool GetTriggerState(USHORT track, USHORT step) { return _tracks[track].GetTriggerState(step); }
-	inline void ToggleTriggerState(USHORT track, USHORT step) { _tracks[track].ToggleTriggerState(step); }
-
-	//Enable State
+	// ENABLE STATE
 	inline bool GetEnableState(USHORT track, USHORT step) { return _tracks[track].GetEnableState(step); }
 	inline void ToggleEnableState(USHORT track, USHORT step) { _tracks[track].ToggleEnableState(step); }
 
-	//Accent State
+	// SKIP STATE
+	inline bool GetSkipState(USHORT track, USHORT step) { return _tracks[track].GetSkipState(step); }
+	inline void ToggleSkipState(USHORT track, USHORT step) { _tracks[track].ToggleSkipState(step); }
+
+	// ACCENT STATE
 	inline USHORT GetAccent(USHORT track, USHORT step) { return _tracks[track].GetAccent(step); }
 	inline void ToggleAccent(USHORT track, USHORT step) { _tracks[track].ToggleAccent(step); }
 
-	//ProbabilityState
+	// PROBABILITY STATE
 	inline USHORT GetProbability(USHORT track, USHORT step) { return _tracks[track].GetProbability(step); }
 	inline void ToggleProbability(USHORT track, USHORT step) { _tracks[track].ToggleProbability(step); }
 
-	//Timing
+	// TIMING
 	inline USHORT GetCursorPosition(USHORT track) { return _tracks[track].GetCursorPosition(); }
 	void ProcessPulse(ULONG pulse);
+
+	// BURST MULTIPLIER
+	inline USHORT GetBurstMultiplier(USHORT track, USHORT step) { return _tracks[track].GetBurstMultiplier(step); }
+	inline void ToggleBurstMultiplier(USHORT track, USHORT step) { _tracks[track].ToggleBurstMultiplier(step); }
+
 
 	inline USHORT GetCurrentTrack() { return _currentTrack; }
 	inline void SetCurrentTrack(USHORT currentTrack) { _currentTrack = currentTrack; }

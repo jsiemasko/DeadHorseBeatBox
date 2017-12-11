@@ -17,8 +17,8 @@ class Clock {
 	 ULONG current_pulse_ = 0;		//Pulse that is currently being processed
 	 ULONG previous_pulse_ = 0;		//Last pulse that was processed
 	 static const UINT kMicrosecPerMin = 60000000;
-	 static const UINT kMinBpm = 50;
-	 static const UINT kMaxBpm = 250;
+	 static const UINT kMinBpm = 20;
+	 static const UINT kMaxBpm = 300;
 
  public:
 	 //Constructors
