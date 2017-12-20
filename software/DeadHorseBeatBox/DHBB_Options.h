@@ -37,7 +37,6 @@
 
 /* -- Function Select Button -- */
 #define FUNCTION_SELECT_BTN_PIN 10
-#define FUNCTION_SELECT_LED_PIN 8
 
 /* -- Encoder -- */
 #define ENCODER_BTN_PIN 6
@@ -46,7 +45,7 @@
 
 
 /* -- Tempo LED -- */
-#define TEMPO_LED_PIN 23
+#define TEMPO_LED_PIN 8
 #define TEMPO_LED_BLINK_FREQUENCY 4
 
 #endif

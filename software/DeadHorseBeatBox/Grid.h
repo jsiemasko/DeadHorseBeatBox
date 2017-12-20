@@ -82,7 +82,6 @@ class Grid
 	 Button track_select_button_ = Button(TRACK_SELECT_BTN_PIN);
 	 Led track_select_led_ = Led(TRACK_SELECT_LED_PIN);
 	 Button function_select_button_ = Button(FUNCTION_SELECT_BTN_PIN);
-	 Led function_select_led_ = Led(FUNCTION_SELECT_LED_PIN);
 	 
 	 //Encoder Setup
 	 Button encoder_button_ = Button(ENCODER_BTN_PIN);

@@ -229,27 +229,21 @@ void Grid::UpdateSelectButtonDisplay() {
 	//Determine mode
 	switch (current_grid_mode_) {
 	case kGridModeSingleTrackEdit:
-		function_select_led_.SetMode(kLedModeOff);
 		track_select_led_.SetMode(kLedModeOff);
 		break;
 	case kGridModeSelectFunction:
-		function_select_led_.SetMode(kLedModeFlash);
 		track_select_led_.SetMode(kLedModeOff);
 		break;
 	case kGridModeSelectTrack:
-		function_select_led_.SetMode(kLedModeOff);
 		track_select_led_.SetMode(kLedModeFlash);
 		break;
 	case kGridModeSelectTrackFunction:
-		function_select_led_.SetMode(kLedModeFlash);
 		track_select_led_.SetMode(kLedModeFlash);
 		break;
 	default:
-		function_select_led_.SetMode(kLedModeSolid);
 		track_select_led_.SetMode(kLedModeOff);
 	}
 
 	//Update button LEDs
 	track_select_led_.UpdateDisplay(current_pulse_);
-	function_select_led_.UpdateDisplay(current_pulse_);
 }
