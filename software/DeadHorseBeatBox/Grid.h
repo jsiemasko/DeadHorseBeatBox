@@ -90,8 +90,8 @@ class Grid
 	 USHORT encoder_count = 0;
 
 	 //Current grid mode and grid mode to return to after an action
-	 GridMode default_grid_mode_ = kGridModeFourTrackEdit;
-	 GridMode current_grid_mode_ = kGridModeFourTrackEdit;
+	 GridMode default_grid_mode_ = kGridModeSingleTrackEdit;
+	 GridMode current_grid_mode_ = kGridModeSingleTrackEdit;
 
 	 //Function to get a LED numebr based on row and column 
 	 inline USHORT GetGridNumber(USHORT row, USHORT col) { return col + (row * TRELLIS_BUTTONS_PER_ROW); }

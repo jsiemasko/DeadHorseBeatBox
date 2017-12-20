@@ -21,12 +21,8 @@ void Grid::DisplaySingleTrackEditMode() {
 	USHORT current_track = p_pattern_->GetCurrentTrack();
 	for (USHORT currentStep = 0; currentStep < STEPS_PER_PATTERN; currentStep++) {
 		USHORT accent = p_pattern_->GetAccent(current_track, currentStep);
-		USHORT probability = p_pattern_->GetProbability(current_track, currentStep);
-		USHORT burst_multiplier = p_pattern_->GetBurstMultiplier(current_track, currentStep);
 		trellis_led_buffer_[GetGridNumber(0, currentStep)] = p_pattern_->GetEnableState(current_track, currentStep);
 		trellis_led_buffer_[GetGridNumber(1, currentStep)] = LedLightPattern(accent);
-		trellis_led_buffer_[GetGridNumber(2, currentStep)] = LedLightPattern(probability);
-		trellis_led_buffer_[GetGridNumber(3, currentStep)] = LedLightPattern(burst_multiplier);
 	}
 	//Display Cursor
 	int current_led = p_pattern_->GetCursorPosition(current_track);
