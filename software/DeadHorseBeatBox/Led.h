@@ -36,7 +36,7 @@ public:
 
 	//Display
 	inline void SetMode(LedMode mode) { mode_ = mode; }
-	void UpdateDisplay(ULONG pulse);
+	virtual void UpdateDisplay(ULONG pulse);
 };
 
 #endif

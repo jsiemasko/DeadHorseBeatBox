@@ -22,32 +22,8 @@ enum ParamMenuItem {
 };
 
 enum GridMode {
-	//Select Modes
-	kGridModeSelectFunction,
 	kGridModeSelectTrack,
-	kGridModeSelectTrackFunction,
-
-	//Track Edit Modes
-	kGridModeSingleTrackEdit,
-	kGridModeFourTrackEdit
-	
-	/*
-	RETHINKING ALL THESE MODES
-	kGridModeBinaryNoteEdit,
-	kGridModeStepRetrigger,
-	kGridModeStepGateLength,
-	kGridModeStepMidiNote,
-	kGridModeStepStepJump,
-	kGridModeTrackMute,
-	kGridModeTrackDirection,
-	kGridModeTrackClearToggle,
-	kGridModeTrackClearSkip,
-	kGridModeTrackClearVelocity,
-	kGridModeTrackClearTrigger,
-	kGridModeTrackClearGateLength,
-	kGridModeTrackClearMidiNote,
-	kGridModeSyncAllChannels
-	*/
+	kGridModeSingleTrackEdit
 };
 
 class Grid

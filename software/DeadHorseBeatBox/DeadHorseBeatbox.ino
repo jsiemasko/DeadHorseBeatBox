@@ -17,7 +17,7 @@ typedef unsigned int UINT;
 MidiManager midi_manager;
 Clock clock(DEFAULT_TEMPO);
 Display display;
-TempoLed tempo_led;
+TempoLed tempo_led(TEMPO_LED_PIN);
 Pattern pattern(&midi_manager);
 Grid grid;
 
@@ -72,10 +72,10 @@ void loop(void) {
 		if (clock.GetLag() < 10) {
 			if (current_pulse % PULSE_PER_STEP == 0) { display.UpdateDisplay(current_pulse); }
 
-			tempo_led.UpdateTempoLed(current_pulse);
+			tempo_led.UpdateDisplay(current_pulse);
 		}
 		if (clock.GetLag() < 10) {
-			if (current_pulse % 4 == 0) {
+			if (current_pulse % 2 == 0) {
 				grid.UpdateDisplay(current_pulse);
 			}
 		}
