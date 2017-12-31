@@ -50,7 +50,7 @@ void Track::ProcessPulse(ULONG pulse){
 	Step currentStep = steps_[cursor_position_];
 	
 	// We only do a probability check once per step so that the burst is triggered as an atomic unit
-	if (pulse_in_step == 0) { probability_trigger_ = ((rand() % 4) /* 0-3 */ <= currentStep.Probability);}
+	if (pulse_in_step == 0) { probability_trigger_ = currentStep.Probability ? (rand() % 2 == 0) : true; }
 
 	// Do we need to check for a note trigger?
 	bool note_check_needed = (pulse_in_step % burst_mods[currentStep.BurstMultiplier - 1] == 0);
@@ -59,7 +59,7 @@ void Track::ProcessPulse(ULONG pulse){
 	if (note_check_needed && currentStep.Enabled && !currentStep.Skip && probability_trigger_) {
 		MidiEvent midi_event;
 		midi_event.RootNote = midi_root_note_;
-		midi_event.Velocity = (currentStep.Accent * 31) + 3; //Convert accent 1-4 to Velocity 34-127
+		midi_event.Velocity = currentStep.Accent ? 127 : 100;
 		midi_event.Channel = midi_channel_;
 		midi_event.PulseLife = 5;
 		midi_event.Track = track_num_;

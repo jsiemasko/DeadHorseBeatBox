@@ -23,8 +23,8 @@ enum TrackDirection {
 struct Step {
 	bool Enabled = false;					// Enable - Whether or not the step will trigger a midi event.
 	bool Skip = false;						// Skip - Should the track cursor skip this step
-	USHORT Accent = 3;						// Accent 1 - 4.  3 = Midi velocity 100
-	USHORT Probability = 4;					// Probability 1 - 4.  1 = 25% change of trigger, 4 = 100%
+	bool Accent = false;					// Accent - Off = Velocity 100, On = Velocity 127
+	bool Probability = false;				// Probability - On = 50% chance of trigger
 	USHORT ScaleNote = 0;					// ScaleNote 0 - 7. Offset for MIDI root note using the current scaled
 	USHORT BurstMultiplier = 1;
 	USHORT GateLength = 48;
@@ -70,12 +70,12 @@ public:
 	inline void SetMidiRootNote(USHORT midi_root_note) { midi_root_note_ = midi_root_note; }
 
 	// ACCENT
-	inline USHORT GetAccent(USHORT step) { return steps_[step].Accent; };
-	inline void ToggleAccent(USHORT step) {	steps_[step].Accent = ((steps_[step].Accent) % 4) + 1; };
+	inline bool GetAccent(USHORT step) { return steps_[step].Accent; };
+	inline void ToggleAccent(USHORT step) {	steps_[step].Accent = !(steps_[step].Accent); };
 	
 	// PROBABILITY
-	inline USHORT GetProbability(USHORT step) { return steps_[step].Probability; }
-	inline void ToggleProbability(USHORT step) { steps_[step].Probability = (steps_[step].Probability) % 4 + 1; } //Probability ranges from 1-4.
+	inline bool GetProbability(USHORT step) { return steps_[step].Probability; }
+	inline void ToggleProbability(USHORT step) { steps_[step].Probability = !(steps_[step].Probability); }
 
 	// BURST MULTIPLIER
 	inline USHORT GetBurstMultiplier(USHORT step) { return steps_[step].BurstMultiplier; }
