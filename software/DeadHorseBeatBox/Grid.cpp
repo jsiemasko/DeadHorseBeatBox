@@ -20,26 +20,27 @@ void Grid::ClearGrid(){
 void Grid::DisplaySingleTrackEditMode() {
 	USHORT current_track = p_pattern_->GetCurrentTrack();
 	for (USHORT currentStep = 0; currentStep < STEPS_PER_PATTERN; currentStep++) {
+		
+		//Determine which param to show based on the edit mode
+		bool edit_param_value = false;
+		switch (current_grid_mode_) {
+			case kGridModeAccentEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
+			case kGridModeProbabilityEdit: edit_param_value = p_pattern_->GetProbability(current_track, currentStep); break;
+			//case kGridModeRetriggerEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
+			case kGridModeSkipEdit: edit_param_value = p_pattern_->GetSkipState(current_track, currentStep); break;
+			//case kGridModeNoteEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
+			//case kGridModeModEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
+			//Jump
+			default: edit_param_value = false;  break;
+		}
 		trellis_led_buffer_[GetGridNumber(0, currentStep)] = p_pattern_->GetEnableState(current_track, currentStep);
-		trellis_led_buffer_[GetGridNumber(1, currentStep)] = p_pattern_->GetAccent(current_track, currentStep);
+		trellis_led_buffer_[GetGridNumber(1, currentStep)] = edit_param_value;
 	}
 	//Display Cursor
 	int current_led = p_pattern_->GetCursorPosition(current_track);
-	trellis_led_buffer_[current_led] = (current_pulse_ / (PULSE_PER_STEP / 2) % 2 == 0); //Cursor 1
-	trellis_led_buffer_[current_led + STEPS_PER_PATTERN] = (current_pulse_ / (PULSE_PER_STEP / 2) % 2 == 0); //Cursor 1
-}
-
-bool Grid::LedLightPattern(USHORT LightParam) {
-	// For parameters that range from one to four this contains the logic to control their flashing pattern
-	bool led_lit = false;
-	switch (LightParam) {
-		case 4: led_lit = true; break; //On
-		case 3: led_lit = (current_pulse_ %	16 > 7); break; //High pulse
-		case 2: led_lit = (current_pulse_ % 16 > 12); break;  //Low pulse
-		case 1: led_lit = false; break; //Off
-		default: led_lit = false; break;
-	}
-	return led_lit;
+	bool cursor_display_state = (current_pulse_ / (PULSE_PER_STEP / 2) % 2 == 0);
+	trellis_led_buffer_[current_led] = cursor_display_state; //Cursor 1
+	trellis_led_buffer_[current_led + STEPS_PER_PATTERN] = cursor_display_state; //Cursor 1
 }
 
 void Grid::DisplayPlayingTracks() {
@@ -52,6 +53,18 @@ void Grid::DisplayPlayingTracks() {
 			trellis_led_buffer_[current_led] = false;
 		}
 	}
+
+	//Show currently selected mode LED
+	switch (default_grid_mode_) {
+		case kGridModeAccentEdit: trellis_led_buffer_[16] = true; break;
+		case kGridModeProbabilityEdit: trellis_led_buffer_[17] = true; break;
+		case kGridModeRetriggerEdit: trellis_led_buffer_[18] = true; break;
+		case kGridModeNoteEdit: trellis_led_buffer_[19] = true; break;
+		case kGridModeModEdit: trellis_led_buffer_[20] = true; break;
+		case kGridModeJumpEdit: trellis_led_buffer_[21] = true; break;
+		case kGridModeSkipEdit: trellis_led_buffer_[22] = true; break;
+		default: break;
+	}	
 }
 
 void Grid::WriteCurrentPattern() {
@@ -72,7 +85,6 @@ void Grid::UpdateDisplay(ULONG pulse) {
 
 	//Update grid
 	switch (current_grid_mode_) {
-		case kGridModeSingleTrackEdit:	DisplaySingleTrackEditMode(); break;
 		case kGridModeSelectTrack:		DisplayPlayingTracks();	break;
 		default:						DisplaySingleTrackEditMode(); break;
 	}
@@ -82,25 +94,37 @@ void Grid::UpdateDisplay(ULONG pulse) {
 
 void Grid::ProcessGridButton(USHORT button_num){
 	button_num = button_renumber_[button_num];
-	if (current_grid_mode_ == kGridModeSingleTrackEdit) { //Step Toggle
+	if (current_grid_mode_ == kGridModeAccentEdit) { //Step Toggle
 		if (button_num < TRELLIS_BUTTONS_PER_ROW) {
 			p_pattern_->ToggleEnableState(p_pattern_->GetCurrentTrack(), button_num);
 		}
 		else if (button_num < TRELLIS_BUTTONS_PER_ROW * 2) {
 			p_pattern_->ToggleAccent(p_pattern_->GetCurrentTrack(), button_num - TRELLIS_BUTTONS_PER_ROW);
 		}
+/*
 		else if (button_num < TRELLIS_BUTTONS_PER_ROW * 3) {
 			p_pattern_->ToggleProbability(p_pattern_->GetCurrentTrack(), button_num - (TRELLIS_BUTTONS_PER_ROW * 2));
 		}
 		else {
 			p_pattern_->ToggleBurstMultiplier(p_pattern_->GetCurrentTrack(), button_num - (TRELLIS_BUTTONS_PER_ROW * 3));
 		}
+		*/
 	} else if (current_grid_mode_ == kGridModeSelectTrack) { //Track Select
 		//Select a track if one exists and then go back to default edit mode
 		if (button_num < NUM_OF_TRACKS) {
 			p_pattern_->SetCurrentTrack(button_num);
 		}
-		//current_grid_mode_ = default_grid_mode_;
+		else {
+			switch (button_num) {
+				case 16: default_grid_mode_ = kGridModeAccentEdit;		break; //Accent
+				case 17: default_grid_mode_ = kGridModeProbabilityEdit;	break; //Probability 
+				case 18: default_grid_mode_ = kGridModeRetriggerEdit;	break; //Retrigger
+				case 19: default_grid_mode_ = kGridModeNoteEdit;		break; //Note 
+				case 20: default_grid_mode_ = kGridModeModEdit;			break; //Modulo
+				case 21: default_grid_mode_ = kGridModeJumpEdit;		break; //Jump 
+				case 22: default_grid_mode_ = kGridModeSkipEdit;		break; //Skip
+			}
+		}
 	}
 }
 
@@ -169,18 +193,7 @@ void Grid::ReadSwitches()
 }
 
 void Grid::UpdateSelectButtonDisplay() {
-	//Determine mode
-	switch (current_grid_mode_) {
-	case kGridModeSingleTrackEdit:
-		track_select_led_.SetMode(kLedModeOff);
-		break;
-	case kGridModeSelectTrack:
-		track_select_led_.SetMode(kLedModeFlash);
-		break;
-	default:
-		track_select_led_.SetMode(kLedModeOff);
-	}
-
-	//Update button LEDs
+	LedMode current_led_mode = (current_grid_mode_ == kGridModeSelectTrack) ? kLedModeFlash : kLedModeOff;
+	track_select_led_.SetMode(current_led_mode);
 	track_select_led_.UpdateDisplay(current_pulse_);
 }

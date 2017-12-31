@@ -7,6 +7,7 @@
 #define NUM_OF_TRACKS 16
 #define STEPS_PER_PATTERN 16
 #define STEPS_PER_QUARTER_NOTE 4
+#define GENERATE_TEST_BEAT true
 
 /* -- CLOCK -- */
 #define DEFAULT_TEMPO 98

@@ -23,7 +23,13 @@ enum ParamMenuItem {
 
 enum GridMode {
 	kGridModeSelectTrack,
-	kGridModeSingleTrackEdit
+	kGridModeAccentEdit,
+	kGridModeProbabilityEdit,
+	kGridModeSkipEdit,
+	kGridModeRetriggerEdit,
+	kGridModeNoteEdit,
+	kGridModeModEdit,
+	kGridModeJumpEdit
 };
 
 class Grid
@@ -66,20 +72,17 @@ class Grid
 	 USHORT encoder_count = 0;
 
 	 //Current grid mode and grid mode to return to after an action
-	 GridMode default_grid_mode_ = kGridModeSingleTrackEdit;
-	 GridMode current_grid_mode_ = kGridModeSingleTrackEdit;
+	 GridMode default_grid_mode_ = kGridModeAccentEdit;
+	 GridMode current_grid_mode_ = kGridModeAccentEdit;
 
 	 //Function to get a LED numebr based on row and column 
 	 inline USHORT GetGridNumber(USHORT row, USHORT col) { return col + (row * TRELLIS_BUTTONS_PER_ROW); }
 	 	 
 	 void DisplayPlayingTracks();
 	 void DisplaySingleTrackEditMode();
-	 void DisplayFourTrackEditMode();
-	 void DisplayFunctionSelectMenu();
 	 void ClearGrid();
 	 void WriteCurrentPattern();
 	 void UpdateSelectButtonDisplay();
-	 bool LedLightPattern(USHORT LightParam);
 
  public:
 	Grid();
@@ -88,6 +91,7 @@ class Grid
 	inline void SetClock(Clock * p_clock) { p_clock_ = p_clock; }
 	inline void SetGridMode(GridMode grid_mode) { current_grid_mode_ = grid_mode; }
 	inline GridMode GetGridMode() { return current_grid_mode_; }
+	inline GridMode GetDefaultGridMode() { return default_grid_mode_; }
 	void ProcessGridButton(USHORT button_num);
 	void ReadSwitches();
 	void UpdateDisplay(ULONG pulse);
