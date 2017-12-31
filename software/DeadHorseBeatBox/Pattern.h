@@ -28,11 +28,11 @@ class Pattern
 	inline void ToggleSkipState(USHORT track, USHORT step) { _tracks[track].ToggleSkipState(step); }
 
 	// ACCENT STATE
-	inline USHORT GetAccent(USHORT track, USHORT step) { return _tracks[track].GetAccent(step); }
+	inline bool GetAccent(USHORT track, USHORT step) { return _tracks[track].GetAccent(step); }
 	inline void ToggleAccent(USHORT track, USHORT step) { _tracks[track].ToggleAccent(step); }
 
 	// PROBABILITY STATE
-	inline USHORT GetProbability(USHORT track, USHORT step) { return _tracks[track].GetProbability(step); }
+	inline bool GetProbability(USHORT track, USHORT step) { return _tracks[track].GetProbability(step); }
 	inline void ToggleProbability(USHORT track, USHORT step) { _tracks[track].ToggleProbability(step); }
 
 	// TIMING
