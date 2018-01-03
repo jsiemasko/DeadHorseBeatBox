@@ -15,11 +15,15 @@ void Display::GraphicsSetup() {
 }
 
 void Display::ShowPatternProperties(){
+	char digits[] = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6' };
+	const USHORT char_height = 9;
+	const USHORT char_width = 8;
+
 	oled_.clearBuffer();
-	oled_.setDrawColor(1);
 	oled_.setFont(u8g2_font_pressstart2p_8f);
-	oled_.setFontPosCenter();
-	oled_.setCursor(0, 4);		
+	oled_.setFontPosTop();
+	oled_.setCursor(0, 4);
+	oled_.setDrawColor(1);
 	switch (p_grid_->GetDefaultGridMode()) {
 		case kGridModeSelectTrack:		oled_.print("Select Track");	break;
 		case kGridModeAccentEdit:		oled_.print("Accent");			break;
@@ -30,14 +34,44 @@ void Display::ShowPatternProperties(){
 		case kGridModeNoteEdit:			oled_.print("Note");			break;
 		case kGridModeModEdit:			oled_.print("Modulo");			break;
 	}
-	oled_.setCursor(0, 14);		oled_.print("Track:");
-	oled_.setCursor(48, 14);	oled_.print(p_pattern_->GetCurrentTrack() + 1);
-	//oled_.setCursor(0, 24);		oled_.print("Step:");
-	//oled_.setCursor(48, 24);	oled_.print(p_pattern_->GetSelectedStep() + 1);
-	oled_.setCursor(0, 24);		oled_.print("BPM:");
-	oled_.setCursor(48, 24);	oled_.print(p_clock_->GetTempo());
-	oled_.setCursor(0, 34);		oled_.print("1234567890123456");
-	oled_.setCursor(0, 44);		oled_.print("1234567890123456");
+	
+	oled_.setCursor(0, 44);		oled_.print("BPM:");
+	oled_.setCursor(48, 44);	oled_.print(p_clock_->GetTempo());
+
+	//Tracks
+	for (USHORT track = 0; track < NUM_OF_TRACKS; track++) {
+		if (p_pattern_->GetTrackNotePlaying(track)) {
+			oled_.setDrawColor(1);
+			oled_.drawBox(track * char_width, 14, char_width, char_height);
+			oled_.setDrawColor(0);
+			oled_.setCursor(track * char_width, 14);
+			oled_.print(digits[track]);
+			oled_.setDrawColor(1);
+		}
+		else {
+			oled_.setDrawColor(1);
+			oled_.setCursor(track * char_width, 14);
+			oled_.print(digits[track]);
+		}
+	}
+
+	//Steps
+	for (USHORT step = 0; step < STEPS_PER_PATTERN; step++) {
+		if (p_pattern_->GetCursorPosition(p_pattern_->GetCurrentTrack()) == step) {
+			oled_.setDrawColor(1);
+			oled_.drawBox(step * char_width, 23, char_width, char_height);
+			oled_.setDrawColor(0);
+			oled_.setCursor(step * char_width, 23);
+			oled_.print(digits[step]);
+			oled_.setDrawColor(1);
+		}
+		else {
+			oled_.setDrawColor(1);
+			oled_.setCursor(step * char_width, 23);
+			oled_.print(digits[step]);
+		}
+	}
+
 	oled_.setCursor(0, 54);		oled_.print("A P R N M J S");
 	oled_.sendBuffer();
 }
