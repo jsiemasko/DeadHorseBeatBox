@@ -37,14 +37,34 @@ class Display
 {
  private:
 	 DisplayMode display_mode_ = kDisplayModePatternProperties;
-	 const USHORT NUM_OF_DISPLAY_MODES = 1;
+	 const static USHORT kNumOfDisplayModes = 1;
 	 Pattern * p_pattern_ = 0;
 	 Clock * p_clock_ = 0;
 	 Grid * p_grid_ = 0;
+	 const static USHORT kCharHeight = 9;
+	 const static USHORT kCharWidth = 8;
+	 const static USHORT kNumOfModes = 7;
+
+	 //These values are updated once per display
+	 GridMode default_grid_mode_ = kGridModeAccentEdit;
+	 USHORT current_track_ = 0;
+	 USHORT current_step_ = 0;
+
+	 //These arrays are used for easy display of mode initials, track nums and step nums
+	 const char single_digits[16] = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6' };
+	 const char mode_initials[kNumOfModes] = { 'A', 'C', 'R', 'N', 'M', 'J', 'S' };
+
+	 //Oled object
 	 U8G2_SH1106_128X64_NONAME_F_4W_HW_SPI oled_{ U8G2_R0, DISPLAY_PIN_CS, DISPLAY_PIN_DC, DISPLAY_PIN_RESET };
 	 
 	 //DisplayModes
 	 void ShowPatternProperties();
+	 void ShowTrackSelectDisplay();
+
+	 //Display sub sections
+	 void ShowPageHeader();
+	 void ShowSteps(USHORT y_offset);
+	 void ShowTracks(USHORT y_offset);
 
  public:
 	Display();
