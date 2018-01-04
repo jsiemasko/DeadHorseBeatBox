@@ -16,10 +16,9 @@ void Display::GraphicsSetup() {
 
 void Display::ShowPatternProperties(){
 	ShowPageHeader();
-	oled_.setCursor(0, 44);		oled_.print("BPM:");
-	oled_.setCursor(40, 44);	oled_.print(p_clock_->GetTempo());
-	ShowTracks(15);
-	ShowSteps(24);
+	ShowSteps(16);
+	ShowBargraph(26, 20, 1);
+	ShowTracks(47);
 }
 
 void Display::ShowTrackSelectDisplay() {
@@ -82,11 +81,12 @@ void Display::ShowPageHeader() {
 	}
 
 	oled_.setCursor(7 * kCharWidth, 4);
-	oled_.print("Trk:");
-	oled_.setCursor(7 * kCharWidth, 4);
+	oled_.print("BPM:");
+	oled_.setCursor(11 * kCharWidth, 4);
+	oled_.print(p_clock_->GetTempo());
 
 	//Seperator
-	oled_.drawHLine(0, 13, 132);
+	oled_.drawHLine(0, 14, 132);
 }
 
 void Display::ShowSteps(USHORT y_offset) {
@@ -95,30 +95,45 @@ void Display::ShowSteps(USHORT y_offset) {
 			oled_.setDrawColor(1);
 			oled_.drawBox(step * kCharWidth, y_offset, kCharWidth, kCharHeight);
 			oled_.setDrawColor(0);
-			oled_.setCursor(step * kCharWidth, y_offset);
-			oled_.print(single_digits[step]);
+		} else {
 			oled_.setDrawColor(1);
 		}
-		else {
-			oled_.setDrawColor(1);
+
+		if (step % 4 == 0) {
+			oled_.setFont(u8g2_font_pressstart2p_8f);
 			oled_.setCursor(step * kCharWidth, y_offset);
 			oled_.print(single_digits[step]);
+		} else {
+			oled_.setFont(u8g2_font_unifont_t_symbols);
+			oled_.drawGlyph(step * kCharWidth, y_offset, 0x002D);
 		}
+		oled_.setDrawColor(1);
 	}
 }
 
 void Display::ShowTracks(USHORT y_offset) {
+	oled_.setFont(u8g2_font_pressstart2p_8f);
 	for (USHORT track = 0; track < NUM_OF_TRACKS; track++) {
 		oled_.setDrawColor(1);
-		if (p_pattern_->GetTrackNotePlaying(track)) {
-			oled_.drawFrame(track * kCharWidth, y_offset, kCharWidth, kCharHeight + 1);
-		}
 		if (current_track_ == track) {
 			oled_.drawBox(track * kCharWidth, y_offset, kCharWidth, kCharHeight);
 			oled_.setDrawColor(0);
 		}
 		oled_.setCursor(track * kCharWidth, y_offset);
 		oled_.print(single_digits[track]);
+	}
+}
+
+void Display::ShowBargraph(USHORT y_offset, USHORT height, USHORT fall_speed) {
+	y_offset += height;
+	for (USHORT track = 0; track < NUM_OF_TRACKS; track++) {
+		oled_.setDrawColor(1);
+		if (p_pattern_->GetTrackNotePlaying(track)) {
+			bargraph[track] = height;
+		} else {
+			bargraph[track] = (bargraph[track] > 0) ? bargraph[track] - fall_speed : 0;
+		}
+		oled_.drawBox((track * kCharWidth) + 1, y_offset - bargraph[track], kCharWidth - 2, bargraph[track]);
 	}
 }
 
@@ -142,11 +157,11 @@ void Display::UpdateDisplay(ULONG pulse) {
 
 	oled_.clearBuffer();
 	if (display_mode_ == kDisplayModePatternProperties) {
-		if (p_grid_->GetGridMode() == kGridModeSelectTrack) {
-			ShowTrackSelectDisplay();
-		} else {
+		//if (p_grid_->GetGridMode() == kGridModeSelectTrack) {
+		//	ShowTrackSelectDisplay();
+		//} else {
 			ShowPatternProperties();
-		}
+		//}
 	}
 	oled_.sendBuffer();
 }
