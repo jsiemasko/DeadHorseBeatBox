@@ -56,6 +56,7 @@ Pattern::Pattern(MidiManager * p_midi_manager){
 		tracks_[3].ToggleEnableState(10);
 		tracks_[3].ToggleEnableState(13);
 		tracks_[3].ToggleEnableState(15);
+		tracks_[3].ToggleSkipState(15);
 	}
 }
 

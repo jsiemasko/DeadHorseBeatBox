@@ -16,9 +16,13 @@ void Display::GraphicsSetup() {
 
 void Display::ShowPatternProperties(){
 	ShowPageHeader();
-	ShowSteps(16);
-	ShowBargraph(26, 20, 1);
-	ShowTracks(47);
+	ShowBargraph(16, 23, 1);
+	ShowTracks(40);
+	ShowSteps(46);
+	
+	for (USHORT i = 0; i < 10; i++) {
+		oled_.drawVLine(64, 15 + (6 * i), 3);
+	}
 }
 
 void Display::ShowTrackSelectDisplay() {
@@ -90,24 +94,17 @@ void Display::ShowPageHeader() {
 }
 
 void Display::ShowSteps(USHORT y_offset) {
+	oled_.setDrawColor(1);
+	oled_.setFont(u8g2_font_unifont_t_symbols);
 	for (USHORT step = 0; step < STEPS_PER_PATTERN; step++) {
 		if (current_step_ == step) {
-			oled_.setDrawColor(1);
-			oled_.drawBox(step * kCharWidth, y_offset, kCharWidth, kCharHeight);
-			oled_.setDrawColor(0);
-		} else {
-			oled_.setDrawColor(1);
+			oled_.drawFrame(step * kCharWidth + ((step > 7) ? 1 : 0) - 1, y_offset + 4, kCharWidth + 2, kCharHeight + 1);
 		}
-
-		if (step % 4 == 0) {
-			oled_.setFont(u8g2_font_pressstart2p_8f);
-			oled_.setCursor(step * kCharWidth, y_offset);
-			oled_.print(single_digits[step]);
+		if (p_pattern_->GetEnableState(current_track_, step)) {
+			oled_.drawGlyph(step * kCharWidth + ((step > 7) ? 1 : 0), y_offset, 0x25FC);
 		} else {
-			oled_.setFont(u8g2_font_unifont_t_symbols);
-			oled_.drawGlyph(step * kCharWidth, y_offset, 0x002D);
+			oled_.drawGlyph(step * kCharWidth + ((step > 7) ? 1 : 0), y_offset, 0x25FB);
 		}
-		oled_.setDrawColor(1);
 	}
 }
 
@@ -119,7 +116,7 @@ void Display::ShowTracks(USHORT y_offset) {
 			oled_.drawBox(track * kCharWidth, y_offset, kCharWidth, kCharHeight);
 			oled_.setDrawColor(0);
 		}
-		oled_.setCursor(track * kCharWidth, y_offset);
+		oled_.setCursor(track * kCharWidth + ((track > 7) ? 1 : 0), y_offset);
 		oled_.print(single_digits[track]);
 	}
 }
@@ -130,10 +127,11 @@ void Display::ShowBargraph(USHORT y_offset, USHORT height, USHORT fall_speed) {
 		oled_.setDrawColor(1);
 		if (p_pattern_->GetTrackNotePlaying(track)) {
 			bargraph[track] = height;
+			oled_.drawBox((track * kCharWidth) + 1 + ((track > 7) ? 1 : 0), y_offset - bargraph[track], kCharWidth - 2, bargraph[track]);
 		} else {
 			bargraph[track] = (bargraph[track] > 0) ? bargraph[track] - fall_speed : 0;
+			oled_.drawFrame((track * kCharWidth) + 1 + ((track > 7) ? 1 : 0), y_offset - bargraph[track], kCharWidth - 2, bargraph[track]);
 		}
-		oled_.drawBox((track * kCharWidth) + 1, y_offset - bargraph[track], kCharWidth - 2, bargraph[track]);
 	}
 }
 
