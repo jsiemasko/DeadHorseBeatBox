@@ -47,13 +47,12 @@ class Display
 
 	 //These values are updated once per display
 	 GridMode default_grid_mode_ = kGridModeAccentEdit;
-	 USHORT current_track_ = 0;
-	 USHORT current_step_ = 0;
-
+	 
 	 //These arrays are used for easy display of mode initials, track nums and step nums
-	 const char single_digits[16] = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6' };
-	 const char mode_initials[kNumOfModes] = { 'A', 'C', 'R', 'N', 'M', 'J', 'S' };
+	 const char track_labels[16] = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6' };
+	 const char mode_initials[kNumOfModes] = { 'A', 'C', 'R', 'N', 'J', 'S' };
 
+	 //Used to track the current values of the bargraph
 	 USHORT bargraph[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	 //Oled object
@@ -65,9 +64,10 @@ class Display
 
 	 //Display sub sections
 	 void ShowPageHeader();
-	 void ShowSteps(USHORT y_offset);
-	 void ShowTracks(USHORT y_offset);
+	 void ShowSteps(USHORT y_offset, USHORT track);
+	 void ShowTracks(USHORT y_offset, USHORT current_track);
 	 void ShowBargraph(USHORT y_offset, USHORT height, USHORT fall_speed);
+	 void DrawStepBox(USHORT x, USHORT y, bool step_accented, bool step_chance_set, bool step_retriggered);
 
  public:
 	Display();

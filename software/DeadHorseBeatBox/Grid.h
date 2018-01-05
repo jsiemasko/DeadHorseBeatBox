@@ -28,7 +28,6 @@ enum GridMode {
 	kGridModeSkipEdit,
 	kGridModeRetriggerEdit,
 	kGridModeNoteEdit,
-	kGridModeModEdit,
 	kGridModeJumpEdit
 };
 

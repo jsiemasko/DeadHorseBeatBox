@@ -29,7 +29,6 @@ void Grid::DisplaySingleTrackEditMode() {
 			//case kGridModeRetriggerEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
 			case kGridModeSkipEdit: edit_param_value = p_pattern_->GetSkipState(current_track, currentStep); break;
 			//case kGridModeNoteEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
-			//case kGridModeModEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
 			//Jump
 			default: edit_param_value = false;  break;
 		}
@@ -60,9 +59,8 @@ void Grid::DisplayPlayingTracks() {
 		case kGridModeProbabilityEdit: trellis_led_buffer_[17] = true; break;
 		case kGridModeRetriggerEdit: trellis_led_buffer_[18] = true; break;
 		case kGridModeNoteEdit: trellis_led_buffer_[19] = true; break;
-		case kGridModeModEdit: trellis_led_buffer_[20] = true; break;
-		case kGridModeJumpEdit: trellis_led_buffer_[21] = true; break;
-		case kGridModeSkipEdit: trellis_led_buffer_[22] = true; break;
+		case kGridModeJumpEdit: trellis_led_buffer_[20] = true; break;
+		case kGridModeSkipEdit: trellis_led_buffer_[21] = true; break;
 		default: break;
 	}	
 }
@@ -120,9 +118,8 @@ void Grid::ProcessGridButton(USHORT button_num){
 				case 17: default_grid_mode_ = kGridModeProbabilityEdit;	break; //Probability 
 				case 18: default_grid_mode_ = kGridModeRetriggerEdit;	break; //Retrigger
 				case 19: default_grid_mode_ = kGridModeNoteEdit;		break; //Note 
-				case 20: default_grid_mode_ = kGridModeModEdit;			break; //Modulo
-				case 21: default_grid_mode_ = kGridModeJumpEdit;		break; //Jump 
-				case 22: default_grid_mode_ = kGridModeSkipEdit;		break; //Skip
+				case 20: default_grid_mode_ = kGridModeJumpEdit;		break; //Jump 
+				case 21: default_grid_mode_ = kGridModeSkipEdit;		break; //Skip
 			}
 		}
 	}
