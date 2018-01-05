@@ -18,13 +18,7 @@ void Display::ShowPatternProperties(){
 	ShowPageHeader();
 	ShowBargraph(16, 23, 1);
 	ShowTracks(40);
-	ShowSteps(46);
-	oled_.drawPixel(32, 20);
-	oled_.drawPixel(32, 30);
-	oled_.drawPixel(64, 20);
-	oled_.drawPixel(64, 30);
-	oled_.drawPixel(96, 20);
-	oled_.drawPixel(96, 30);
+	ShowSteps(48);
 }
 
 void Display::ShowTrackSelectDisplay() {
@@ -96,9 +90,62 @@ void Display::ShowPageHeader() {
 }
 
 void Display::ShowSteps(USHORT y_offset) {
-	oled_.setDrawColor(1);
-	oled_.setFont(u8g2_font_unifont_t_symbols);
 	for (USHORT step = 0; step < STEPS_PER_PATTERN; step++) {
+		oled_.setDrawColor(1);
+		//Seperator lines
+		if (step % 4 == 3) {
+			oled_.drawPixel((step + 1) * kCharWidth, y_offset + 2);
+			oled_.drawPixel((step + 1) * kCharWidth, y_offset + 5);
+		}
+
+		//Cursor
+		if (current_step_ == step) {
+			oled_.drawHLine(step * kCharWidth + 1, y_offset + kCharHeight - 1, 5);
+		}
+
+		if (p_pattern_->GetSkipState(current_track_, step)) { //Skip step
+			; //Draw nothing, step is skipped
+		} else if (p_pattern_->GetEnableState(current_track_, step) == false) { //Step is off
+			oled_.drawPixel((step * kCharWidth) + 4, y_offset + 4);
+		} else if (p_pattern_->GetAccent(current_track_, step) == false) {//No Accent
+			if (p_pattern_->GetProbability(current_track_, step)) {//Chance
+				oled_.drawFrame((step * kCharWidth) + 3, y_offset + 3, 3, 3);
+				//Retrigger?
+				if (p_pattern_->GetBurstMultiplier(current_track_, step)) {
+					oled_.setDrawColor(0);
+					oled_.drawVLine((step * kCharWidth) + 4, y_offset + 2, 5);
+					oled_.drawHLine((step * kCharWidth) + 2, y_offset + 4, 5);
+				}
+			} else {//Normal
+				oled_.drawBox((step * kCharWidth) + 3, y_offset + 3, 3, 3);
+				//Retrigger?
+				if (p_pattern_->GetBurstMultiplier(current_track_, step)) {
+					oled_.setDrawColor(0);
+					oled_.drawVLine((step * kCharWidth) + 4, y_offset + 2, 5);
+				}
+			}
+		} else {//Accemt
+			if (p_pattern_->GetProbability(current_track_, step)) {//Chance
+				oled_.drawFrame((step * kCharWidth) + 2, y_offset + 2, 5, 5);
+				//Retrigger?
+				if (p_pattern_->GetBurstMultiplier(current_track_, step)) {
+					oled_.setDrawColor(0);
+					oled_.drawVLine((step * kCharWidth) + 4, y_offset + 2, 5);
+					oled_.drawHLine((step * kCharWidth) + 2, y_offset + 4, 5);
+				}
+			}
+			else {//Normal
+				oled_.drawBox((step * kCharWidth) + 2, y_offset + 2, 5, 5);
+				//Retrigger?
+				if (p_pattern_->GetBurstMultiplier(current_track_, step)) {
+					oled_.setDrawColor(0);
+					oled_.drawVLine((step * kCharWidth) + 4, y_offset + 2, 5);
+				}
+			}
+		}
+
+
+		/*
 		if (current_step_ == step) {
 			oled_.drawFrame(step * kCharWidth - 1, y_offset + 4, kCharWidth + 2, kCharHeight + 1);
 		}
@@ -109,6 +156,7 @@ void Display::ShowSteps(USHORT y_offset) {
 		} else {
 			oled_.drawGlyph(step * kCharWidth, y_offset, 0x25FB);
 		}
+		*/
 	}
 }
 
@@ -117,6 +165,7 @@ void Display::ShowTracks(USHORT y_offset) {
 	for (USHORT track = 0; track < NUM_OF_TRACKS; track++) {
 		oled_.setDrawColor(1);
 		if (current_track_ == track) {
+			//if track is selected use the main color for the box and invert the color for drawing text
 			oled_.drawBox(track * kCharWidth, y_offset, kCharWidth, kCharHeight);
 			oled_.setDrawColor(0);
 		}
@@ -126,15 +175,34 @@ void Display::ShowTracks(USHORT y_offset) {
 }
 
 void Display::ShowBargraph(USHORT y_offset, USHORT height, USHORT fall_speed) {
+	//Seperator 1
+	oled_.drawPixel(32, y_offset + 4);
+	oled_.drawPixel(32, y_offset + 14);
+
+	//Seperator 2
+	oled_.drawPixel(64, y_offset + 4);
+	oled_.drawPixel(64, y_offset + 14);
+
+	//Seperator 3
+	oled_.drawPixel(96, y_offset + 4);
+	oled_.drawPixel(96, y_offset + 14);
+
+	//Offset adjust
 	y_offset += height;
+
+	oled_.setDrawColor(1);
+	
 	for (USHORT track = 0; track < NUM_OF_TRACKS; track++) {
-		oled_.setDrawColor(1);
 		if (p_pattern_->GetTrackNotePlaying(track)) {
+			//If a note is playing set the bargraph to the top and fill it
 			bargraph[track] = height;
 			oled_.drawBox((track * kCharWidth) + 1, y_offset - bargraph[track], kCharWidth - 2, bargraph[track]);
-		} else {
-			bargraph[track] = (bargraph[track] > 0) ? bargraph[track] - fall_speed : 0;
+		} else if (bargraph[track] > 0) {
+			//If a note is not playing but the bargrah is not empty then make it hollow and let it fall
+			bargraph[track] = bargraph[track] - fall_speed;
 			oled_.drawFrame((track * kCharWidth) + 1, y_offset - bargraph[track], kCharWidth - 2, bargraph[track]);
+		} else {
+			; //Bargraph is empty, do nothing
 		}
 	}
 }
