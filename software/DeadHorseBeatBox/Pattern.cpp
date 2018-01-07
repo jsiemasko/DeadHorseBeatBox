@@ -29,13 +29,13 @@ Pattern::Pattern(MidiManager * p_midi_manager){
 		tracks_[1].ToggleAccent(4);
 		tracks_[1].ToggleEnableState(12);
 		tracks_[1].ToggleAccent(12);
-		tracks_[1].ToggleProbability(12);
+		tracks_[1].ToggleChance(12);
 		tracks_[1].ToggleEnableState(13);
-		tracks_[1].ToggleProbability(13);
+		tracks_[1].ToggleChance(13);
 		tracks_[1].ToggleEnableState(14);
-		tracks_[1].ToggleProbability(14);
+		tracks_[1].ToggleChance(14);
 		tracks_[1].ToggleEnableState(15);
-		tracks_[1].ToggleProbability(15);
+		tracks_[1].ToggleChance(15);
 
 
 		tracks_[2].ToggleEnableState(0);

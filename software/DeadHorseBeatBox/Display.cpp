@@ -98,8 +98,8 @@ void Display::ShowSteps(USHORT y_offset, USHORT track) {
 		bool step_skipped = p_pattern_->GetSkipState(track, step);
 		bool step_enabled = p_pattern_->GetEnableState(track, step);
 		bool step_accented = p_pattern_->GetAccent(track, step);
-		bool step_chance_set = p_pattern_->GetProbability(track, step);
-		bool step_retriggered = (p_pattern_->GetBurstMultiplier(track, step) > 1);
+		bool step_chance_set = p_pattern_->GetChance(track, step);
+		bool step_retriggered = p_pattern_->GetRetrigger(track, step);
 
 		//Seperator lines every 4 steps
 		if (step % 4 == 3) {
@@ -202,7 +202,7 @@ void Display::ShowBargraph(USHORT y_offset, USHORT height, USHORT fall_speed) {
 
 void Display::SplashHorse(){
 	oled_.clearBuffer();
-	Serial.print("Splash Screen");
+	Serial.println("Splash Screen");
 	oled_.drawXBMP(0, 0, 128, 64, dedhors_bits);
 	oled_.setFont(u8g2_font_timB10_tf);
 	oled_.setDrawColor(1);

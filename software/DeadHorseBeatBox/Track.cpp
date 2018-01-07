@@ -50,10 +50,10 @@ void Track::ProcessPulse(ULONG pulse){
 	Step currentStep = steps_[cursor_position_];
 	
 	// We only do a probability check once per step so that the burst is triggered as an atomic unit
-	if (pulse_in_step == 0) { probability_trigger_ = currentStep.Probability ? (rand() % 2 == 0) : true; }
+	if (pulse_in_step == 0) { probability_trigger_ = currentStep.Chance ? (rand() % 2 == 0) : true; }
 
 	// Do we need to check for a note trigger?
-	bool note_check_needed = (pulse_in_step % burst_mods[currentStep.BurstMultiplier - 1] == 0);
+	bool note_check_needed = (pulse_in_step % retrigger_pulses[currentStep.RetriggerAmount - 1] == 0);
 
 	// Check all the values to see if we need a new note
 	if (note_check_needed && currentStep.Enabled && !currentStep.Skip && probability_trigger_) {

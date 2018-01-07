@@ -69,15 +69,12 @@ void loop(void) {
 		midi_manager.ProcessPulse(current_pulse);
 
 		//Update all displays unless we are lagging
-		//if (clock.GetLag() < 10) {
-//			if (current_pulse % 4 == 0) { display.UpdateDisplay(current_pulse); }
+		if (clock.GetLag() < 2 || current_pulse % PULSE_PER_STEP == 0) {
 			display.UpdateDisplay(current_pulse);
-			tempo_led.UpdateDisplay(current_pulse);
-		//}
-		if (clock.GetLag() < 10) {
-			if (current_pulse % 2 == 0) {
-				grid.UpdateDisplay(current_pulse);
-			}
+		}
+		tempo_led.UpdateDisplay(current_pulse);
+		if ((clock.GetLag() < 2 && current_pulse % 2 == 0) || (current_pulse % PULSE_PER_STEP == 0)) {
+			grid.UpdateDisplay(current_pulse);
 		}
 	}
 	clock.UpdateCurrentPulse();

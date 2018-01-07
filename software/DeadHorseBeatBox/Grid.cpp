@@ -25,10 +25,10 @@ void Grid::DisplaySingleTrackEditMode() {
 		bool edit_param_value = false;
 		switch (current_grid_mode_) {
 			case kGridModeAccentEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
-			case kGridModeProbabilityEdit: edit_param_value = p_pattern_->GetProbability(current_track, currentStep); break;
-			//case kGridModeRetriggerEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
+			case kGridModeProbabilityEdit: edit_param_value = p_pattern_->GetChance(current_track, currentStep); break;
+			case kGridModeRetriggerEdit: edit_param_value = p_pattern_->GetRetrigger(current_track, currentStep); break;
 			case kGridModeSkipEdit: edit_param_value = p_pattern_->GetSkipState(current_track, currentStep); break;
-			//case kGridModeNoteEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
+			case kGridModeNoteEdit: edit_param_value = p_pattern_->GetNote(current_track, currentStep); break;
 			//Jump
 			default: edit_param_value = false;  break;
 		}

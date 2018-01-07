@@ -31,18 +31,21 @@ class Pattern
 	inline bool GetAccent(USHORT track, USHORT step) { return tracks_[track].GetAccent(step); }
 	inline void ToggleAccent(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleAccent(step); }
 
-	// PROBABILITY STATE
-	inline bool GetProbability(USHORT track, USHORT step) { return tracks_[track].GetProbability(step); }
-	inline void ToggleProbability(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleProbability(step); }
+	// CHANCE
+	inline bool GetChance(USHORT track, USHORT step) { return tracks_[track].GetChance(step); }
+	inline void ToggleChance(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleChance(step); }
 
 	// TIMING
 	inline USHORT GetCursorPosition(USHORT track) { return tracks_[track].GetCursorPosition(); }
 	void ProcessPulse(ULONG pulse);
 
-	// BURST MULTIPLIER
-	inline USHORT GetBurstMultiplier(USHORT track, USHORT step) { return tracks_[track].GetBurstMultiplier(step); }
-	inline void ToggleBurstMultiplier(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleBurstMultiplier(step); }
+	// RETRIGGER
+	inline bool GetRetrigger(USHORT track, USHORT step) { return tracks_[track].GetRetrigger(step); }
+	inline void ToggleRetrigger(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleRetrigger(step); }
 
+	// NOTE
+	inline bool GetNote(USHORT track, USHORT step) { return tracks_[track].GetNote(step); }
+	inline void ToggleNote(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleNote(step); }
 
 	inline USHORT GetCurrentTrack() { return current_track_; }
 	inline USHORT GetSelectedStep() { return selected_step_; }

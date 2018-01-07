@@ -9,10 +9,6 @@ Clock::~Clock(){ }
 void Clock::SetTempo(float bpm) {
 	bpm_ = bpm;
 	bpm_changed_ = true;
-	Serial.print("Clock tempo is:");
-	Serial.println(bpm_);
-	Serial.print("Clock period is:");
-	Serial.println(GetPeriod());
 }
 
 void Clock::OffsetTempo(float bpm_offset) {
@@ -27,7 +23,6 @@ void Clock::OffsetTempo(float bpm_offset) {
 		bpm_ = kMinBpm;
 	}
 }
-
 
 void Clock::UpdateTargetPulse(){
 	//Clock is getting it's pulse value incremented by the timer interrupt
@@ -47,5 +42,15 @@ void Clock::UpdateCurrentPulse() {
 	//on the next iteration
 	if (current_pulse_ < target_pulse_) {
 		current_pulse_++;
+		if (current_pulse_ % PULSE_PER_STEP == 0) { 
+			Serial.print((current_pulse_ / PULSE_PER_STEP) / STEPS_PER_PATTERN);
+			Serial.print("-"); 
+			Serial.print((current_pulse_ / PULSE_PER_STEP) % STEPS_PER_PATTERN); 
+			Serial.print(" Tempo:");
+			Serial.print(bpm_);
+			Serial.print(" Period:");
+			Serial.print(GetPeriod());
+			Serial.print(" - ");
+		}
 	}
 }
