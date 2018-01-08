@@ -1,3 +1,4 @@
+#include "Step.h"
 #include <Encoder.h>
 #include "Led.h"
 #include "DHBB_Options.h"

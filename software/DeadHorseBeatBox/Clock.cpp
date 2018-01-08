@@ -42,6 +42,7 @@ void Clock::UpdateCurrentPulse() {
 	//on the next iteration
 	if (current_pulse_ < target_pulse_) {
 		current_pulse_++;
+		/*
 		if (current_pulse_ % PULSE_PER_STEP == 0) { 
 			Serial.print((current_pulse_ / PULSE_PER_STEP) / STEPS_PER_PATTERN);
 			Serial.print("-"); 
@@ -52,5 +53,6 @@ void Clock::UpdateCurrentPulse() {
 			Serial.print(GetPeriod());
 			Serial.print(" - ");
 		}
+		*/
 	}
 }

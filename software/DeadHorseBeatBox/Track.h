@@ -6,6 +6,7 @@
 #include "DHBB_Options.h"
 #include "arduino.h"
 #include "MidiManager.h"
+#include "Step.h"
 
 typedef unsigned short int USHORT;
 typedef unsigned int ULONG;
@@ -17,21 +18,6 @@ enum TrackDirection {
 	kTrackDirectionBackwards,
 	kTrackDirectionRandom,
 	kTrackDirectionRandomWalk
-};
-
-// Step controls what will trigger on each step of the track
-struct Step {
-	bool Enabled = false;			// Whether or not the step will trigger a midi event.
-	bool Skip = false;				// Should the track cursor skip this step
-	bool Accent = false;			// Apply the accent velocity?
-	USHORT AccentVelocity = 127;
-	bool Chance = false;
-	USHORT ChanceAmount = 50;
-	bool Note = false;
-	USHORT NoteScaleOffset = 0;		// 0 - 7. Offset for MIDI root note using the current scaled
-	bool Retrigger = false;
-	USHORT RetriggerAmount = 1;
-	USHORT GateLength = 48;
 };
 
 class Track{
@@ -57,12 +43,10 @@ public:
 
 	inline void SetMidiManager(MidiManager * p_midi_manager) { p_midi_manager_ = p_midi_manager;  }
 
-	// ENABLE STATE
-	inline bool GetEnableState(USHORT step) { return steps_[step].Enabled; }
-	inline void ToggleEnableState(USHORT step) { steps_[step].Enabled = !(steps_[step].Enabled); }
+	inline Step& GetStep(USHORT step_num) { return steps_[step_num]; }
 
 	// SKIP STATE
-	inline bool GetSkipState(USHORT step) { return steps_[step].Skip; }
+	/*
 	inline void ToggleSkipState(USHORT step) {
 		// If we are trying to disable the last step to skip then bail out.
 		if (steps_[step].Skip == false && num_steps_ == 1) { return; }
@@ -71,38 +55,15 @@ public:
 		steps_[step].Skip = !(steps_[step].Skip);
 		num_steps_ += (steps_[step].Skip ? -1 : 1);
 	}
+	*/
 	
 	// MIDI
 	inline void SetMidiRootNote(USHORT midi_root_note) { midi_root_note_ = midi_root_note; }
 
-	// ACCENT
-	inline bool GetAccent(USHORT step) { return steps_[step].Accent; };
-	inline void ToggleAccent(USHORT step) {	steps_[step].Accent = !(steps_[step].Accent); };
-	inline USHORT GetAccentVelocity(USHORT step) { return steps_[step].AccentVelocity; }
-	inline void SetAccentVelocity(USHORT step, USHORT accent_velocity) { steps_[step].AccentVelocity = accent_velocity; }
-
-	// CHANCE
-	inline bool GetChance(USHORT step) { return steps_[step].Chance; }
-	inline void ToggleChance(USHORT step) { steps_[step].Chance = !(steps_[step].Chance); }
-	inline USHORT GetChanceAmount(USHORT step) { return steps_[step].ChanceAmount; }
-	inline void SetChanceAmount(USHORT step, USHORT chance_amount) { steps_[step].ChanceAmount = chance_amount; }
-
-	// RETRIGGER
-	inline bool GetRetrigger(USHORT step) { return steps_[step].Retrigger; }
-	inline void ToggleRetrigger(USHORT step) { steps_[step].Retrigger = !(steps_[step].Retrigger); }
-	inline USHORT GetRetriggerAmount(USHORT step) { return steps_[step].RetriggerAmount; }
-	inline void SetRetriggerAmount(USHORT step, USHORT retrigger_amount) { steps_[step].RetriggerAmount = retrigger_amount; }
-
-	// NOTE
-	inline bool GetNote(USHORT step) { return steps_[step].Note; }
-	inline void ToggleNote(USHORT step) { steps_[step].Note = !(steps_[step].Note); }
-	inline USHORT GetNoteScaleOffset(USHORT step) { return steps_[step].NoteScaleOffset; }
-	inline void SetNoteScaleOffset(USHORT step, USHORT note_scale_offset) { steps_[step].NoteScaleOffset = note_scale_offset; }
-
 	// TIMING
-	inline void StepJump(USHORT cursor_position) { next_cursor_position_ = cursor_position; }
 	inline void SetTrackDirection(TrackDirection direction) { direction_ = direction; }
 	inline USHORT GetCursorPosition() { return cursor_position_; };
+	void CalculateNumberOfSteps();
 	void ProcessPulse(ULONG pulse);
 };
 

@@ -20,32 +20,32 @@ class Pattern
 	inline bool GetTrackNotePlaying(USHORT track) { return p_midi_manager_->EventPlaying(track); }
 
 	// ENABLE STATE
-	inline bool GetEnableState(USHORT track, USHORT step) { return tracks_[track].GetEnableState(step); }
-	inline void ToggleEnableState(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleEnableState(step); }
+	inline bool GetEnableState(USHORT track, USHORT step) { return tracks_[track].GetStep(step).GetEnableState(); }
+	inline void ToggleEnableState(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].GetStep(step).ToggleEnableState(); }
 
 	// SKIP STATE
-	inline bool GetSkipState(USHORT track, USHORT step) { return tracks_[track].GetSkipState(step); }
-	inline void ToggleSkipState(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleSkipState(step); }
+	inline bool GetSkipState(USHORT track, USHORT step) { return tracks_[track].GetStep(step).GetSkipState(); }
+	inline void ToggleSkipState(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].GetStep(step).ToggleSkipState(); }
 
 	// ACCENT STATE
-	inline bool GetAccent(USHORT track, USHORT step) { return tracks_[track].GetAccent(step); }
-	inline void ToggleAccent(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleAccent(step); }
+	inline bool GetAccent(USHORT track, USHORT step) { return tracks_[track].GetStep(step).GetAccentState(); }
+	inline void ToggleAccent(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].GetStep(step).ToggleAccentState(); }
 
 	// CHANCE
-	inline bool GetChance(USHORT track, USHORT step) { return tracks_[track].GetChance(step); }
-	inline void ToggleChance(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleChance(step); }
+	inline bool GetChance(USHORT track, USHORT step) { return tracks_[track].GetStep(step).GetChanceState(); }
+	inline void ToggleChance(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].GetStep(step).ToggleChanceState(); }
 
 	// TIMING
 	inline USHORT GetCursorPosition(USHORT track) { return tracks_[track].GetCursorPosition(); }
 	void ProcessPulse(ULONG pulse);
 
 	// RETRIGGER
-	inline bool GetRetrigger(USHORT track, USHORT step) { return tracks_[track].GetRetrigger(step); }
-	inline void ToggleRetrigger(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleRetrigger(step); }
+	inline bool GetRetrigger(USHORT track, USHORT step) { return tracks_[track].GetStep(step).GetRetriggerState(); }
+	inline void ToggleRetrigger(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].GetStep(step).ToggleRetriggerState(); }
 
 	// NOTE
-	inline bool GetNote(USHORT track, USHORT step) { return tracks_[track].GetNote(step); }
-	inline void ToggleNote(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].ToggleNote(step); }
+	inline bool GetNote(USHORT track, USHORT step) { return tracks_[track].GetStep(step).GetNoteState(); }
+	inline void ToggleNote(USHORT track, USHORT step) { selected_step_ = step; tracks_[track].GetStep(step).ToggleNoteState(); }
 
 	inline USHORT GetCurrentTrack() { return current_track_; }
 	inline USHORT GetSelectedStep() { return selected_step_; }

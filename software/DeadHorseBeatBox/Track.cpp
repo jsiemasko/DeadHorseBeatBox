@@ -21,6 +21,7 @@ void Track::Advance(){
 	
 	//Normal advance if we land on a step that is to be skipped try again.
 	do{
+		CalculateNumberOfSteps();
 		switch (direction_) {
 			case kTrackDirectionForward:		
 				cursor_position_ = (cursor_position_ + 1) % STEPS_PER_PATTERN; 
@@ -36,7 +37,16 @@ void Track::Advance(){
 				cursor_position_ = ((cursor_position_ == 0) && (walk_direction == -1)) ? STEPS_PER_PATTERN - 1 : (cursor_position_ + walk_direction) % STEPS_PER_PATTERN;
 				break;
 		}
-	} while ((steps_[cursor_position_].Skip == true) && (num_steps_ > 0));
+	} while ((steps_[cursor_position_].GetSkipState() == true) && (num_steps_ > 0));
+}
+
+void Track::CalculateNumberOfSteps() {
+	// Zero out and recalculate the number of steps that are not skipped
+	num_steps_ = 0;
+	for (USHORT i = 0; i < STEPS_PER_PATTERN; i++) {
+		if (!steps_[i].GetSkipState()) { num_steps_++; }
+	}
+
 }
 
 void Track::ProcessPulse(ULONG pulse){
@@ -50,16 +60,16 @@ void Track::ProcessPulse(ULONG pulse){
 	Step currentStep = steps_[cursor_position_];
 	
 	// We only do a probability check once per step so that the burst is triggered as an atomic unit
-	if (pulse_in_step == 0) { probability_trigger_ = currentStep.Chance ? (rand() % 2 == 0) : true; }
+	if (pulse_in_step == 0) { probability_trigger_ = currentStep.GetChanceState() ? (rand() % 2 == 0) : true; }
 
 	// Do we need to check for a note trigger?
 	bool note_check_needed = (pulse_in_step % retrigger_pulses[currentStep.RetriggerAmount - 1] == 0);
 
 	// Check all the values to see if we need a new note
-	if (note_check_needed && currentStep.Enabled && !currentStep.Skip && probability_trigger_) {
+	if (note_check_needed && currentStep.GetEnableState() && !currentStep.GetSkipState() && probability_trigger_) {
 		MidiEvent midi_event;
 		midi_event.RootNote = midi_root_note_;
-		midi_event.Velocity = currentStep.Accent ? 127 : 100;
+		midi_event.Velocity = currentStep.GetAccentState() ? 127 : 100;
 		midi_event.Channel = midi_channel_;
 		midi_event.PulseLife = 5;
 		midi_event.Track = track_num_;

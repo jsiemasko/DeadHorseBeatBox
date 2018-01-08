@@ -12,51 +12,50 @@ Pattern::Pattern(MidiManager * p_midi_manager){
 	}
 
 	if (GENERATE_TEST_BEAT) {
-		tracks_[0].ToggleEnableState(0);
-		tracks_[0].ToggleAccent(0);
-		tracks_[0].ToggleEnableState(3);
-		tracks_[0].ToggleEnableState(4);
-		tracks_[0].ToggleAccent(4);
-		tracks_[0].ToggleEnableState(6);
-		tracks_[0].ToggleEnableState(8);
-		tracks_[0].ToggleAccent(8);
-		tracks_[0].ToggleEnableState(11);
-		tracks_[0].ToggleEnableState(12);
-		tracks_[0].ToggleAccent(12);
-		tracks_[0].ToggleEnableState(14);
+		tracks_[0].GetStep(0).ToggleEnableState();
+		tracks_[0].GetStep(0).ToggleAccentState();
+		tracks_[0].GetStep(3).ToggleEnableState();
+		tracks_[0].GetStep(4).ToggleEnableState();
+		tracks_[0].GetStep(4).ToggleAccentState();
+		tracks_[0].GetStep(6).ToggleEnableState();
+		tracks_[0].GetStep(8).ToggleEnableState();
+		tracks_[0].GetStep(8).ToggleAccentState();
+		tracks_[0].GetStep(11).ToggleEnableState();
+		tracks_[0].GetStep(12).ToggleEnableState();
+		tracks_[0].GetStep(12).ToggleAccentState();
+		tracks_[0].GetStep(14).ToggleEnableState();
 
-		tracks_[1].ToggleEnableState(4);
-		tracks_[1].ToggleAccent(4);
-		tracks_[1].ToggleEnableState(12);
-		tracks_[1].ToggleAccent(12);
-		tracks_[1].ToggleChance(12);
-		tracks_[1].ToggleEnableState(13);
-		tracks_[1].ToggleChance(13);
-		tracks_[1].ToggleEnableState(14);
-		tracks_[1].ToggleChance(14);
-		tracks_[1].ToggleEnableState(15);
-		tracks_[1].ToggleChance(15);
+		tracks_[1].GetStep(4).ToggleEnableState();
+		tracks_[1].GetStep(4).ToggleAccentState();
+		tracks_[1].GetStep(12).ToggleEnableState();
+		tracks_[1].GetStep(12).ToggleAccentState();
+		tracks_[1].GetStep(12).ToggleChanceState();
+		tracks_[1].GetStep(13).ToggleEnableState();
+		tracks_[1].GetStep(13).ToggleChanceState();
+		tracks_[1].GetStep(14).ToggleEnableState();
+		tracks_[1].GetStep(14).ToggleChanceState();
+		tracks_[1].GetStep(15).ToggleEnableState();
+		tracks_[1].GetStep(15).ToggleChanceState();
 
+		tracks_[2].GetStep(0).ToggleEnableState();
+		tracks_[2].GetStep(0).ToggleAccentState();
+		tracks_[2].GetStep(1).ToggleEnableState();
+		tracks_[2].GetStep(3).ToggleEnableState();
+		tracks_[2].GetStep(4).ToggleEnableState();
+		tracks_[2].GetStep(4).ToggleAccentState();
+		tracks_[2].GetStep(8).ToggleEnableState();
+		tracks_[2].GetStep(8).ToggleAccentState();
+		tracks_[2].GetStep(9).ToggleEnableState();
+		tracks_[2].GetStep(12).ToggleEnableState();
+		tracks_[2].GetStep(12).ToggleAccentState();
+		tracks_[2].GetStep(14).ToggleEnableState();
 
-		tracks_[2].ToggleEnableState(0);
-		tracks_[2].ToggleAccent(0);
-		tracks_[2].ToggleEnableState(1);
-		tracks_[2].ToggleEnableState(3);
-		tracks_[2].ToggleEnableState(4);
-		tracks_[2].ToggleAccent(4);
-		tracks_[2].ToggleEnableState(8);
-		tracks_[2].ToggleAccent(8);
-		tracks_[2].ToggleEnableState(9);
-		tracks_[2].ToggleEnableState(12);
-		tracks_[2].ToggleAccent(12);
-		tracks_[2].ToggleEnableState(14);
-
-		tracks_[3].ToggleEnableState(2);
-		tracks_[3].ToggleEnableState(6);
-		tracks_[3].ToggleEnableState(10);
-		tracks_[3].ToggleEnableState(13);
-		tracks_[3].ToggleEnableState(15);
-		tracks_[3].ToggleSkipState(15);
+		tracks_[3].GetStep(2).ToggleEnableState();
+		tracks_[3].GetStep(6).ToggleEnableState();
+		tracks_[3].GetStep(10).ToggleEnableState();
+		tracks_[3].GetStep(13).ToggleEnableState();
+		tracks_[3].GetStep(15).ToggleEnableState();
+		tracks_[3].GetStep(15).ToggleSkipState();
 	}
 }
 
