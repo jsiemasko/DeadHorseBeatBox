@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClInclude Include="Clock.h" />
     <ClInclude Include="DHBB_Options.h" />
+    <ClInclude Include="DHBB_Types.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Grid.h" />

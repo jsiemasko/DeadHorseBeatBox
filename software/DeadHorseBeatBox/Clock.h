@@ -2,11 +2,8 @@
 #define _CLOCK_h
 
 #include "DHBB_Options.h"
+#include "DHBB_Types.h"
 #include "arduino.h"
-
-typedef unsigned short int USHORT;
-typedef unsigned int ULONG;
-typedef unsigned int UINT;
 
 class Clock {
  private:
@@ -18,7 +15,7 @@ class Clock {
 	 ULONG previous_pulse_ = 0;		//Last pulse that was processed
 	 static const UINT kMicrosecPerMin = 60000000;
 	 static const UINT kMinBpm = 1;
-	 static const UINT kMaxBpm = 900;
+	 static const UINT kMaxBpm = 500;
 
  public:
 	 //Constructors

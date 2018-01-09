@@ -4,11 +4,8 @@
 #define _LED_h
 
 #include "DHBB_Options.h"
+#include "DHBB_Types.h"
 #include "arduino.h"
-
-typedef unsigned short int USHORT;
-typedef unsigned int ULONG;
-typedef unsigned int UINT;
 
 enum LedMode {
 	kLedModeSolid,

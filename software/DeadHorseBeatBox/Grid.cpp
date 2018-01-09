@@ -18,25 +18,26 @@ void Grid::ClearGrid(){
 
 
 void Grid::DisplaySingleTrackEditMode() {
-	USHORT current_track = p_pattern_->GetCurrentTrack();
-	for (USHORT currentStep = 0; currentStep < STEPS_PER_PATTERN; currentStep++) {
-		
+	Track& r_current_track = p_pattern_->GetCurrentTrack();
+	for (USHORT current_step = 0; current_step < STEPS_PER_PATTERN; current_step++) {
+		Step& r_current_step = r_current_track.GetStep(current_step);
+
 		//Determine which param to show based on the edit mode
 		bool edit_param_value = false;
 		switch (current_grid_mode_) {
-			case kGridModeAccentEdit: edit_param_value = p_pattern_->GetAccent(current_track, currentStep); break;
-			case kGridModeProbabilityEdit: edit_param_value = p_pattern_->GetChance(current_track, currentStep); break;
-			case kGridModeRetriggerEdit: edit_param_value = p_pattern_->GetRetrigger(current_track, currentStep); break;
-			case kGridModeSkipEdit: edit_param_value = p_pattern_->GetSkipState(current_track, currentStep); break;
-			case kGridModeNoteEdit: edit_param_value = p_pattern_->GetNote(current_track, currentStep); break;
+			case kGridModeAccentEdit: edit_param_value = r_current_step.GetAccentState(); break;
+			case kGridModeChanceEdit: edit_param_value = r_current_step.GetChanceState(); break;
+			case kGridModeRetriggerEdit: edit_param_value = r_current_step.GetRetriggerState(); break;
+			case kGridModeSkipEdit: edit_param_value = r_current_step.GetSkipState(); break;
+			case kGridModeNoteEdit: edit_param_value = r_current_step.GetNoteState(); break;
 			//Jump
 			default: edit_param_value = false;  break;
 		}
-		trellis_led_buffer_[GetGridNumber(0, currentStep)] = p_pattern_->GetEnableState(current_track, currentStep);
-		trellis_led_buffer_[GetGridNumber(1, currentStep)] = edit_param_value;
+		trellis_led_buffer_[GetGridNumber(0, current_step)] = r_current_step.GetEnableState();
+		trellis_led_buffer_[GetGridNumber(1, current_step)] = edit_param_value;
 	}
 	//Display Cursor
-	int current_led = p_pattern_->GetCursorPosition(current_track);
+	int current_led = r_current_track.GetCursorPosition();
 	bool cursor_display_state = (current_pulse_ / (PULSE_PER_STEP / 2) % 2 == 0);
 	trellis_led_buffer_[current_led] = cursor_display_state; //Cursor 1
 	trellis_led_buffer_[current_led + STEPS_PER_PATTERN] = cursor_display_state; //Cursor 1
@@ -56,7 +57,7 @@ void Grid::DisplayPlayingTracks() {
 	//Show currently selected mode LED
 	switch (default_grid_mode_) {
 		case kGridModeAccentEdit: trellis_led_buffer_[16] = true; break;
-		case kGridModeProbabilityEdit: trellis_led_buffer_[17] = true; break;
+		case kGridModeChanceEdit: trellis_led_buffer_[17] = true; break;
 		case kGridModeRetriggerEdit: trellis_led_buffer_[18] = true; break;
 		case kGridModeNoteEdit: trellis_led_buffer_[19] = true; break;
 		case kGridModeJumpEdit: trellis_led_buffer_[20] = true; break;
@@ -92,102 +93,78 @@ void Grid::UpdateDisplay(ULONG pulse) {
 
 void Grid::ProcessGridButton(USHORT button_num){
 	button_num = button_renumber_[button_num];
-	if (current_grid_mode_ == kGridModeAccentEdit) { //Step Toggle
-		if (button_num < TRELLIS_BUTTONS_PER_ROW) {
-			p_pattern_->ToggleEnableState(p_pattern_->GetCurrentTrack(), button_num);
-		}
-		else if (button_num < TRELLIS_BUTTONS_PER_ROW * 2) {
-			p_pattern_->ToggleAccent(p_pattern_->GetCurrentTrack(), button_num - TRELLIS_BUTTONS_PER_ROW);
-		}
-/*
-		else if (button_num < TRELLIS_BUTTONS_PER_ROW * 3) {
-			p_pattern_->ToggleProbability(p_pattern_->GetCurrentTrack(), button_num - (TRELLIS_BUTTONS_PER_ROW * 2));
-		}
-		else {
-			p_pattern_->ToggleBurstMultiplier(p_pattern_->GetCurrentTrack(), button_num - (TRELLIS_BUTTONS_PER_ROW * 3));
-		}
-		*/
-	} else if (current_grid_mode_ == kGridModeSelectTrack) { //Track Select
-		//Select a track if one exists and then go back to default edit mode
+	Track& r_current_track = p_pattern_->GetCurrentTrack();
+	if (current_grid_mode_ == kGridModeSelectTrack) { //Track Select
+													  //Select a track if one exists and then go back to default edit mode
 		if (button_num < NUM_OF_TRACKS) {
 			p_pattern_->SetCurrentTrack(button_num);
 		}
 		else {
 			switch (button_num) {
-				case 16: default_grid_mode_ = kGridModeAccentEdit;		break; //Accent
-				case 17: default_grid_mode_ = kGridModeProbabilityEdit;	break; //Probability 
-				case 18: default_grid_mode_ = kGridModeRetriggerEdit;	break; //Retrigger
-				case 19: default_grid_mode_ = kGridModeNoteEdit;		break; //Note 
-				case 20: default_grid_mode_ = kGridModeJumpEdit;		break; //Jump 
-				case 21: default_grid_mode_ = kGridModeSkipEdit;		break; //Skip
+			case 16: default_grid_mode_ = kGridModeAccentEdit;		break; //Accent
+			case 17: default_grid_mode_ = kGridModeChanceEdit;	break; //Probability 
+			case 18: default_grid_mode_ = kGridModeRetriggerEdit;	break; //Retrigger
+			case 19: default_grid_mode_ = kGridModeNoteEdit;		break; //Note 
+			case 20: default_grid_mode_ = kGridModeJumpEdit;		break; //Jump 
+			case 21: default_grid_mode_ = kGridModeSkipEdit;		break; //Skip
 			}
 		}
-	}
+	} else {
+		if (button_num < TRELLIS_BUTTONS_PER_ROW) {
+			r_current_track.GetStep(button_num).ToggleEnableState();
+		}
+		else if (button_num < TRELLIS_BUTTONS_PER_ROW * 2) {
+			//Get the step, offsetting for the fact we using the second row of buttons
+			Step& r_current_step = r_current_track.GetStep(button_num - TRELLIS_BUTTONS_PER_ROW);
+
+			switch (current_grid_mode_){
+				case kGridModeAccentEdit: r_current_step.ToggleAccentState(); break;
+				case kGridModeChanceEdit: r_current_step.ToggleChanceState(); break;
+				case kGridModeSkipEdit: r_current_step.ToggleSkipState(); break;
+				case kGridModeRetriggerEdit: r_current_step.ToggleRetriggerState(); break;
+				case kGridModeNoteEdit: r_current_step.ToggleNoteState(); break;
+				case kGridModeJumpEdit: break; //TODO: this.
+				default: break; //Unknown mode, do nothing
+			}
+		}
+	} 
 }
 
-void Grid::ReadSwitches()
-{
-	//Check if throttle time has expired
+void Grid::ReadSwitches() {
+	//Check if throttle time has expired, if not then bail out
 	long current_millis = millis();
-	if (current_millis - throttle_previous_ms_ > TRELLIS_READ_THROTTLE_IN_MS) {
-		throttle_previous_ms_ = current_millis;
+	if (current_millis - throttle_previous_ms_ < TRELLIS_READ_THROTTLE_IN_MS) { return; }
+
+	throttle_previous_ms_ = current_millis;
 		
-		//Refresh buttons
-		track_select_button_.CheckForPress();
-		function_select_button_.CheckForPress();
-		encoder_button_.CheckForPress();
+	//Refresh buttons
+	track_select_button_.CheckForPress();
+	function_select_button_.CheckForPress();
+	encoder_button_.CheckForPress();
 
-		//Switch in and out of param edit mode
-		if (encoder_button_.JustPressed()) { param_edit_ = !param_edit_; }
-
-		//Check if we need to switch modes
-		if (track_select_button_.IsPressed()) {
-			current_grid_mode_ = kGridModeSelectTrack;
-		} else if (function_select_button_.IsPressed()) {
-			;//current_grid_mode_ = kGridModeSelectFunction;
-		} else {//Return to default mode
-			current_grid_mode_ = default_grid_mode_;
-		}
-
-		//Read Trellis
-		trellis_.readSwitches();
-		for (USHORT i = 0; i < TRELLIS_NUM_OF_BUTTONS; i++) {
-			if (trellis_.justPressed(i)) { ProcessGridButton(i); }
-		}
+	//Check if we need to switch modes
+	if (track_select_button_.IsPressed()) {
+		current_grid_mode_ = kGridModeSelectTrack;
+	} else if (function_select_button_.IsPressed()) {
+		;//current_grid_mode_ = kGridModeSelectFunction;
+	} else {//Return to default mode
+		current_grid_mode_ = default_grid_mode_;
 	}
 
-	//Check for encoder change
+	//Read Trellis
+	trellis_.readSwitches();
+	for (USHORT i = 0; i < TRELLIS_NUM_OF_BUTTONS; i++) {
+		if (trellis_.justPressed(i)) { ProcessGridButton(i); }
+	}
+
+	//Take an encoder reading, if we have accumulated enough then send take an action and reset our accumulation
 	long current_encoder_position_ = encoder_.read();
-	if (current_encoder_position_ != 0) {
-		encoder_count = (encoder_count + 1) % 4;
-
-		// Encode produces 4 events every time it turns a click.  Only process every forth event
-		if (encoder_count != 3) { return;  }
-
-		if (param_edit_ == true) {
-			if (current_param_ == kParamMenuItemBpm) {
-				p_clock_->OffsetTempo(current_encoder_position_);
-			}
-			else if (current_param_ == kParamMenuItemTrack) {
-				if (current_encoder_position_ > 0) {
-					p_pattern_->IncrementCurrentTrack();
-				}
-				else {
-					p_pattern_->DecrementCurrentTrack();
-				}
-			}
-		}
-		else { //We are in param select, not param edit
-			if (current_param_ == kParamMenuItemTrack) {
-				current_param_ = kParamMenuItemBpm;
-			}
-			else {
-				current_param_ = kParamMenuItemTrack;
-			}
-		}
+	if (current_encoder_position_ >= ENCODER_SCALE || current_encoder_position_ <= -ENCODER_SCALE) {
+		p_clock_->OffsetTempo(current_encoder_position_ / ENCODER_SCALE);
 		encoder_.write(0);
 	}
 }
+
 
 void Grid::UpdateSelectButtonDisplay() {
 	LedMode current_led_mode = (current_grid_mode_ == kGridModeSelectTrack) ? kLedModeFlash : kLedModeOff;

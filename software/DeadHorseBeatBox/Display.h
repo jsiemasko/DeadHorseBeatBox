@@ -4,12 +4,12 @@
 #define _DISPLAY_h
 
 #include "DHBB_Options.h"
+#include "DHBB_Types.h"
 #include "arduino.h"
 #include "Clock.h"
 #include "Grid.h"
 #include "Pattern.h"
 #include "SplashScreen.h"
-
 
 /*  Universal 8bit Graphics Library (https://github.com/olikraus/u8g2/) */
 #include <U8g2lib.h>
@@ -20,10 +20,6 @@
 #ifdef U8X8_HAVE_HW_I2C
 #include <Wire.h>
 #endif
-
-typedef unsigned short int USHORT;
-typedef unsigned int ULONG;
-typedef unsigned int UINT;
 
 enum DisplayMode {
 	kDisplayModePatternProperties,

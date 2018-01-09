@@ -2,6 +2,7 @@
 #define _GRID_h
 
 #include "DHBB_Options.h"
+#include "DHBB_Types.h"
 #include "Button.h"
 #include <Encoder.h>
 #include "Led.h"
@@ -12,19 +13,10 @@
 #include "Track.h"
 #include "Clock.h"
 
-typedef unsigned short int USHORT;
-typedef unsigned int ULONG;
-typedef unsigned int UINT;
-
-enum ParamMenuItem {
-	kParamMenuItemTrack,
-	kParamMenuItemBpm
-};
-
 enum GridMode {
 	kGridModeSelectTrack,
 	kGridModeAccentEdit,
-	kGridModeProbabilityEdit,
+	kGridModeChanceEdit,
 	kGridModeSkipEdit,
 	kGridModeRetriggerEdit,
 	kGridModeNoteEdit,
@@ -34,9 +26,6 @@ enum GridMode {
 class Grid
 {
  private:
-	 ParamMenuItem current_param_ = kParamMenuItemBpm;
-	 bool param_edit_ = true;
-
 	 Pattern * p_pattern_ = 0;			//Pointer to the current pattern object
 	 Clock * p_clock_ = 0;				//Pointer to the current clock object
 	 ULONG current_pulse_ = 0;			//Current pulse that is being processed

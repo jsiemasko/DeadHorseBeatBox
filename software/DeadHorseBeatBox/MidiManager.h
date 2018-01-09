@@ -4,12 +4,9 @@
 #define _MIDIMANAGER_h
 
 #include "DHBB_Options.h"
+#include "DHBB_Types.h"
 #include "arduino.h"
 #include <vector>
-
-typedef unsigned short int USHORT;
-typedef unsigned int ULONG;
-typedef unsigned int UINT;
 
 struct MidiEvent {
 	USHORT Track = 0;

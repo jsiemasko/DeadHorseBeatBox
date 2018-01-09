@@ -26,11 +26,12 @@ Pattern::Pattern(MidiManager * p_midi_manager){
 		tracks_[0].GetStep(14).ToggleEnableState();
 
 		tracks_[1].GetStep(4).ToggleEnableState();
+		tracks_[1].GetStep(4).ToggleRetriggerState();
 		tracks_[1].GetStep(4).ToggleAccentState();
 		tracks_[1].GetStep(12).ToggleEnableState();
 		tracks_[1].GetStep(12).ToggleAccentState();
-		tracks_[1].GetStep(12).ToggleChanceState();
 		tracks_[1].GetStep(13).ToggleEnableState();
+		tracks_[1].GetStep(13).ToggleRetriggerState();
 		tracks_[1].GetStep(13).ToggleChanceState();
 		tracks_[1].GetStep(14).ToggleEnableState();
 		tracks_[1].GetStep(14).ToggleChanceState();

@@ -14,7 +14,6 @@ void Clock::SetTempo(float bpm) {
 void Clock::OffsetTempo(float bpm_offset) {
 	bpm_ += (bpm_offset);
 	bpm_changed_ = true;
-
 	// Clip bpm within our min and max
 	if (bpm_ > kMaxBpm) {
 		bpm_ = kMaxBpm;

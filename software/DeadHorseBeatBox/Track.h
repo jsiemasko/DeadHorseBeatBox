@@ -4,13 +4,10 @@
 #define _TRACK_h
 
 #include "DHBB_Options.h"
+#include "DHBB_Types.h"
 #include "arduino.h"
 #include "MidiManager.h"
 #include "Step.h"
-
-typedef unsigned short int USHORT;
-typedef unsigned int ULONG;
-typedef unsigned int UINT;
 
 // Track direction controls direction of track playback
 enum TrackDirection {

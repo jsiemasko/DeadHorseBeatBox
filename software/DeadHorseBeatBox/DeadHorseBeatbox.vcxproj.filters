@@ -57,6 +57,9 @@
     <ClInclude Include="Step.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DHBB_Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Clock.cpp">

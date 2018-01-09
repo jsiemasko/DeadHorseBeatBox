@@ -43,6 +43,7 @@
 #define ENCODER_BTN_PIN 6
 #define ENCODER_PIN_1 21
 #define ENCODER_PIN_2 22
+#define ENCODER_SCALE 4
 
 
 /* -- Tempo LED -- */

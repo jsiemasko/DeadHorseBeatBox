@@ -15,7 +15,7 @@ void Display::GraphicsSetup() {
 }
 
 void Display::ShowPatternProperties(){
-	USHORT current_track = p_pattern_->GetCurrentTrack();
+	USHORT current_track = p_pattern_->GetCurrentTrackNumber();
 	ShowPageHeader();
 	ShowBargraph(16, 23, 1);
 	ShowTracks(40, current_track);
@@ -33,7 +33,7 @@ void Display::ShowTrackSelectDisplay() {
 
 	switch (default_grid_mode_) {
 		case kGridModeAccentEdit: current_mode = 0; break;
-		case kGridModeProbabilityEdit: current_mode = 1; break;
+		case kGridModeChanceEdit: current_mode = 1; break;
 		case kGridModeSkipEdit: current_mode = 5; break;
 		case kGridModeJumpEdit: current_mode = 4; break;
 		case kGridModeRetriggerEdit: current_mode = 2; break;
@@ -73,7 +73,7 @@ void Display::ShowPageHeader() {
 	oled_.setCursor(0, 4);
 	switch (default_grid_mode_) {
 		case kGridModeAccentEdit: oled_.print("Accent"); break;
-		case kGridModeProbabilityEdit: oled_.print("Chance"); break;
+		case kGridModeChanceEdit: oled_.print("Chance"); break;
 		case kGridModeSkipEdit: oled_.print("Skip"); break;
 		case kGridModeJumpEdit: oled_.print("Jump"); break;
 		case kGridModeRetriggerEdit: oled_.print("Retrig"); break;
@@ -91,32 +91,34 @@ void Display::ShowPageHeader() {
 }
 
 void Display::ShowSteps(USHORT y_offset, USHORT track) {
+	Track& r_current_track = p_pattern_->GetTrack(track);
 	for (USHORT step = 0; step < STEPS_PER_PATTERN; step++) {
 		oled_.setDrawColor(1);
 
 		USHORT x_offset = step * kCharWidth;
-		bool step_skipped = p_pattern_->GetSkipState(track, step);
-		bool step_enabled = p_pattern_->GetEnableState(track, step);
-		bool step_accented = p_pattern_->GetAccent(track, step);
-		bool step_chance_set = p_pattern_->GetChance(track, step);
-		bool step_retriggered = p_pattern_->GetRetrigger(track, step);
+		Step& r_current_step = r_current_track.GetStep(step);
+		bool step_skipped = r_current_step.GetSkipState();
+		bool step_enabled = r_current_step.GetEnableState();
+		bool step_accented = r_current_step.GetAccentState();
+		bool step_chance_set = r_current_step.GetChanceState();
+		bool step_retriggered = r_current_step.GetRetriggerState();
 
 		//Seperator lines every 4 steps
 		if (step % 4 == 3) {
-			oled_.drawPixel(x_offset + kCharWidth, y_offset + 2);
-			oled_.drawPixel(x_offset + kCharWidth, y_offset + 5);
+			oled_.drawPixel(x_offset + kCharWidth, y_offset + 3);
+			oled_.drawPixel(x_offset + kCharWidth, y_offset + 7);
 		}
 
 		//Cursor
-		if (step == p_pattern_->GetCursorPosition(track)) {
-			oled_.drawHLine(x_offset + 1, y_offset + kCharHeight - 1, 5);
+		if (step == r_current_track.GetCursorPosition()) {
+			oled_.drawHLine(x_offset + 1, y_offset + kCharHeight + 1, 5);
 		}
 
 		if (step_skipped) {
 			; //Draw nothing, step is skipped
 		}
 		else if (!step_enabled) {
-			oled_.drawPixel(x_offset + 4, y_offset + 4); //Just a dot
+			oled_.drawPixel(x_offset + 4, y_offset + 5); //Just a dot
 		}
 		else {
 			DrawStepBox(x_offset, y_offset, step_accented, step_chance_set, step_retriggered); //Draw a stepbox
@@ -129,24 +131,26 @@ void Display::DrawStepBox(USHORT x, USHORT y, bool step_accented, bool step_chan
 
 	//Determine size and offset of box based on accent
 	USHORT offset = step_accented ? 2 : 3;
-	USHORT size = step_accented ? 5: 3;
+	USHORT x_size = step_accented ? 5 : 3;
+	USHORT y_size = step_accented ? 7 : 5;
+
 
 	//Determine if box is filled based on chance
 	if (step_chance_set) {//Chance
-		oled_.drawFrame(x + offset, y + offset, size, size);
+		oled_.drawFrame(x + offset, y + offset, x_size, y_size);
 	}
 	else {//Normal
-		oled_.drawBox(x + offset, y + offset, size, size);
+		oled_.drawBox(x + offset, y + offset, x_size, y_size);
 	}
 
 	//Retrigger erase lines to show a retrigger
 	if (step_retriggered) {
 		oled_.setDrawColor(0);
-		oled_.drawVLine(x + 4, y + 2, 5);
+		oled_.drawVLine(x + 4, y + offset, y_size);
 
 		//If the step box had chance set then we also erase a horizontal line on a retrigger
 		if (step_chance_set) {
-			oled_.drawHLine(x + 2, y + 4, 5);
+			oled_.drawHLine(x + offset, y + 5, x_size);
 		}
 	}
 }

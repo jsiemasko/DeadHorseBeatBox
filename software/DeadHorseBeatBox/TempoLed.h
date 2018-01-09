@@ -4,12 +4,9 @@
 #define _TEMPOLED_h
 
 #include "DHBB_Options.h"
+#include "DHBB_Types.h"
 #include "arduino.h"
 #include "Led.h"
-
-typedef unsigned short int USHORT;
-typedef unsigned int ULONG;
-typedef unsigned int UINT;
 
 class TempoLed: public Led
 {

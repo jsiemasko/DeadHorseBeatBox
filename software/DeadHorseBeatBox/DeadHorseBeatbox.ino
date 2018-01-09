@@ -2,6 +2,7 @@
 #include <Encoder.h>
 #include "Led.h"
 #include "DHBB_Options.h"
+#include "DHBB_Types.h"
 #include "MidiManager.h"
 #include "TempoLed.h"
 #include "Grid.h"
@@ -10,10 +11,6 @@
 #include "Clock.h"
 #include <TimerThree.h>
 #include <Arduino.h>
-
-typedef unsigned short int USHORT;
-typedef unsigned int ULONG;
-typedef unsigned int UINT;
 
 MidiManager midi_manager;
 Clock clock(DEFAULT_TEMPO);
