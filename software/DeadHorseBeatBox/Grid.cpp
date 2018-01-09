@@ -115,7 +115,8 @@ void Grid::ProcessGridButton(USHORT button_num){
 		}
 		else if (button_num < TRELLIS_BUTTONS_PER_ROW * 2) {
 			//Get the step, offsetting for the fact we using the second row of buttons
-			Step& r_current_step = r_current_track.GetStep(button_num - TRELLIS_BUTTONS_PER_ROW);
+			button_num -= TRELLIS_BUTTONS_PER_ROW;
+			Step& r_current_step = r_current_track.GetStep(button_num);
 
 			switch (current_grid_mode_){
 				case kGridModeAccentEdit: r_current_step.ToggleAccentState(); break;
@@ -123,7 +124,7 @@ void Grid::ProcessGridButton(USHORT button_num){
 				case kGridModeSkipEdit: r_current_step.ToggleSkipState(); break;
 				case kGridModeRetriggerEdit: r_current_step.ToggleRetriggerState(); break;
 				case kGridModeNoteEdit: r_current_step.ToggleNoteState(); break;
-				case kGridModeJumpEdit: break; //TODO: this.
+				case kGridModeJumpEdit: r_current_track.SetCursorPosition(button_num); break; //TODO: this.
 				default: break; //Unknown mode, do nothing
 			}
 		}

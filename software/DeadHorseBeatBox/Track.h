@@ -60,6 +60,7 @@ public:
 	// TIMING
 	inline void SetTrackDirection(TrackDirection direction) { direction_ = direction; }
 	inline USHORT GetCursorPosition() { return cursor_position_; };
+	inline void SetCursorPosition(USHORT cursor_position) { next_cursor_position_ = cursor_position; };
 	void CalculateNumberOfSteps();
 	void ProcessPulse(ULONG pulse);
 };
