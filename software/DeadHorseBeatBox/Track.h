@@ -29,7 +29,6 @@ private:
 	USHORT midi_root_note_ = 60;			// MIDI root note, step offsets from this based off scale settings
 	TrackDirection direction_ = kTrackDirectionForward;	// Controls how the cursor advances
 	bool probability_trigger_ = true;		// Boolean results of current probability check. Storing so we check it only once per step, not on each burst.
-	USHORT retrigger_pulses[6] = { PULSE_PER_STEP, PULSE_PER_STEP / 2, PULSE_PER_STEP / 3, PULSE_PER_STEP / 4, PULSE_PER_STEP / 6, PULSE_PER_STEP / 12 }; // Burst mod values to make the math work
 	void Advance();							// Advance per track direction setting
 
 public:

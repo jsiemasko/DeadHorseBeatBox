@@ -15,6 +15,11 @@ private:
 	bool chance_state_ = false;
 	bool note_state_ = false;
 	bool retrigger_state_ = false;
+	USHORT retrigger_amount_ = 0;
+
+	// Burst mod values to make the math work
+	USHORT retrigger_pulses[5] = { PULSE_PER_STEP / 2, PULSE_PER_STEP / 3, PULSE_PER_STEP / 4, PULSE_PER_STEP / 6, PULSE_PER_STEP / 12 };
+
 public:
 	Step();
 	~Step();
@@ -36,11 +41,13 @@ public:
 
 	inline bool GetRetriggerState() { return retrigger_state_; }
 	inline void ToggleRetriggerState() { retrigger_state_ = !retrigger_state_; }
+	inline USHORT GetRetriggerAmount() { return retrigger_amount_; }
+	inline void SetRetriggerAmount(USHORT retrigger_amount) { retrigger_amount_ = retrigger_amount; }
+	inline USHORT GetRetriggerPulses() { return retrigger_pulses[retrigger_amount_]; }
 
 	USHORT AccentVelocity = 127;
 	USHORT ChanceAmount = 50;
 	USHORT NoteScaleOffset = 0;		// 0 - 7. Offset for MIDI root note using the current scaled
-	USHORT RetriggerAmount = 1;
 	USHORT GateLength = 48;
 };
 

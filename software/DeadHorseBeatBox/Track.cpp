@@ -54,16 +54,20 @@ void Track::ProcessPulse(ULONG pulse){
 	USHORT pulse_in_step = pulse % PULSE_PER_STEP;
 	
 	// If we are at the start of a new step then advance before updating
-	if (pulse_in_step == 0) { Advance(); }
+	if (pulse_in_step == 0) { 
+		Advance(); 
+	}
 
 	// Pull the current step
 	Step currentStep = steps_[cursor_position_];
 	
 	// We only do a probability check once per step so that the burst is triggered as an atomic unit
-	if (pulse_in_step == 0) { probability_trigger_ = currentStep.GetChanceState() ? (rand() % 2 == 0) : true; }
+	if (pulse_in_step == 0) { 
+		probability_trigger_ = currentStep.GetChanceState() ? (rand() % 2 == 0) : true; 
+	}
 
-	// Do we need to check for a note trigger?
-	bool note_check_needed = (pulse_in_step % retrigger_pulses[currentStep.RetriggerAmount - 1] == 0);
+	// Do we need to check for a note trigger? Always check on first pulse and use retrigger math for the rest.
+	bool note_check_needed = (pulse_in_step == 0) || ((pulse_in_step % currentStep.GetRetriggerPulses() == 0) && currentStep.GetRetriggerState());
 
 	// Check all the values to see if we need a new note
 	if (note_check_needed && currentStep.GetEnableState() && !currentStep.GetSkipState() && probability_trigger_) {
