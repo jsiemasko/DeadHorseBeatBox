@@ -28,6 +28,7 @@ class Grid
  private:
 	 Pattern * p_pattern_ = 0;			//Pointer to the current pattern object
 	 Clock * p_clock_ = 0;				//Pointer to the current clock object
+	 MidiManager * p_midi_manager_ = 0; //Pointer to the current Midi Manager object
 	 ULONG current_pulse_ = 0;			//Current pulse that is being processed
 	 bool trellis_led_buffer_[32];		//Holds the current state of the LEDs before writing
 	 long throttle_previous_ms_ = 0;	//Throttle counter for trellis button reads
@@ -73,7 +74,7 @@ class Grid
 	 void UpdateSelectButtonDisplay();
 
  public:
-	Grid();
+	Grid(MidiManager * p_midi_manager);
 	~Grid();
 	inline void SetPattern(Pattern * p_pattern) { p_pattern_ = p_pattern; }
 	inline void SetClock(Clock * p_clock) { p_clock_ = p_clock; }

@@ -14,10 +14,10 @@
 
 MidiManager midi_manager;
 Clock clock(DEFAULT_TEMPO);
-Display display;
+Display display(&midi_manager);
 TempoLed tempo_led(TEMPO_LED_PIN);
 Pattern pattern(&midi_manager);
-Grid grid;
+Grid grid(&midi_manager);
 
 void setup(void) {
 	//Serial for debugging

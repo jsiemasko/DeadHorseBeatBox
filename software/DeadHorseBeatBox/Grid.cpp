@@ -1,6 +1,7 @@
 #include "Grid.h"
 
-Grid::Grid(){
+Grid::Grid(MidiManager * p_midi_manager){
+	p_midi_manager_ = p_midi_manager;
 	trellis_.begin(TRELLIS_ADDRESS_1, TRELLIS_ADDRESS_2);
 	trellis_.setBrightness(TRELLIS_BRIGHTNESS);
 	ClearGrid();
@@ -48,7 +49,7 @@ void Grid::DisplayPlayingTracks() {
 	for (int current_led = 0; current_led < (TRELLIS_NUM_OF_BUTTONS); current_led++) {
 		//Update the LED to show if a note is playing for the first two rows
 		if (current_led < NUM_OF_TRACKS) {
-			trellis_led_buffer_[current_led] = p_pattern_->GetTrackNotePlaying(current_led);
+			trellis_led_buffer_[current_led] = p_midi_manager_->GetEvent(current_led).Playing;
 		} else { //Otherwise just clear it out
 			trellis_led_buffer_[current_led] = false;
 		}

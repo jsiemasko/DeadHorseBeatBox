@@ -29,7 +29,7 @@ class MidiManager{
 	~MidiManager();
 	void AddEvent(MidiEvent& midi_event);
 	void ProcessPulse(ULONG pulse);
-	bool EventPlaying(USHORT track);
+	MidiEvent& GetEvent(USHORT track);
 };
 
 #endif

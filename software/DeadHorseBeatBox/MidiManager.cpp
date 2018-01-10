@@ -65,25 +65,13 @@ void MidiManager::ProcessPulse(ULONG pulse){
 			}
 		}
 		else {//Our note has no pulses left
-
 			//Turn it off if it is playing
 			if (r_midi_event.Playing == true) { NoteOff(r_midi_event); }
 		}
-		/*
-		if (pulse % PULSE_PER_STEP == 0) {
-			Serial.print(r_midi_event.Playing);
-			Serial.print(" ");
-		}
-		*/
 	}
-	/*
-	if (pulse % PULSE_PER_STEP == 0) {
-		Serial.println("");
-	}
-	*/
 }
 
-bool MidiManager::EventPlaying(USHORT track)
+MidiEvent& MidiManager::GetEvent(USHORT track)
 {
-	return midi_events_[track].Playing;
+	return midi_events_[track];
 }

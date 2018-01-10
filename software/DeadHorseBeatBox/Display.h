@@ -34,6 +34,7 @@ class Display
  private:
 	 DisplayMode display_mode_ = kDisplayModePatternProperties;
 	 const static USHORT kNumOfDisplayModes = 1;
+	 MidiManager * p_midi_manager_ = 0;
 	 Pattern * p_pattern_ = 0;
 	 Clock * p_clock_ = 0;
 	 Grid * p_grid_ = 0;
@@ -62,11 +63,11 @@ class Display
 	 void ShowPageHeader();
 	 void ShowSteps(USHORT y_offset, USHORT track);
 	 void ShowTracks(USHORT y_offset, USHORT current_track);
-	 void ShowBargraph(USHORT y_offset, USHORT height, USHORT fall_speed);
+	 void ShowBargraph(USHORT y_offset, USHORT accent_height, USHORT std_height, USHORT fall_speed);
 	 void DrawStepBox(USHORT x, USHORT y, bool step_accented, bool step_chance_set, bool step_retriggered);
 
  public:
-	Display();
+	Display(MidiManager * p_midi_manager);
 	~Display();
 	void GraphicsSetup();
 	void SplashHorse();

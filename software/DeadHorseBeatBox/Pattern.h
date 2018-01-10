@@ -14,7 +14,8 @@ class Pattern
 	Pattern(MidiManager * p_midi_manager);
 	~Pattern();
 
-	inline bool GetTrackNotePlaying(USHORT track) { return p_midi_manager_->EventPlaying(track); }
+
+	//inline bool GetTrackNotePlaying(USHORT track) { return p_midi_manager_->EventPlaying(track); }
 
 	inline Track& GetTrack(USHORT track_num) { return tracks_[track_num]; }
 

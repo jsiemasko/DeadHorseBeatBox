@@ -1,6 +1,8 @@
 #include "Display.h"
 
-Display::Display() { }
+Display::Display(MidiManager * p_midi_manager) {
+	p_midi_manager_ = p_midi_manager;
+}
 
 Display::~Display(){ }
 
@@ -17,7 +19,7 @@ void Display::GraphicsSetup() {
 void Display::ShowPatternProperties(){
 	USHORT current_track = p_pattern_->GetCurrentTrackNumber();
 	ShowPageHeader();
-	ShowBargraph(16, 23, 1);
+	ShowBargraph(16, 23, 14, 1);
 	ShowTracks(40, current_track);
 	ShowSteps(48, current_track);
 }
@@ -170,7 +172,7 @@ void Display::ShowTracks(USHORT y_offset, USHORT current_track) {
 	}
 }
 
-void Display::ShowBargraph(USHORT y_offset, USHORT height, USHORT fall_speed) {
+void Display::ShowBargraph(USHORT y_offset, USHORT accent_height, USHORT std_height, USHORT fall_speed) {
 	//Seperator 1
 	oled_.drawPixel(32, y_offset + 4);
 	oled_.drawPixel(32, y_offset + 14);
@@ -184,15 +186,16 @@ void Display::ShowBargraph(USHORT y_offset, USHORT height, USHORT fall_speed) {
 	oled_.drawPixel(96, y_offset + 14);
 
 	//Offset adjust
-	y_offset += height;
+	y_offset += accent_height;
 
 	oled_.setDrawColor(1);
-	
+
 	for (USHORT track = 0; track < NUM_OF_TRACKS; track++) {
 		USHORT x_offset = track * kCharWidth + 1;
-		if (p_pattern_->GetTrackNotePlaying(track)) {
-			//If a note is playing set the bargraph to the top and fill it
-			bargraph[track] = height;
+		MidiEvent& r_event = p_midi_manager_->GetEvent(track);
+		if (r_event.Playing) {
+			//If a note is playing set the bargraph to appropriate height and and fill it
+			bargraph[track] = (r_event.Velocity > 100) ? accent_height : std_height ;
 			oled_.drawBox(x_offset, y_offset - bargraph[track], kCharWidth - 2, bargraph[track]);
 		} else if (bargraph[track] > 0) {
 			//If a note is not playing but the bargrah is not empty then make it hollow and let it fall
@@ -207,9 +210,9 @@ void Display::ShowBargraph(USHORT y_offset, USHORT height, USHORT fall_speed) {
 void Display::SplashHorse(){
 	oled_.clearBuffer();
 	Serial.println("Splash Screen");
+	oled_.setDrawColor(1);
 	oled_.drawXBMP(0, 0, 128, 64, dedhors_bits);
 	oled_.setFont(u8g2_font_timB10_tf);
-	oled_.setDrawColor(1);
 	oled_.drawStr(95, 64, "v0.01");
 	oled_.sendBuffer();
 	delay(DISPLAY_SPLASH_SCREEN_DISPLAY_TIME);
