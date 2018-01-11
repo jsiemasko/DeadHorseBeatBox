@@ -71,6 +71,13 @@ void MidiManager::ProcessPulse(ULONG pulse){
 	}
 }
 
+void MidiManager::AllNotesOff() {
+	for (USHORT track_num = 0; (track_num < NUM_OF_TRACKS); track_num++) {
+		MidiEvent& r_midi_event = midi_events_[track_num];
+		if (r_midi_event.Playing == true) { NoteOff(r_midi_event); }
+	}
+}
+
 MidiEvent& MidiManager::GetEvent(USHORT track)
 {
 	return midi_events_[track];

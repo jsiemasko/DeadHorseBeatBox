@@ -1,8 +1,6 @@
 #include "Clock.h"
 
-Clock::Clock(float bpm) { 
-	SetTempo(bpm);
-}
+Clock::Clock(float bpm) { SetTempo(bpm); }
 
 Clock::~Clock(){ }
 
@@ -12,7 +10,7 @@ void Clock::SetTempo(float bpm) {
 }
 
 void Clock::OffsetTempo(float bpm_offset) {
-	bpm_ += (bpm_offset);
+	bpm_ += bpm_offset;
 	bpm_changed_ = true;
 	// Clip bpm within our min and max
 	if (bpm_ > kMaxBpm) {
@@ -37,21 +35,6 @@ void Clock::UpdateTargetPulse(){
 }
 
 void Clock::UpdateCurrentPulse() {
-	//If we are less then the target increment the current pulse and it will get processed
-	//on the next iteration
-	if (current_pulse_ < target_pulse_) {
-		current_pulse_++;
-		/*
-		if (current_pulse_ % PULSE_PER_STEP == 0) { 
-			Serial.print((current_pulse_ / PULSE_PER_STEP) / STEPS_PER_PATTERN);
-			Serial.print("-"); 
-			Serial.print((current_pulse_ / PULSE_PER_STEP) % STEPS_PER_PATTERN); 
-			Serial.print(" Tempo:");
-			Serial.print(bpm_);
-			Serial.print(" Period:");
-			Serial.print(GetPeriod());
-			Serial.print(" - ");
-		}
-		*/
-	}
+	//If we are less then the target increment the current pulse and it will get processed on the next iteration
+	if (current_pulse_ < target_pulse_) { current_pulse_++; }
 }

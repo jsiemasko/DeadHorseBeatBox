@@ -19,7 +19,7 @@ void Display::GraphicsSetup() {
 void Display::ShowPatternProperties(){
 	USHORT current_track = p_pattern_->GetCurrentTrackNumber();
 	ShowPageHeader();
-	ShowBargraph(16, 23, 14, 1);
+	ShowBargraph(16, 23, 14, 25);
 	ShowTracks(40, current_track);
 	ShowSteps(48, current_track);
 }
@@ -189,22 +189,23 @@ void Display::ShowBargraph(USHORT y_offset, USHORT accent_height, USHORT std_hei
 	y_offset += accent_height;
 
 	oled_.setDrawColor(1);
-
+	bool process_fall = (millis() - last_bargraph_update_ > fall_speed);
 	for (USHORT track = 0; track < NUM_OF_TRACKS; track++) {
 		USHORT x_offset = track * kCharWidth + 1;
 		MidiEvent& r_event = p_midi_manager_->GetEvent(track);
 		if (r_event.Playing) {
 			//If a note is playing set the bargraph to appropriate height and and fill it
-			bargraph[track] = (r_event.Velocity > 100) ? accent_height : std_height ;
-			oled_.drawBox(x_offset, y_offset - bargraph[track], kCharWidth - 2, bargraph[track]);
-		} else if (bargraph[track] > 0) {
-			//If a note is not playing but the bargrah is not empty then make it hollow and let it fall
-			bargraph[track] = bargraph[track] - fall_speed;
-			oled_.drawFrame(x_offset, y_offset - bargraph[track], kCharWidth - 2, bargraph[track]);
+			bargraph_[track] = (r_event.Velocity > 100) ? accent_height : std_height ;
+			oled_.drawBox(x_offset, y_offset - bargraph_[track], kCharWidth - 2, bargraph_[track]);
+		} else if (bargraph_[track] > 0) {
+			//If a note is not playing but the bargrah is not empty then make it hollow if it should fall
+			if (process_fall) { bargraph_[track] = bargraph_[track] - 1; }
+			oled_.drawFrame(x_offset, y_offset - bargraph_[track], kCharWidth - 2, bargraph_[track]);
 		} else {
 			; //Bargraph is empty, do nothing
 		}
 	}
+	if (process_fall) { last_bargraph_update_ = millis(); }
 }
 
 void Display::SplashHorse(){

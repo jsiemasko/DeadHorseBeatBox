@@ -50,7 +50,8 @@ class Display
 	 const char mode_initials[kNumOfModes] = { 'A', 'C', 'R', 'N', 'J', 'S' };
 
 	 //Used to track the current values of the bargraph
-	 USHORT bargraph[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	 USHORT bargraph_[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	 ULONG last_bargraph_update_ = millis();
 
 	 //Oled object
 	 U8G2_SH1106_128X64_NONAME_F_4W_HW_SPI oled_{ U8G2_R0, DISPLAY_PIN_CS, DISPLAY_PIN_DC, DISPLAY_PIN_RESET };

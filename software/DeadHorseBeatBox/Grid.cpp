@@ -39,7 +39,7 @@ void Grid::DisplaySingleTrackEditMode() {
 	}
 	//Display Cursor
 	int current_led = r_current_track.GetCursorPosition();
-	bool cursor_display_state = (current_pulse_ / (PULSE_PER_STEP / 2) % 2 == 0);
+	bool cursor_display_state = ((millis() / 50L) % 2 == 0);
 	trellis_led_buffer_[current_led] = cursor_display_state; //Cursor 1
 	trellis_led_buffer_[current_led + STEPS_PER_PATTERN] = cursor_display_state; //Cursor 1
 }
@@ -147,8 +147,8 @@ void Grid::ReadSwitches() {
 	//Check if we need to switch modes
 	if (track_select_button_.IsPressed()) {
 		current_grid_mode_ = kGridModeSelectTrack;
-	} else if (function_select_button_.IsPressed()) {
-		;//current_grid_mode_ = kGridModeSelectFunction;
+	} else if (function_select_button_.JustReleased()) {
+		p_clock_->TogglePlayState();
 	} else {//Return to default mode
 		current_grid_mode_ = default_grid_mode_;
 	}

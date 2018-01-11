@@ -34,29 +34,10 @@ private:
 public:
 	Track(USHORT track_num, USHORT midi_root_note);
 	~Track();
-
 	static const USHORT kNoNextPosition = 255;	// Represents that no next_cursor_position is set and Track_Direction shoudl be used to determine cursor movement
-
-	inline void SetMidiManager(MidiManager * p_midi_manager) { p_midi_manager_ = p_midi_manager;  }
-
 	inline Step& GetStep(USHORT step_num) { return steps_[step_num]; }
-
-	// SKIP STATE
-	/*
-	inline void ToggleSkipState(USHORT step) {
-		// If we are trying to disable the last step to skip then bail out.
-		if (steps_[step].Skip == false && num_steps_ == 1) { return; }
-
-		// Toggle the skip state and update the number of steps.
-		steps_[step].Skip = !(steps_[step].Skip);
-		num_steps_ += (steps_[step].Skip ? -1 : 1);
-	}
-	*/
-	
-	// MIDI
+	inline void SetMidiManager(MidiManager * p_midi_manager) { p_midi_manager_ = p_midi_manager; }
 	inline void SetMidiRootNote(USHORT midi_root_note) { midi_root_note_ = midi_root_note; }
-
-	// TIMING
 	inline void SetTrackDirection(TrackDirection direction) { direction_ = direction; }
 	inline USHORT GetCursorPosition() { return cursor_position_; };
 	inline void SetCursorPosition(USHORT cursor_position) { next_cursor_position_ = cursor_position; };

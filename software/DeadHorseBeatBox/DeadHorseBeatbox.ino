@@ -42,38 +42,51 @@ void setup(void) {
 	Timer3.initialize(clock.GetPeriod());
 	Timer3.attachInterrupt(clockPulse);
 	clock.SetBpmUnchanged();
+
+	clock.TogglePlayState();
 }
 
-void clockPulse(void) {	clock.IncrementPulse(); }
+void clockPulse(void) {	
+	if (clock.GetPlayState()) {
+		clock.IncrementPulse();
+	}
+}
 
 void loop(void) {
 	clock.UpdateTargetPulse();
+	CheckForBpmChange();
+	grid.ReadSwitches(); 	//Check grid for button presses, grid class handles internal throttling so we don't check too frequently
+	ProcessPulse();
+	UpdateDisplays();
+	//if (!clock.GetPlayState()) { midi_manager.AllNotesOff(); }	//If we are not playing then shut down all notes
+	clock.UpdateCurrentPulse();
+}
 
+void ProcessPulse() {
+	long current_pulse = clock.GetCurrentPulse();
+	if (clock.IsNewPulseReadyToProcess()) {
+		clock.MarkCurrentPulseProcessed();
+		pattern.ProcessPulse(current_pulse);
+		midi_manager.ProcessPulse(current_pulse);
+	}
+}
+
+void UpdateDisplays() {
+	long current_pulse = clock.GetCurrentPulse();
+	bool is_playing = clock.GetPlayState();
+	//Update all displays unless we are lagging, ensure displays still update even when the clock is stopped
+	if (clock.GetLag() < 2 || current_pulse % PULSE_PER_STEP == 0 || !is_playing) {
+		display.UpdateDisplay(current_pulse);
+		if ((current_pulse % 2 == 0) || !is_playing) {
+			grid.UpdateDisplay(current_pulse);
+		}
+	}
+	tempo_led.UpdateDisplay(current_pulse);
+}
+
+void CheckForBpmChange() {
 	if (clock.IsChangedBpm()) {
 		Timer3.setPeriod(clock.GetPeriod());
 		clock.SetBpmUnchanged();
 	}
-
-	//Check grid for button presses, grid class handles internal throttling so we 
-	//don't check too frequently
-	grid.ReadSwitches();
-
-	if (clock.IsNewPulseReadyToProcess()) {
-		clock.MarkCurrentPulseProcessed();
-
-		long current_pulse = clock.GetCurrentPulse();
-
-		pattern.ProcessPulse(current_pulse);
-		midi_manager.ProcessPulse(current_pulse);
-
-		//Update all displays unless we are lagging
-		if (clock.GetLag() < 2 || current_pulse % PULSE_PER_STEP == 0) {
-			display.UpdateDisplay(current_pulse);
-		}
-		tempo_led.UpdateDisplay(current_pulse);
-		if ((clock.GetLag() < 2 && current_pulse % 2 == 0) || (current_pulse % PULSE_PER_STEP == 0)) {
-			grid.UpdateDisplay(current_pulse);
-		}
-	}
-	clock.UpdateCurrentPulse();
 }

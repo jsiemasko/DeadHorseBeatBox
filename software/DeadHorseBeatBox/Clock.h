@@ -7,6 +7,7 @@
 
 class Clock {
  private:
+	 bool is_playing_ = false;
 	 float bpm_ = DEFAULT_TEMPO;
 	 bool bpm_changed_ = 0;			//Flag to mark bpm as changed so that Timer can update
 	 volatile ULONG pulse_ = 0;		//Volitile pulse updated by the interupt
@@ -38,6 +39,8 @@ class Clock {
 	 void UpdateCurrentPulse();
 	 inline long GetLag() { return target_pulse_ - current_pulse_; };
 	 inline long GetCurrentPulse() { return current_pulse_; }
+	 inline void TogglePlayState() { is_playing_ = !is_playing_; }
+	 inline bool GetPlayState() { return is_playing_; }
 };
 
 #endif

@@ -29,6 +29,7 @@ class MidiManager{
 	~MidiManager();
 	void AddEvent(MidiEvent& midi_event);
 	void ProcessPulse(ULONG pulse);
+	void AllNotesOff();
 	MidiEvent& GetEvent(USHORT track);
 };
 
