@@ -7,6 +7,8 @@
 #include "WProgram.h"
 #endif
 
+#include "DHBB_Types.h"
+#include "DHBB_Options.h"
 #include "Adafruit_Trellis.h"
 
 namespace Controls
@@ -38,9 +40,19 @@ namespace Controls
 		Adafruit_Trellis trellis_matrix1_ = Adafruit_Trellis();
 		Adafruit_TrellisSet trellis_ = Adafruit_TrellisSet(&trellis_matrix0_, &trellis_matrix1_);
 
+		void ClearBuffer();
+
 	public:
 		DHTrellis();
 		~DHTrellis();
+//		inline void SetBuffer(USHORT led_num, bool state) { led_renumber_[led_num] = state; }
+		inline void SetBuffer(USHORT row, USHORT step, bool state) { trellis_led_buffer_[led_renumber_[(row * TRELLIS_BUTTONS_PER_ROW) + step]] = state; }
+//		inline bool GetBuffer(USHORT led_num) { return led_renumber_[led_num]; }
+		//inline bool GetBuffer(USHORT row, USHORT step) { return led_renumber_[(row * TRELLIS_BUTTONS_PER_ROW) + step]; }
+		//Function to get a LED numebr based on row and column 
+		//inline USHORT GetGridNumber(USHORT row, USHORT col) { return col + (row * TRELLIS_BUTTONS_PER_ROW); }
+		void ReadSwitches();
+		void UpdateDisplay();
 	};
 }
 #endif

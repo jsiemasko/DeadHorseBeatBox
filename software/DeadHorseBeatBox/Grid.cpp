@@ -2,20 +2,9 @@
 
 Grid::Grid(MidiManager * p_midi_manager){
 	p_midi_manager_ = p_midi_manager;
-	trellis_.begin(TRELLIS_ADDRESS_1, TRELLIS_ADDRESS_2);
-	trellis_.setBrightness(TRELLIS_BRIGHTNESS);
-	ClearGrid();
-	trellis_.writeDisplay();
 }
 
 Grid::~Grid(){ }
-
-void Grid::ClearGrid(){
-	//Clear the entire grid
-	for (int button_num = 0; button_num < TRELLIS_NUM_OF_BUTTONS; button_num++) {
-		trellis_led_buffer_[button_num] = false;
-	}
-}
 
 
 void Grid::DisplaySingleTrackEditMode() {
@@ -34,49 +23,34 @@ void Grid::DisplaySingleTrackEditMode() {
 			//Jump
 			default: edit_param_value = false;  break;
 		}
-		trellis_led_buffer_[GetGridNumber(0, current_step)] = r_current_step.GetEnableState();
-		trellis_led_buffer_[GetGridNumber(1, current_step)] = edit_param_value;
+		trellis_.SetBuffer(0, current_step, r_current_step.GetEnableState());
+		trellis_.SetBuffer(1, current_step, edit_param_value);
 	}
 	//Display Cursor
-	int current_led = r_current_track.GetCursorPosition();
+	int cursor_pos = r_current_track.GetCursorPosition();
 	bool cursor_display_state = ((millis() / 50L) % 2 == 0);
-	trellis_led_buffer_[current_led] = cursor_display_state; //Cursor 1
-	trellis_led_buffer_[current_led + STEPS_PER_PATTERN] = cursor_display_state; //Cursor 1
+	trellis_.SetBuffer(0, cursor_pos, cursor_display_state);
+	trellis_.SetBuffer(1, cursor_pos, cursor_display_state);
 }
 
 void Grid::DisplayPlayingTracks() {
 	// This shows the midi activity of every track while in track select mode.  
-	for (int current_led = 0; current_led < (TRELLIS_NUM_OF_BUTTONS); current_led++) {
-		//Update the LED to show if a note is playing for the first two rows
-		if (current_led < NUM_OF_TRACKS) {
-			trellis_led_buffer_[current_led] = p_midi_manager_->GetEvent(current_led).Playing;
-		} else { //Otherwise just clear it out
-			trellis_led_buffer_[current_led] = false;
-		}
+	for (int current_led = 0; current_led < TRELLIS_BUTTONS_PER_ROW; current_led++) {
+		//Update the LED to show if a note is playing for the first two rows, clear the second row
+		trellis_.SetBuffer(0, current_led, p_midi_manager_->GetEvent(current_led).Playing);
+		trellis_.SetBuffer(1, current_led, false);
 	}
 
 	//Show currently selected mode LED
 	switch (default_grid_mode_) {
-		case kGridModeAccentEdit: trellis_led_buffer_[16] = true; break;
-		case kGridModeChanceEdit: trellis_led_buffer_[17] = true; break;
-		case kGridModeRetriggerEdit: trellis_led_buffer_[18] = true; break;
-		case kGridModeNoteEdit: trellis_led_buffer_[19] = true; break;
-		case kGridModeJumpEdit: trellis_led_buffer_[20] = true; break;
-		case kGridModeSkipEdit: trellis_led_buffer_[21] = true; break;
+		case kGridModeAccentEdit: trellis_.SetBuffer(1, 0, true); break;
+		case kGridModeChanceEdit: trellis_.SetBuffer(1, 1, true); break;
+		case kGridModeRetriggerEdit: trellis_.SetBuffer(1, 2, true); break;
+		case kGridModeNoteEdit: trellis_.SetBuffer(1, 3, true); break;
+		case kGridModeJumpEdit: trellis_.SetBuffer(1, 4, true); break;
+		case kGridModeSkipEdit: trellis_.SetBuffer(1, 5, true); break;
 		default: break;
 	}	
-}
-
-void Grid::WriteCurrentPattern() {
-	for (int current_led = 0; current_led < TRELLIS_NUM_OF_BUTTONS; current_led++) {
-		if (trellis_led_buffer_[current_led]) {
-			trellis_.setLED(led_renumber_[current_led]);
-		}
-		else {
-			trellis_.clrLED(led_renumber_[current_led]);
-		}
-	}
-	trellis_.writeDisplay();
 }
 
 void Grid::UpdateDisplay(ULONG pulse) {
@@ -89,10 +63,11 @@ void Grid::UpdateDisplay(ULONG pulse) {
 		default:						DisplaySingleTrackEditMode(); break;
 	}
 
-	WriteCurrentPattern();
+	trellis_.UpdateDisplay();
 }
 
 void Grid::ProcessGridButton(USHORT button_num){
+	/*
 	button_num = button_renumber_[button_num];
 	Track& r_current_track = p_pattern_->GetCurrentTrack();
 	if (current_grid_mode_ == kGridModeSelectTrack) { //Track Select
@@ -128,17 +103,16 @@ void Grid::ProcessGridButton(USHORT button_num){
 			}
 		}
 	} 
+	*/
 }
 
 void Grid::CheckForModeSwitch() {
 	//Check if we need to switch modes
 	if (track_select_button_.IsPressed()) {
 		current_grid_mode_ = kGridModeSelectTrack;
-	}
-	else if (function_select_button_.JustReleased()) {
+	} else if (function_select_button_.JustReleased()) {
 		p_clock_->TogglePlayState();
-	}
-	else {//Return to default mode
+	} else {//Return to default mode
 		current_grid_mode_ = default_grid_mode_;
 	}
 }
@@ -153,10 +127,12 @@ void Grid::ReadSwitches() {
 	track_select_button_.CheckForPress();
 	function_select_button_.CheckForPress();
 	encoder_.Update();
-	trellis_.readSwitches();
+	trellis_.ReadSwitches();
 
 	CheckForModeSwitch();
 
+	/*
+	TODO!!!!
 	bool is_any_key_pressed = false;
 	for (USHORT i = 0; i < TRELLIS_NUM_OF_BUTTONS; i++) {
 		//Only process the button if the encoder has not changed

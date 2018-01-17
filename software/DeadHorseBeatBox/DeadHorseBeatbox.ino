@@ -1,4 +1,3 @@
-#include "DHTrellis.h"
 #include "Encoder.h"
 #include "Step.h"
 #include <Encoder.h>
