@@ -12,7 +12,7 @@ private:
 	bool enable_state_ = false;
 	bool skip_state_ = false;
 	bool accent_state_ = false;
-	USHORT accent_velocity_ = 127;
+	long accent_velocity_ = 127;
 	bool chance_state_ = false;
 	USHORT chance_amount_ = 50;
 	bool note_state_ = false;
@@ -39,8 +39,14 @@ public:
 	//Accent
 	inline bool GetAccentState() { return accent_state_; }
 	inline void ToggleAccentState() { accent_state_ = !accent_state_; }
-	inline USHORT GetAccentVelocity() { return accent_velocity_; }
-	inline void SetAccentVelocity(USHORT accent_velocity) { accent_velocity_ = accent_velocity; }
+	inline long GetAccentVelocity() { return accent_velocity_; }
+	inline void ModifyAccentVelocity(long accent_velocity_offset) { 
+		Serial.println(accent_velocity_offset);
+		//accent_velocity_ += accent_velocity_offset; 
+		//accent_velocity_ = (accent_velocity_ >= 127) ? 127 : accent_velocity_;
+		//accent_velocity_ = (accent_velocity_ <= 0) ? 0 : accent_velocity_;
+		Serial.println(accent_velocity_);
+	}
 
 	//Chance
 	inline bool GetChanceState() { return chance_state_; }

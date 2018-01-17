@@ -4,7 +4,7 @@
 #include "DHBB_Options.h"
 #include "DHBB_Types.h"
 #include "Button.h"
-#include <Encoder.h>
+//#include <Encoder.h>
 #include "Led.h"
 #include "arduino.h"
 #include <Wire.h>
@@ -12,6 +12,7 @@
 #include "Pattern.h"
 #include "Track.h"
 #include "Clock.h"
+#include "DHEncoder.h"
 
 enum GridMode {
 	kGridModeSelectTrack,
@@ -44,6 +45,12 @@ class Grid
 		 8,  9, 10, 11, 24, 25, 26, 27,
 		12, 13, 14, 15, 28, 29, 30, 31
 	 };
+	 bool cancel_press_[32] = {			//When moving the encoder while holding a button we want to cancel the button press action
+		 false, false, false, false, false, false, false, false,
+		 false, false, false, false, false, false, false, false,
+		 false, false, false, false, false, false, false, false,
+		 false, false, false, false, false, false, false, false
+	 };
 	 //Trellis Setup
 	 Adafruit_Trellis trellis_matrix0_ = Adafruit_Trellis();
 	 Adafruit_Trellis trellis_matrix1_ = Adafruit_Trellis();
@@ -55,10 +62,7 @@ class Grid
 	 Button function_select_button_ = Button(FUNCTION_SELECT_BTN_PIN);
 	 
 	 //Encoder Setup
-	 Button encoder_button_ = Button(ENCODER_BTN_PIN);
-	 Encoder encoder_ =  Encoder(ENCODER_PIN_1, ENCODER_PIN_2);
-	 long encoder_change_amount_ = 0;
-	 USHORT encoder_count = 0;
+	 Controls::DHEncoder encoder_ = Controls::DHEncoder(); //Encoder(ENCODER_PIN_1, ENCODER_PIN_2);
 
 	 //Current grid mode and grid mode to return to after an action
 	 GridMode default_grid_mode_ = kGridModeAccentEdit;
@@ -72,6 +76,7 @@ class Grid
 	 void ClearGrid();
 	 void WriteCurrentPattern();
 	 void UpdateSelectButtonDisplay();
+	 void CheckForModeSwitch();
 
  public:
 	Grid(MidiManager * p_midi_manager);

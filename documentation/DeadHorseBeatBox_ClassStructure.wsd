@@ -1,0 +1,25 @@
+@startuml
+
+Title PSD Server\nClass Relationships
+hide empty members
+namespace Controls #DDDDDD{
+    class DHEncoder
+    class Button
+    class Grid
+    class Led
+    class TempoLed
+}
+namespace Midi #DDDDDD{
+    class MidiManager
+}
+namespace Visual #DDDDDD{
+    class Display
+}
+namespace Pattern #DDDDDD{
+    class Clock
+    class Pattern
+    class Step
+    class Track
+}
+
+@enduml

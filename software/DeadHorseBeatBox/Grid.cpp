@@ -96,14 +96,12 @@ void Grid::ProcessGridButton(USHORT button_num){
 	button_num = button_renumber_[button_num];
 	Track& r_current_track = p_pattern_->GetCurrentTrack();
 	if (current_grid_mode_ == kGridModeSelectTrack) { //Track Select
-													  //Select a track if one exists and then go back to default edit mode
 		if (button_num < NUM_OF_TRACKS) {
 			p_pattern_->SetCurrentTrack(button_num);
-		}
-		else {
+		} else {
 			switch (button_num) {
 			case 16: default_grid_mode_ = kGridModeAccentEdit;		break; //Accent
-			case 17: default_grid_mode_ = kGridModeChanceEdit;	break; //Probability 
+			case 17: default_grid_mode_ = kGridModeChanceEdit;		break; //Probability 
 			case 18: default_grid_mode_ = kGridModeRetriggerEdit;	break; //Retrigger
 			case 19: default_grid_mode_ = kGridModeNoteEdit;		break; //Note 
 			case 20: default_grid_mode_ = kGridModeJumpEdit;		break; //Jump 
@@ -132,41 +130,70 @@ void Grid::ProcessGridButton(USHORT button_num){
 	} 
 }
 
+void Grid::CheckForModeSwitch() {
+	//Check if we need to switch modes
+	if (track_select_button_.IsPressed()) {
+		current_grid_mode_ = kGridModeSelectTrack;
+	}
+	else if (function_select_button_.JustReleased()) {
+		p_clock_->TogglePlayState();
+	}
+	else {//Return to default mode
+		current_grid_mode_ = default_grid_mode_;
+	}
+}
+
 void Grid::ReadSwitches() {
 	//Check if throttle time has expired, if not then bail out
 	long current_millis = millis();
 	if (current_millis - throttle_previous_ms_ < TRELLIS_READ_THROTTLE_IN_MS) { return; }
-
 	throttle_previous_ms_ = current_millis;
 		
 	//Refresh buttons
 	track_select_button_.CheckForPress();
 	function_select_button_.CheckForPress();
-	encoder_button_.CheckForPress();
-
-	//Check if we need to switch modes
-	if (track_select_button_.IsPressed()) {
-		current_grid_mode_ = kGridModeSelectTrack;
-	} else if (function_select_button_.JustReleased()) {
-		p_clock_->TogglePlayState();
-	} else {//Return to default mode
-		current_grid_mode_ = default_grid_mode_;
-	}
-
-	//Read Trellis
+	encoder_.Update();
 	trellis_.readSwitches();
+
+	CheckForModeSwitch();
+
+	bool is_any_key_pressed = false;
 	for (USHORT i = 0; i < TRELLIS_NUM_OF_BUTTONS; i++) {
-		if (trellis_.justPressed(i)) { ProcessGridButton(i); }
-	}
+		//Only process the button if the encoder has not changed
+		if (trellis_.justReleased(i) && !cancel_press_[i]) { 
+			ProcessGridButton(i); 
+		} else if (trellis_.isKeyPressed(i) && encoder_.HasValue()) {
+			//If the encoder has moved then negate the key press
+			cancel_press_[i] = true;
+		} else if (!trellis_.isKeyPressed(i) && cancel_press_[i]) {
+			//If key is not pressed then clear the encoder changed flag
+			cancel_press_[i] = false;
+		}
 
-	//Take an encoder reading, if we have accumulated enough then send take an action and reset our accumulation
-	long current_encoder_position_ = encoder_.read();
-	if (current_encoder_position_ >= ENCODER_SCALE || current_encoder_position_ <= -ENCODER_SCALE) {
-		p_clock_->OffsetTempo(current_encoder_position_ / ENCODER_SCALE);
-		encoder_.write(0);
+		//If any of the keys have been pressed mark is_any_key_pressed
+		if (trellis_.isKeyPressed(i)) { is_any_key_pressed = true; }
 	}
+	
+	//Only move the clock with the encoder if no buttons were being held
+	if (!is_any_key_pressed && encoder_.HasValue()){
+		p_clock_->OffsetTempo(encoder_.GetValue());
+	}/* else if (encoder_.HasValue()) {
+		Track current_track = p_pattern_->GetCurrentTrack();
+		for (USHORT button_num = TRELLIS_BUTTONS_PER_ROW; button_num < TRELLIS_NUM_OF_BUTTONS; button_num++) {
+			button_num = button_renumber_[button_num];
+		
+			if (trellis_.isKeyPressed(button_num)) {
+				if (current_grid_mode_ == kGridModeAccentEdit) {
+					Serial.println(button_num - TRELLIS_BUTTONS_PER_ROW);
+					//current_track.GetStep(button_renumber_[button_num - TRELLIS_BUTTONS_PER_ROW]).ModifyAccentVelocity(encoder_.GetValue());
+				}
+
+			}
+		
+		}
+		*/
+			
 }
-
 
 void Grid::UpdateSelectButtonDisplay() {
 	LedMode current_led_mode = (current_grid_mode_ == kGridModeSelectTrack) ? kLedModeFlash : kLedModeOff;
