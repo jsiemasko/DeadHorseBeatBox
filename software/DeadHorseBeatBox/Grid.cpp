@@ -64,11 +64,10 @@ void Grid::UpdateDisplay(ULONG pulse) {
 	}
 
 	trellis_.UpdateDisplay();
+	tempo_led_.UpdateDisplay(pulse);
 }
 
 void Grid::ProcessGridButton(USHORT button_num){
-	/*
-	button_num = button_renumber_[button_num];
 	Track& r_current_track = p_pattern_->GetCurrentTrack();
 	if (current_grid_mode_ == kGridModeSelectTrack) { //Track Select
 		if (button_num < NUM_OF_TRACKS) {
@@ -103,7 +102,6 @@ void Grid::ProcessGridButton(USHORT button_num){
 			}
 		}
 	} 
-	*/
 }
 
 void Grid::CheckForModeSwitch() {
@@ -131,25 +129,30 @@ void Grid::ReadSwitches() {
 
 	CheckForModeSwitch();
 
-	/*
-	TODO!!!!
-	bool is_any_key_pressed = false;
-	for (USHORT i = 0; i < TRELLIS_NUM_OF_BUTTONS; i++) {
+//	bool is_any_key_pressed = false;
+	for (USHORT button = 0; button < TRELLIS_NUM_OF_BUTTONS; button++) {
+		if (trellis_.JustReleased(button)) {
+			ProcessGridButton(button);
+		}
+	}
+		/*
 		//Only process the button if the encoder has not changed
-		if (trellis_.justReleased(i) && !cancel_press_[i]) { 
+		if (trellis_.JustReleased(i) && !cancel_press_[i]) { 
 			ProcessGridButton(i); 
-		} else if (trellis_.isKeyPressed(i) && encoder_.HasValue()) {
+		} else if (trellis_.IsKeyPressed(i) && encoder_.HasValue()) {
 			//If the encoder has moved then negate the key press
 			cancel_press_[i] = true;
-		} else if (!trellis_.isKeyPressed(i) && cancel_press_[i]) {
+		} else if (!trellis_.IsKeyPressed(i) && cancel_press_[i]) {
 			//If key is not pressed then clear the encoder changed flag
 			cancel_press_[i] = false;
 		}
 
 		//If any of the keys have been pressed mark is_any_key_pressed
-		if (trellis_.isKeyPressed(i)) { is_any_key_pressed = true; }
+		if (trellis_.IsKeyPressed(i)) { is_any_key_pressed = true; }
 	}
+	*/
 	
+	/*
 	//Only move the clock with the encoder if no buttons were being held
 	if (!is_any_key_pressed && encoder_.HasValue()){
 		p_clock_->OffsetTempo(encoder_.GetValue());
@@ -172,7 +175,7 @@ void Grid::ReadSwitches() {
 }
 
 void Grid::UpdateSelectButtonDisplay() {
-	LedMode current_led_mode = (current_grid_mode_ == kGridModeSelectTrack) ? kLedModeFlash : kLedModeOff;
+	Controls::LedMode current_led_mode = (current_grid_mode_ == kGridModeSelectTrack) ? Controls::kLedModeFlash : Controls::kLedModeOff;
 	track_select_led_.SetMode(current_led_mode);
 	track_select_led_.UpdateDisplay(current_pulse_);
 }

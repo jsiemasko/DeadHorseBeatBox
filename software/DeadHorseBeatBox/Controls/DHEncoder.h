@@ -8,15 +8,13 @@
 #endif
 
 #include <Encoder.h>
-#include "Button.h"
+#include "DHButton.h"
 
-namespace Controls
-{
-	class DHEncoder
-	{
+namespace Controls {
+	class DHEncoder {
 	private:
 		//Encoder Setup
-		Button button_ = Button(ENCODER_BTN_PIN);
+		DHButton button_ = DHButton(ENCODER_BTN_PIN);
 		Encoder encoder_ = Encoder(ENCODER_PIN_1, ENCODER_PIN_2);
 		USHORT scale_ = ENCODER_SCALE;
 		long value_ = 0;

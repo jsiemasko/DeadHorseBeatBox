@@ -1,7 +1,3 @@
-// 
-// 
-// 
-
 #include "DHEncoder.h"
 
 namespace Controls {

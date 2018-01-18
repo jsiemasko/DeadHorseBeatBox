@@ -87,32 +87,32 @@
     <ClInclude Include="Clock.h" />
     <ClInclude Include="DHBB_Options.h" />
     <ClInclude Include="DHBB_Types.h" />
-    <ClInclude Include="DHTrellis.h" />
+    <ClInclude Include="Controls\DHTrellis.h" />
     <ClInclude Include="Display.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="DHEncoder.h" />
+    <ClInclude Include="Controls\DHButton.h" />
+    <ClInclude Include="Controls\DHEncoder.h" />
     <ClInclude Include="Grid.h" />
-    <ClInclude Include="Led.h" />
+    <ClInclude Include="Controls\DHLed.h" />
     <ClInclude Include="MidiManager.h" />
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="Step.h" />
-    <ClInclude Include="TempoLed.h" />
+    <ClInclude Include="Controls\DHTempoLed.h" />
     <ClInclude Include="Track.h" />
     <ClInclude Include="__vm\.DeadHorseBeatbox.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Clock.cpp" />
-    <ClCompile Include="DHTrellis.cpp" />
+    <ClCompile Include="Controls\DHTrellis.cpp" />
     <ClCompile Include="Display.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="DHEncoder.cpp" />
+    <ClCompile Include="Controls\DHButton.cpp" />
+    <ClCompile Include="Controls\DHEncoder.cpp" />
     <ClCompile Include="Grid.cpp" />
-    <ClCompile Include="Led.cpp" />
+    <ClCompile Include="Controls\DHLed.cpp" />
     <ClCompile Include="MidiManager.cpp" />
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="Step.cpp" />
-    <ClCompile Include="TempoLed.cpp" />
+    <ClCompile Include="Controls\DHTempoLed.cpp" />
     <ClCompile Include="Track.cpp" />
   </ItemGroup>
   <PropertyGroup>

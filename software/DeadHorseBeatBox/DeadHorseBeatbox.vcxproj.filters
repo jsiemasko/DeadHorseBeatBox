@@ -33,19 +33,10 @@
     <ClInclude Include="Pattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TempoLed.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MidiManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DHBB_Options.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Led.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SplashScreen.h">
@@ -60,10 +51,19 @@
     <ClInclude Include="Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DHEncoder.h">
+    <ClInclude Include="Controls\DHEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DHTrellis.h">
+    <ClInclude Include="Controls\DHTrellis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\DHButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\DHLed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\DHTempoLed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -80,16 +80,7 @@
     <ClCompile Include="Pattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TempoLed.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MidiManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Led.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Step.cpp">
@@ -98,10 +89,19 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DHEncoder.cpp">
+    <ClCompile Include="Controls\DHEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DHTrellis.cpp">
+    <ClCompile Include="Controls\DHTrellis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\DHButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\DHLed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\DHTempoLed.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

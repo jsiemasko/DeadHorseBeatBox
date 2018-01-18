@@ -3,15 +3,16 @@
 
 #include "DHBB_Options.h"
 #include "DHBB_Types.h"
-#include "Button.h"
-#include "Led.h"
 #include "arduino.h"
 #include <Wire.h>
 #include "Pattern.h"
 #include "Track.h"
 #include "Clock.h"
-#include "DHEncoder.h"
-#include "DHTrellis.h"
+#include "Controls/DHButton.h"
+#include "Controls/DHEncoder.h"
+#include "Controls/DHTrellis.h"
+#include "Controls/DHLed.h"
+#include "Controls/DHTempoLed.h"
 
 enum GridMode {
 	kGridModeSelectTrack,
@@ -33,9 +34,10 @@ class Grid
 	 long throttle_previous_ms_ = 0;	//Throttle counter for control reads
 	 
 	 //Controls Setup
-	 Button track_select_button_ = Button(TRACK_SELECT_BTN_PIN);
-	 Led track_select_led_ = Led(TRACK_SELECT_LED_PIN);
-	 Button function_select_button_ = Button(FUNCTION_SELECT_BTN_PIN);
+	 Controls::DHTempoLed tempo_led_ = Controls::DHTempoLed(TEMPO_LED_PIN);
+	 Controls::DHLed track_select_led_ = Controls::DHLed(TRACK_SELECT_LED_PIN);
+	 Controls::DHButton track_select_button_ = Controls::DHButton(TRACK_SELECT_BTN_PIN);
+	 Controls::DHButton function_select_button_ = Controls::DHButton(FUNCTION_SELECT_BTN_PIN);
 	 Controls::DHEncoder encoder_ = Controls::DHEncoder();
 	 Controls::DHTrellis trellis_ = Controls::DHTrellis();
 
@@ -60,6 +62,5 @@ class Grid
 	void ReadSwitches();
 	void UpdateDisplay(ULONG pulse);
 };
-
 
 #endif

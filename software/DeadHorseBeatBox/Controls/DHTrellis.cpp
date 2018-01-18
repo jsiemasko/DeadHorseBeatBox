@@ -11,7 +11,7 @@ namespace Controls {
 	DHTrellis::~DHTrellis() { }
 
 	void DHTrellis::ReadSwitches(){
-		//TODO:
+		trellis_.readSwitches();
 	}
 
 	void DHTrellis::UpdateDisplay(){

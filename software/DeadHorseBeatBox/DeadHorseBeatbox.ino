@@ -1,11 +1,8 @@
-#include "Encoder.h"
 #include "Step.h"
 #include <Encoder.h>
-#include "Led.h"
 #include "DHBB_Options.h"
 #include "DHBB_Types.h"
 #include "MidiManager.h"
-#include "TempoLed.h"
 #include "Grid.h"
 #include "Pattern.h"
 #include "Display.h"
@@ -16,7 +13,6 @@
 MidiManager midi_manager;
 Clock clock(DEFAULT_TEMPO);
 Display display(&midi_manager);
-TempoLed tempo_led(TEMPO_LED_PIN);
 Pattern pattern(&midi_manager);
 Grid grid(&midi_manager);
 
@@ -82,7 +78,6 @@ void UpdateDisplays() {
 			grid.UpdateDisplay(current_pulse);
 		}
 	}
-	tempo_led.UpdateDisplay(current_pulse);
 }
 
 void CheckForBpmChange() {
