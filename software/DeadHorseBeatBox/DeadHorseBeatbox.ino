@@ -1,3 +1,4 @@
+#include <MIDI.h>
 #include "Step.h"
 #include <Encoder.h>
 #include "DHBB_Options.h"
@@ -10,13 +11,19 @@
 #include <TimerThree.h>
 #include <Arduino.h>
 
-MidiManager midi_manager;
-Clock clock(DEFAULT_TEMPO);
+MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
+
+MidiManager midi_manager(&MIDI);
+Clock clock(CLOCK_DEFAULT_TEMPO);
 Display display(&midi_manager);
 Pattern pattern(&midi_manager);
 Grid grid(&midi_manager);
 
 void setup(void) {
+	//DIN MIDI Setup
+	//Serial1.setTX(1);
+	//MIDI.begin();
+
 	//Serial for debugging
 	Serial.begin(9600);
 	Serial.println("");

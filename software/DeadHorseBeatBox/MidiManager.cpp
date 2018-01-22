@@ -4,7 +4,11 @@
 
 #include "MidiManager.h"
 
-MidiManager::MidiManager(){}
+
+MidiManager::MidiManager(midi::MidiInterface<HardwareSerial>* p_midi){
+	p_midi->begin();
+	p_midi_ = p_midi;
+}
 
 MidiManager::~MidiManager() {}
 
@@ -37,6 +41,11 @@ void MidiManager::NoteOn(MidiEvent& r_midi_event) {
 		r_midi_event.Velocity, 
 		r_midi_event.Channel
 	);
+	p_midi_->sendNoteOn(
+		r_midi_event.RootNote,
+		r_midi_event.Velocity,
+		r_midi_event.Channel + 1 /*Midi library starts channel numbering at 1*/
+	);
 	r_midi_event.Playing = true;
 }
 
@@ -45,6 +54,11 @@ void MidiManager::NoteOff(MidiEvent& r_midi_event) {
 		r_midi_event.RootNote,
 		r_midi_event.Velocity,
 		r_midi_event.Channel
+	);
+	p_midi_->sendNoteOff(
+		r_midi_event.RootNote,
+		r_midi_event.Velocity,
+		r_midi_event.Channel + 1 /*Midi library starts channel numbering at 1*/
 	);
 	r_midi_event.Playing = false;
 }

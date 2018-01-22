@@ -10,7 +10,7 @@
 #define GENERATE_TEST_BEAT true
 
 /* -- CLOCK -- */
-#define DEFAULT_TEMPO 98
+#define CLOCK_DEFAULT_TEMPO 98
 #define PULSE_PER_STEP 12
 #define PULSE_PER_QUARTER_NOTE 48 
 // (PULSE_PER_STEP * STEPS_PER_QUARTER_NOTE)
@@ -46,9 +46,11 @@
 #define ENCODER_PIN_2 22
 #define ENCODER_SCALE 4
 
-
 /* -- Tempo LED -- */
 #define TEMPO_LED_PIN 8
 #define TEMPO_LED_BLINK_FREQUENCY 4
+
+/* -- MIDI -- */
+#define MIDI_TX_PIN 1
 
 #endif

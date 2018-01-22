@@ -3,17 +3,42 @@
 Title PSD Server\nClass Relationships
 hide empty members
 namespace Controls #DDDDDD{
+    enum LedMode
     class DHEncoder
-    class Button
-    class Grid
-    class Led
-    class TempoLed
-}
-namespace Midi #DDDDDD{
-    class MidiManager
-}
-namespace Visual #DDDDDD{
-    class Display
+    class DHButton
+    class DHLed{
+        #pin_
+        #mode_
+        #TurnLightOn()
+        #TurnLightOff()
+        +DHLed(pin)
+        +~DHLed(pin)
+        +SetMode(mode)
+        +UpdateDisplay(pulse)
+    }
+    DHLed *-- LedMode
+    DHLed <|-- DHTempoLed
+    class DHTempoLed{
+        -led_brightness_
+        +DHTempoLed
+        +~DHTempoLed
+        +UpdateDisplay(pulse)
+    }
+    class DHTrellis{
+        -trellis_led_buffer_[]
+        -grid_renumber_[]
+        -cancel_press_[]
+        -trellis_matrix0_
+        -trellis_matrix1_
+        -trellis_
+        -ClearBuffer()
+        +DHTrellis()
+        +~DHTrellis()
+        +SetBuffer(row, step, state)
+        +JustReleased(button)
+        +ReadSwitches()
+        +UpdateDisplay()
+    }
 }
 namespace Pattern #DDDDDD{
     class Clock
@@ -21,5 +46,8 @@ namespace Pattern #DDDDDD{
     class Step
     class Track
 }
+    class Grid
+    class MidiManager
+    class Display
 
 @enduml

@@ -9,7 +9,7 @@
 namespace Controls {
 	class DHTempoLed : public DHLed {
 	private:
-		short int led_brightness = 255;
+		short int led_brightness_ = 255;
 
 	public:
 		DHTempoLed(USHORT pin);
@@ -20,13 +20,13 @@ namespace Controls {
 			USHORT step_number = (pulse / PULSE_PER_STEP) - 1;
 			bool is_quarter_note = (step_number % TEMPO_LED_BLINK_FREQUENCY == 0);
 			if (is_quarter_note) {
-				led_brightness = 255;
+				led_brightness_ = 255;
 			}
 			else {
-				led_brightness = (led_brightness > 0) ? led_brightness - 32 : 0;
+				led_brightness_ = (led_brightness_ > 0) ? led_brightness_ - 32 : 0;
 			}
 
-			analogWrite(pin_, led_brightness);
+			analogWrite(pin_, led_brightness_);
 		}
 	};
 }

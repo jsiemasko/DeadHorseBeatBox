@@ -6,7 +6,7 @@
 #include "DHBB_Options.h"
 #include "DHBB_Types.h"
 #include "arduino.h"
-#include <vector>
+#include <MIDI.h>
 
 struct MidiEvent {
 	USHORT Track = 0;
@@ -20,12 +20,13 @@ struct MidiEvent {
 
 class MidiManager{
  private:
+	 midi::MidiInterface<HardwareSerial> * p_midi_ = 0;
 	 MidiEvent midi_events_[NUM_OF_TRACKS];
 	 void NoteOn(MidiEvent& midi_event);
 	 void NoteOff(MidiEvent& midi_event);
 
  public:
-	 MidiManager();
+	 MidiManager(midi::MidiInterface<HardwareSerial> * p_midi);
 	~MidiManager();
 	void AddEvent(MidiEvent& midi_event);
 	void ProcessPulse(ULONG pulse);

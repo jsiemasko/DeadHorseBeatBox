@@ -8,7 +8,7 @@
 class Clock {
  private:
 	 bool is_playing_ = false;
-	 float bpm_ = DEFAULT_TEMPO;
+	 float bpm_ = CLOCK_DEFAULT_TEMPO;
 	 bool bpm_changed_ = 0;			//Flag to mark bpm as changed so that Timer can update
 	 volatile ULONG pulse_ = 0;		//Volitile pulse updated by the interupt
 	 ULONG target_pulse_ = 0;		//Non-volitile copy of pulse.
