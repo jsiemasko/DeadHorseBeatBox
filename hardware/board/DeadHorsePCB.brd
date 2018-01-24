@@ -7,7 +7,7 @@
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.5" unitdist="mil" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="yes" active="yes"/>
@@ -178,10 +178,10 @@
 <text x="50.292" y="63.5" size="1.778" layer="21" rot="R180">LED</text>
 <text x="50.292" y="60.96" size="1.778" layer="21" rot="R180">BTN</text>
 <text x="47.498" y="54.356" size="1.778" layer="21" rot="R90">GND</text>
-<hole x="33.02" y="17.78" drill="0.32"/>
-<hole x="33.02" y="76.2" drill="0.32"/>
-<hole x="93.472" y="51.562" drill="0.32"/>
-<hole x="93.98" y="17.78" drill="0.32"/>
+<hole x="33.02" y="17.78" drill="3.6"/>
+<hole x="33.1597" y="75.8825" drill="3.6"/>
+<hole x="93.472" y="51.562" drill="3.6"/>
+<hole x="94.6912" y="18.1737" drill="3.6"/>
 <polygon width="0.1524" layer="39">
 <vertex x="30.48" y="78.74"/>
 <vertex x="38.1" y="78.74"/>
@@ -332,6 +332,10 @@
 <text x="78.74" y="50.038" size="1.778" layer="21" rot="R180">BTN</text>
 <text x="78.74" y="47.498" size="1.778" layer="21" rot="R180">A</text>
 <text x="78.74" y="44.958" size="1.778" layer="21" rot="R180">B</text>
+<text x="78.8162" y="32.5501" size="0.8128" layer="21" font="vector">Dead Horse Beatbox</text>
+<text x="79.7052" y="31.3817" size="0.8128" layer="21" font="vector">by Schemawound</text>
+<text x="79.7306" y="30.0609" size="0.8128" layer="21" font="vector">Hardware Rev A</text>
+<text x="81.5467" y="28.8544" size="0.8128" layer="21" font="vector">CC BY-NA</text>
 </plain>
 <libraries>
 <library name="adafruit">
@@ -907,13 +911,13 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="NAME" x="38.4048" y="30.8102" size="1.27" layer="25" ratio="10" rot="R270"/>
 </element>
 <element name="OLED" library="pinhead" library_urn="urn:adsk.eagle:library:325" package="1X07" package3d_urn="urn:adsk.eagle:package:22477/1" value="OLED" x="41.91" y="42.926" smashed="yes" rot="R90">
-<attribute name="VALUE" x="39.751" y="41.656" size="1.27" layer="27" rot="R90"/>
+<attribute name="VALUE" x="39.751" y="41.656" size="1.27" layer="25" rot="R90"/>
 </element>
 <element name="R8" library="adafruit" package="R0805" value="220R" x="46.482" y="62.738" smashed="yes" rot="MR0">
 <attribute name="NAME" x="52.07" y="61.976" size="1.524" layer="26" rot="MR0"/>
 </element>
 <element name="PLAY_BUTTON" library="pinhead" library_urn="urn:adsk.eagle:library:325" package="1X04" package3d_urn="urn:adsk.eagle:package:22407/2" value="PlayBtn" x="41.91" y="58.928" smashed="yes" rot="R270">
-<attribute name="VALUE" x="38.481" y="61.976" size="1.27" layer="27" rot="R270"/>
+<attribute name="VALUE" x="38.481" y="61.976" size="1.27" layer="25" rot="R270"/>
 </element>
 <element name="FRAME1" library="SparkFun-Aesthetics" package="CREATIVE_COMMONS" value="FRAME-LETTER" x="24.13" y="-13.97"/>
 <element name="R9" library="adafruit" package="R0805" value="4K7" x="46.482" y="60.198" smashed="yes" rot="MR180">
@@ -922,9 +926,12 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <element name="R12" library="adafruit" package="R0805" value="4K7" x="75.946" y="46.482" smashed="yes" rot="MR0">
 <attribute name="NAME" x="77.724" y="47.752" size="1.524" layer="26" rot="MR0"/>
 </element>
-<element name="U$8" library="Teensy_3_and_LC_Series_Boards_v1.4" package="TEENSY_3.6_DIL" value="TEENSY_3.6_DIL" x="64.008" y="49.276"/>
+<element name="U$8" library="Teensy_3_and_LC_Series_Boards_v1.4" package="TEENSY_3.6_DIL" value="TEENSY_3.6_DIL" x="64.008" y="49.276" smashed="yes">
+<attribute name="NAME" x="60.833" y="80.391" size="1.27" layer="25" font="vector"/>
+<attribute name="VALUE" x="64.6684" y="51.6255" size="1.27" layer="25" font="vector" rot="R90"/>
+</element>
 <element name="SELECT_BUTTON" library="pinhead" library_urn="urn:adsk.eagle:library:325" package="1X04" package3d_urn="urn:adsk.eagle:package:22407/2" value="SelectBtn" x="41.91" y="70.866" smashed="yes" rot="R270">
-<attribute name="VALUE" x="38.735" y="75.184" size="1.27" layer="27" rot="R270"/>
+<attribute name="VALUE" x="38.735" y="75.184" size="1.27" layer="25" rot="R270"/>
 </element>
 <element name="R10" library="adafruit" package="R0805" value="220R" x="46.482" y="74.676" smashed="yes" rot="MR0">
 <attribute name="NAME" x="53.594" y="73.914" size="1.524" layer="26" rot="MR0"/>
@@ -938,8 +945,10 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <element name="R13" library="adafruit" package="R0805" value="47" x="46.736" y="67.056" smashed="yes" rot="MR0">
 <attribute name="NAME" x="53.34" y="66.294" size="1.524" layer="26" rot="MR0"/>
 </element>
-<element name="J1" library="SparkFun-Connectors" package="DIN5-RA-PTH" value="DIN5" x="86.868" y="78.486" rot="R180">
+<element name="J1" library="SparkFun-Connectors" package="DIN5-RA-PTH" value="DIN5" x="86.868" y="78.486" smashed="yes" rot="R180">
+<attribute name="NAME" x="88.138" y="73.152" size="0.6096" layer="25" font="vector" ratio="20" rot="R180"/>
 <attribute name="PROD_ID" value="CONN-09481" x="86.868" y="78.486" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="VALUE" x="88.138" y="74.549" size="0.6096" layer="25" font="vector" ratio="20" rot="R180"/>
 </element>
 <element name="ENCODER" library="con-lstb" library_urn="urn:adsk.eagle:library:162" package="MA05-1" package3d_urn="urn:adsk.eagle:package:8332/1" value="ENCODER" x="80.518" y="49.276" smashed="yes" rot="R270">
 <attribute name="MF" value="" x="80.518" y="49.276" size="1.778" layer="27" rot="R270" display="off"/>
