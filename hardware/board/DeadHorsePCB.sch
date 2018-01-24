@@ -3246,7 +3246,7 @@ W = angled&lt;p&gt;
 <part name="J1" library="SparkFun-Connectors" deviceset="DIN5" device=""/>
 <part name="U$4" library="microbuilder" deviceset="GND" device=""/>
 <part name="SUPPLY8" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
-<part name="ENCODER" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA05-1" device="" package3d_urn="urn:adsk.eagle:package:8332/1"/>
+<part name="ENCODER" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA05-1" device="" package3d_urn="urn:adsk.eagle:package:8332/1" value="ENCODER"/>
 </parts>
 <sheets>
 <sheet>
@@ -3330,7 +3330,6 @@ W = angled&lt;p&gt;
 <instance part="U$4" gate="G$1" x="152.4" y="-22.86" rot="R90"/>
 <instance part="SUPPLY8" gate="G$1" x="154.94" y="-30.48" rot="R270"/>
 <instance part="ENCODER" gate="G$1" x="127" y="-83.82" smashed="yes">
-<attribute name="VALUE" x="125.73" y="-93.98" size="1.778" layer="96"/>
 <attribute name="NAME" x="123.19" y="-95.758" size="1.778" layer="95"/>
 </instance>
 </instances>
