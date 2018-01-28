@@ -5,9 +5,9 @@
 #include "DHBB_Types.h"
 #include "arduino.h"
 #include <Wire.h>
-#include "Pattern.h"
-#include "Track.h"
 #include "Clock.h"
+#include "Song/Pattern.h"
+#include "Song/Track.h"
 #include "Controls/DHButton.h"
 #include "Controls/DHEncoder.h"
 #include "Controls/DHTrellis.h"
@@ -27,9 +27,9 @@ enum GridMode {
 class Grid
 {
  private:
-	 Pattern * p_pattern_ = 0;			//Pointer to the current pattern object
+	 Song::Pattern * p_pattern_ = 0;			//Pointer to the current pattern object
 	 Clock * p_clock_ = 0;				//Pointer to the current clock object
-	 MidiManager * p_midi_manager_ = 0; //Pointer to the current Midi Manager object
+	 DHMidi::MidiManager * p_midi_manager_ = 0; //Pointer to the current Midi Manager object
 	 ULONG current_pulse_ = 0;			//Current pulse that is being processed
 	 long throttle_previous_ms_ = 0;	//Throttle counter for control reads
 	 
@@ -51,10 +51,8 @@ class Grid
 	 void CheckForModeSwitch();
 
  public:
-	Grid(MidiManager * p_midi_manager);
+	Grid(DHMidi::MidiManager * p_midi_manager, Song::Pattern * p_pattern, Clock * p_clock);
 	~Grid();
-	inline void SetPattern(Pattern * p_pattern) { p_pattern_ = p_pattern; }
-	inline void SetClock(Clock * p_clock) { p_clock_ = p_clock; }
 	inline void SetGridMode(GridMode grid_mode) { current_grid_mode_ = grid_mode; }
 	inline GridMode GetGridMode() { return current_grid_mode_; }
 	inline GridMode GetDefaultGridMode() { return default_grid_mode_; }

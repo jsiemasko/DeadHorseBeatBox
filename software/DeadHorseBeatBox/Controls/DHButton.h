@@ -6,8 +6,10 @@
 #include "arduino.h"
 #include <Bounce2.h>
 
-namespace Controls {
-	class DHButton {
+namespace Controls 
+{
+	class DHButton 
+	{
 	protected:
 		//Button state constants
 		static const bool kButtonPressed = false;

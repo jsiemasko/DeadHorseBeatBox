@@ -1,16 +1,18 @@
 #include "Grid.h"
 
-Grid::Grid(MidiManager * p_midi_manager){
+Grid::Grid(DHMidi::MidiManager * p_midi_manager, Song::Pattern * p_pattern, Clock * p_clock){
 	p_midi_manager_ = p_midi_manager;
+	p_pattern_ = p_pattern;
+	p_clock_ = p_clock;
 }
 
 Grid::~Grid(){ }
 
 
 void Grid::DisplaySingleTrackEditMode() {
-	Track& r_current_track = p_pattern_->GetCurrentTrack();
+	Song::Track& r_current_track = p_pattern_->GetCurrentTrack();
 	for (USHORT current_step = 0; current_step < STEPS_PER_PATTERN; current_step++) {
-		Step& r_current_step = r_current_track.GetStep(current_step);
+		Song::Step& r_current_step = r_current_track.GetStep(current_step);
 
 		//Determine which param to show based on the edit mode
 		bool edit_param_value = false;
@@ -68,7 +70,7 @@ void Grid::UpdateDisplay(ULONG pulse) {
 }
 
 void Grid::ProcessGridButton(USHORT button_num){
-	Track& r_current_track = p_pattern_->GetCurrentTrack();
+	Song::Track& r_current_track = p_pattern_->GetCurrentTrack();
 	if (current_grid_mode_ == kGridModeSelectTrack) { //Track Select
 		if (button_num < NUM_OF_TRACKS) {
 			p_pattern_->SetCurrentTrack(button_num);
@@ -89,7 +91,7 @@ void Grid::ProcessGridButton(USHORT button_num){
 		else if (button_num < TRELLIS_BUTTONS_PER_ROW * 2) {
 			//Get the step, offsetting for the fact we using the second row of buttons
 			button_num -= TRELLIS_BUTTONS_PER_ROW;
-			Step& r_current_step = r_current_track.GetStep(button_num);
+			Song::Step& r_current_step = r_current_track.GetStep(button_num);
 
 			switch (current_grid_mode_){
 				case kGridModeAccentEdit: r_current_step.ToggleAccentState(); break;

@@ -1,7 +1,9 @@
 #include "DHButton.h"
 
-namespace Controls {
-	DHButton::DHButton(USHORT pin) {
+namespace Controls 
+{
+	DHButton::DHButton(USHORT pin) 
+	{
 		pin_ = pin;
 		pinMode(pin_, INPUT);
 		debouncer_.attach(pin_);
@@ -10,7 +12,8 @@ namespace Controls {
 
 	DHButton::~DHButton() {}
 
-	void DHButton::CheckForPress() {
+	void DHButton::CheckForPress() 
+	{
 		debouncer_.update();
 		bool current_state = debouncer_.read();
 		just_pressed_ = (previous_state_ == kButtonNotPressed && current_state == kButtonPressed);

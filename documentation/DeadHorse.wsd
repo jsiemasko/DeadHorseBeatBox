@@ -1,0 +1,179 @@
+@startuml
+hide empty members
+
+enum Controls.LedMode
+enum DHDisplay.DisplayMode
+class Controls.DHButton{
+    +DHButton(pin)
+    +~DHButton()
+    +CheckForPress()
+    +IsPressed()
+    +JustPressed()
+    +JustReleased()
+}
+class Controls.DHEncoder{
+    +DHEncoder()
+    +~DHEncoder()
+    +IsPressed()
+    +JustPressed()
+    +JustReleased()
+    +GetValue()
+    +HasValue()
+    +Update()
+}
+class Controls.DHLed{
+    #TurnLightOn()
+    #TurnLightOff()
+    +DHLed()
+    +~DHLed()
+    +SetMode(mode)
+    +UpdateDisplay(pulse)
+}
+class Controls.DHTempoLed{
+    +DHTempoLed()
+    +~DHTempoLed()
+    +UpdateDisplay(pulse)
+}
+class Controls.DHTrellis{
+    -ClearBuffer()
+    +DHTrellis()
+    +~DHTrellis()
+    +SetBuffer(row, step, state)
+    +JustReleased(button)
+    +ReadSwitches()
+    +UpdateDisplay()
+}
+class Clock{
+    +Clock(bpm)
+    +~Clock()
+    +SetTempo(bpm)
+    +OffsetTempo(bpm_offset)
+    +IsChangedBpm()
+    +SetBpmUnchanged()
+    +GetTempo()
+    +GetPeriod()
+    +IncrementPulse()
+    +UpdateTargetPulse()
+	+IsNewPulseReadyToProcess()
+	+MarkCurrentPulseProcessed()
+	+UpdateCurrentPulse()
+	+GetLag()
+	+GetCurrentPulse()
+	+TogglePlayState()
+	+GetPlayState()
+}
+class DHDisplay.Display{
+    -ShowPatternProperties()
+    -ShowTrackSelectDisplay()
+    -ShowPageHeader()
+    -ShowSteps(y_offset, track)
+    -ShowTracks(y_offset, current_track)
+    -ShowBargraph(y_offset, accent_height, std_height, fall_speed)
+    -DrawStepBox(x, y, step_accented, step_chance_set, step_retriggered)
+    +Display(p_midi_manager)
+    +~Display()
+    +GraphicsSetup()
+    +SplashHorse()
+    +UpdateDisplay(pulse)
+    +SetDisplayMode(display_mode)
+}
+class Grid{
+    -DisplayPlayingTracks()
+	-DisplaySingleTrackEditMode()
+	-UpdateSelectButtonDisplay()
+	-CheckForModeSwitch()
+	+Grid(p_midi_manager)
+	+~Grid()
+	+SetGridMode(grid_mode)
+	+GetGridMode()
+	+GetDefaultGridMode()
+	+ProcessGridButton(button_num)
+	+ReadSwitches()
+	+UpdateDisplay(pulse)
+}
+class DHMidi.MidiManager{
+    -NoteOn(midi_event)
+    -NoteOff(midi_event)
+    +MidiManager(p_midi)
+	+~MidiManager()
+	+AddEvent(midi_event)
+	+ProcessPulse(pulse)
+	+AllNotesOff()
+	+GetEvent(track)
+
+}
+Class DHMidi.MidiEvent
+Class Song.Pattern{
+    +Pattern(p_midi_manager)
+	+~Pattern()
+    +GetTrack(track_num)
+    +ProcessPulse(pulse)
+    +GetCurrentTrackNumber()
+	+GetCurrentTrack()
+	+GetSelectedStepNumber()
+	+SetCurrentTrack(current_track)
+	+IncrementCurrentTrack()
+	+DecrementCurrentTrack()
+}
+Class Song.Step{
+    +Step()
+	+~Step()
+	+GetEnableState()
+	+ToggleEnableState()
+    +GetSkipState()
+    +ToggleSkipState()
+	+GetAccentState()
+	+ToggleAccentState()
+	+GetAccentVelocity()
+	+ModifyAccentVelocity(accent_velocity_offset)
+	+GetChanceState()
+	+ToggleChanceState()
+	+GetChanceAmount()
+	+SetChanceAmount(chance_amount)
+	+GetNoteState()
+	+ToggleNoteState()
+	+GetNoteOffset()
+	+SetNoteOffset(note_offset)
+	+GetRetriggerState()
+	+ToggleRetriggerState()
+	+GetRetriggerAmount()
+	+SetRetriggerAmount(retrigger_amount)
+	+GetRetriggerPulses()
+    +SetGateLength(gate_length)
+	+GetGateLength()
+}
+Class Song.Track{
+    -Advance()
+    +Track(track_num, midi_root_note)
+	+~Track()
+    +GetStep(step_num)
+	+SetMidiManager(p_midi_manager)
+	+SetMidiRootNote(midi_root_note)
+	+SetTrackDirection(direction)
+	+GetCursorPosition()
+	+SetCursorPosition(cursor_position)
+	+SetMidiChannel(midi_channel)
+	+CalculateNumberOfSteps()
+	+ ProcessPulse(pulse)
+}
+
+Controls.DHEncoder o-- Controls.DHButton
+Controls.DHTempoLed <|-- Controls.DHLed
+DHDisplay.Display o-- DHMidi.MidiManager
+DHDisplay.Display o-- Song.Pattern
+DHDisplay.Display o-- Clock
+DHDisplay.Display o-- Grid
+Song.Pattern o-- Song.Track
+Song.Track o-- Song.Step
+Song.Track o-- DHMidi.MidiManager
+Grid o-- Controls.DHTempoLed
+Grid o-- Controls.DHLed
+Grid o-- Controls.DHButton
+Grid o-- Controls.DHEncoder
+Grid o-- Controls.DHTrellis
+Grid o-- Clock
+DHMidi.MidiManager o-- DHMidi.MidiEvent
+Controls.DHLed o-- Controls.LedMode
+DHDisplay.Display o-- DHDisplay.DisplayMode
+
+@enduml
