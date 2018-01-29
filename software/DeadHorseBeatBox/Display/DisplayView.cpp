@@ -1,15 +1,15 @@
-#include "Display.h"
-namespace DHDisplay {
-	Display::Display(DHMidi::MidiManager * p_midi_manager, Grid * p_grid, Song::Pattern * p_pattern, Clock * p_clock) {
+#include "DisplayView.h"
+namespace Display {
+	DisplayView::DisplayView(Midi::MidiManager * p_midi_manager, Grid * p_grid, Song::Pattern * p_pattern, Song::Clock * p_clock) {
 		p_midi_manager_ = p_midi_manager;
 		p_grid_ = p_grid;
 		p_pattern_ = p_pattern;
 		p_clock_ = p_clock;
 	}
 
-	Display::~Display() { }
+	DisplayView::~DisplayView() { }
 
-	void Display::GraphicsSetup() {
+	void DisplayView::GraphicsSetup() {
 		Serial.println("Graphics Setup");
 		oled_.begin();
 		oled_.setFlipMode(0);
@@ -19,7 +19,7 @@ namespace DHDisplay {
 		oled_.setDrawColor(2);
 	}
 
-	void Display::ShowPatternProperties() {
+	void DisplayView::ShowPatternProperties() {
 		USHORT current_track = p_pattern_->GetCurrentTrackNumber();
 		ShowPageHeader();
 		ShowBargraph(16, 23, 14, 25);
@@ -27,7 +27,7 @@ namespace DHDisplay {
 		ShowSteps(48, current_track);
 	}
 
-	void Display::ShowTrackSelectDisplay() {
+	void DisplayView::ShowTrackSelectDisplay() {
 		/*
 			USHORT current_mode = 0;
 
@@ -69,7 +69,7 @@ namespace DHDisplay {
 			*/
 	}
 
-	void Display::ShowPageHeader() {
+	void DisplayView::ShowPageHeader() {
 		oled_.setFont(u8g2_font_pressstart2p_8f);
 		oled_.setFontPosTop();
 		oled_.setDrawColor(1);
@@ -95,7 +95,7 @@ namespace DHDisplay {
 		oled_.drawHLine(0, 14, 132);
 	}
 
-	void Display::ShowSteps(USHORT y_offset, USHORT track) {
+	void DisplayView::ShowSteps(USHORT y_offset, USHORT track) {
 		Song::Track& r_current_track = p_pattern_->GetTrack(track);
 		for (USHORT step = 0; step < STEPS_PER_PATTERN; step++) {
 			oled_.setDrawColor(1);
@@ -131,7 +131,7 @@ namespace DHDisplay {
 		}
 	}
 
-	void Display::DrawStepBox(USHORT x, USHORT y, bool step_accented, bool step_chance_set, bool step_retriggered) {
+	void DisplayView::DrawStepBox(USHORT x, USHORT y, bool step_accented, bool step_chance_set, bool step_retriggered) {
 		oled_.setDrawColor(1);
 
 		//Determine size and offset of box based on accent
@@ -160,7 +160,7 @@ namespace DHDisplay {
 		}
 	}
 
-	void Display::ShowTracks(USHORT y_offset, USHORT current_track) {
+	void DisplayView::ShowTracks(USHORT y_offset, USHORT current_track) {
 		oled_.setFont(u8g2_font_pressstart2p_8f);
 		for (USHORT track = 0; track < NUM_OF_TRACKS; track++) {
 			USHORT x_offset = track * kCharWidth;
@@ -175,7 +175,7 @@ namespace DHDisplay {
 		}
 	}
 
-	void Display::ShowBargraph(USHORT y_offset, USHORT accent_height, USHORT std_height, USHORT fall_speed) {
+	void DisplayView::ShowBargraph(USHORT y_offset, USHORT accent_height, USHORT std_height, USHORT fall_speed) {
 		//Seperator 1
 		oled_.drawPixel(32, y_offset + 4);
 		oled_.drawPixel(32, y_offset + 14);
@@ -195,7 +195,7 @@ namespace DHDisplay {
 		bool process_fall = (millis() - last_bargraph_update_ > fall_speed);
 		for (USHORT track = 0; track < NUM_OF_TRACKS; track++) {
 			USHORT x_offset = track * kCharWidth + 1;
-			DHMidi::MidiEvent& r_event = p_midi_manager_->GetEvent(track);
+			Midi::MidiEvent& r_event = p_midi_manager_->GetEvent(track);
 			if (r_event.Playing) {
 				//If a note is playing set the bargraph to appropriate height and and fill it
 				bargraph_[track] = (r_event.Velocity > 100) ? accent_height : std_height;
@@ -213,7 +213,7 @@ namespace DHDisplay {
 		if (process_fall) { last_bargraph_update_ = millis(); }
 	}
 
-	void Display::SplashHorse() {
+	void DisplayView::SplashHorse() {
 		oled_.clearBuffer();
 		Serial.println("Splash Screen");
 		oled_.setDrawColor(1);
@@ -226,7 +226,7 @@ namespace DHDisplay {
 		oled_.sendBuffer();
 	}
 
-	void Display::UpdateDisplay(ULONG pulse) {
+	void DisplayView::UpdateDisplay(ULONG pulse) {
 		default_grid_mode_ = p_grid_->GetDefaultGridMode();
 
 		oled_.clearBuffer();

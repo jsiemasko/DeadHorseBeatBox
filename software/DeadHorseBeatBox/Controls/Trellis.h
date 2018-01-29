@@ -1,5 +1,5 @@
-#ifndef _DHTRELLIS_h
-#define _DHTRELLIS_h
+#ifndef _DHTrellis_h
+#define _DHTrellis_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "arduino.h"
@@ -13,7 +13,7 @@
 
 namespace Controls
 {
-	class DHTrellis
+	class Trellis
 	{
 	private:
 		bool trellis_led_buffer_[32];	//Holds the current state of the LEDs before writing
@@ -32,8 +32,8 @@ namespace Controls
 		void ClearBuffer();
 
 	public:
-		DHTrellis();
-		~DHTrellis();
+		Trellis();
+		~Trellis();
 		inline void SetBuffer(USHORT row, USHORT step, bool state) { trellis_led_buffer_[grid_renumber_[(row * TRELLIS_BUTTONS_PER_ROW) + step]] = state; }
 		inline bool JustReleased(USHORT button) { return trellis_.justReleased(grid_renumber_[button]); }
 		void ReadSwitches();

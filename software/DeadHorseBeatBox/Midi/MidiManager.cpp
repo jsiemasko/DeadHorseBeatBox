@@ -1,6 +1,6 @@
 #include "MidiManager.h"
 
-namespace DHMidi {
+namespace Midi {
 	MidiManager::MidiManager(midi::MidiInterface<HardwareSerial>* p_midi) {
 		p_midi->begin();
 		p_midi_ = p_midi;

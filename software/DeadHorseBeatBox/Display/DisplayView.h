@@ -1,14 +1,14 @@
 // Display.h
 
-#ifndef _DISPLAY_h
-#define _DISPLAY_h
+#ifndef _DISPLAYVIEW_h
+#define _DISPLAYVIEW_h
 
 #include "arduino.h"
 #include "SplashScreen.h"
 #include "../Grid.h"
-#include "../Clock.h"
 #include "../DHBB_Options.h"
 #include "../DHBB_Types.h"
+#include "../Song/Clock.h"
 #include "../Song/Pattern.h"
 
 /*  Universal 8bit Graphics Library (https://github.com/olikraus/u8g2/) */
@@ -21,7 +21,7 @@
 #include <Wire.h>
 #endif
 
-namespace DHDisplay {
+namespace Display {
 	enum DisplayMode {
 		kDisplayModePatternProperties,
 	};
@@ -30,14 +30,14 @@ namespace DHDisplay {
 	* Pins in order GND, +3.3, 13, 11, 39,38, 37
 	*/
 
-	class Display
+	class DisplayView
 	{
 	private:
 		DisplayMode display_mode_ = kDisplayModePatternProperties;
 		const static USHORT kNumOfDisplayModes = 1;
-		DHMidi::MidiManager * p_midi_manager_ = 0;
+		Midi::MidiManager * p_midi_manager_ = 0;
 		Song::Pattern * p_pattern_ = 0;
-		Clock * p_clock_ = 0;
+		Song::Clock * p_clock_ = 0;
 		Grid * p_grid_ = 0;
 		const static USHORT kCharHeight = 9;
 		const static USHORT kCharWidth = 8;
@@ -69,8 +69,8 @@ namespace DHDisplay {
 		void DrawStepBox(USHORT x, USHORT y, bool step_accented, bool step_chance_set, bool step_retriggered);
 
 	public:
-		Display(DHMidi::MidiManager * p_midi_manager, Grid * p_grid, Song::Pattern * p_pattern, Clock * p_clock);
-		~Display();
+		DisplayView(Midi::MidiManager * p_midi_manager, Grid * p_grid, Song::Pattern * p_pattern, Song::Clock * p_clock);
+		~DisplayView();
 		void GraphicsSetup();
 		void SplashHorse();
 		void UpdateDisplay(ULONG pulse);

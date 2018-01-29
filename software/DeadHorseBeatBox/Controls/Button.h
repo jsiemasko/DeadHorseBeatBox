@@ -8,7 +8,7 @@
 
 namespace Controls 
 {
-	class DHButton 
+	class Button 
 	{
 	protected:
 		//Button state constants
@@ -31,8 +31,8 @@ namespace Controls
 
 	public:
 		//Constructor
-		DHButton(USHORT pin);
-		~DHButton();
+		Button(USHORT pin);
+		~Button();
 
 		//Check button status
 		void CheckForPress();

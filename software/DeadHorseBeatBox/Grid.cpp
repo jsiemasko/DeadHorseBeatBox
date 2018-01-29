@@ -1,6 +1,6 @@
 #include "Grid.h"
 
-Grid::Grid(DHMidi::MidiManager * p_midi_manager, Song::Pattern * p_pattern, Clock * p_clock){
+Grid::Grid(Midi::MidiManager * p_midi_manager, Song::Pattern * p_pattern, Song::Clock * p_clock){
 	p_midi_manager_ = p_midi_manager;
 	p_pattern_ = p_pattern;
 	p_clock_ = p_clock;
@@ -177,7 +177,7 @@ void Grid::ReadSwitches() {
 }
 
 void Grid::UpdateSelectButtonDisplay() {
-	Controls::LedMode current_led_mode = (current_grid_mode_ == kGridModeSelectTrack) ? Controls::kLedModeFlash : Controls::kLedModeOff;
+	Display::LedMode current_led_mode = (current_grid_mode_ == kGridModeSelectTrack) ? Display::kLedModeFlash : Display::kLedModeOff;
 	track_select_led_.SetMode(current_led_mode);
 	track_select_led_.UpdateDisplay(current_pulse_);
 }

@@ -1,20 +1,20 @@
-#include "DHTrellis.h"
+#include "Trellis.h"
 
 namespace Controls {
-	DHTrellis::DHTrellis() { 
+	Trellis::Trellis() { 
 		trellis_.begin(TRELLIS_ADDRESS_1, TRELLIS_ADDRESS_2);
 		trellis_.setBrightness(TRELLIS_BRIGHTNESS);
 		ClearBuffer();
 		trellis_.writeDisplay();
 	}
 
-	DHTrellis::~DHTrellis() { }
+	Trellis::~Trellis() { }
 
-	void DHTrellis::ReadSwitches(){
+	void Trellis::ReadSwitches(){
 		trellis_.readSwitches();
 	}
 
-	void DHTrellis::UpdateDisplay(){
+	void Trellis::UpdateDisplay(){
 		for (int current_led = 0; current_led < TRELLIS_NUM_OF_BUTTONS; current_led++) {
 			if (trellis_led_buffer_[current_led]) {
 				trellis_.setLED(current_led);
@@ -26,7 +26,7 @@ namespace Controls {
 		trellis_.writeDisplay();
 	}
 
-	void DHTrellis::ClearBuffer() {
+	void Trellis::ClearBuffer() {
 		//Clear the entire grid
 		for (int button_num = 0; button_num < TRELLIS_NUM_OF_BUTTONS; button_num++) {
 			trellis_led_buffer_[button_num] = false;

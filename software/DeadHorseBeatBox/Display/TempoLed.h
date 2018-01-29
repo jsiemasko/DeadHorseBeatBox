@@ -3,17 +3,17 @@
 
 #include "../DHBB_Options.h"
 #include "../DHBB_Types.h"
-#include "DHLed.h"
+#include "Led.h"
 #include "arduino.h"
 
-namespace Controls {
-	class DHTempoLed : public DHLed {
+namespace Display {
+	class TempoLed : public Led {
 	private:
 		short int led_brightness_ = 255;
 
 	public:
-		DHTempoLed(USHORT pin);
-		~DHTempoLed();
+		TempoLed(USHORT pin);
+		~TempoLed();
 
 		//Blink on the quarter notes
 		inline void UpdateDisplay(ULONG pulse) {

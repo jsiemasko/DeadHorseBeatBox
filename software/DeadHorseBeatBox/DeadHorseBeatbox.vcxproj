@@ -84,36 +84,38 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Clock.h" />
+    <ClInclude Include="Song\Clock.h" />
     <ClInclude Include="DHBB_Options.h" />
     <ClInclude Include="DHBB_Types.h" />
-    <ClInclude Include="Controls\DHTrellis.h" />
-    <ClInclude Include="Display.h" />
-    <ClInclude Include="Controls\DHButton.h" />
-    <ClInclude Include="Controls\DHEncoder.h" />
+    <ClInclude Include="Controls\Trellis.h" />
+    <ClInclude Include="Display\DisplayController.h" />
+    <ClInclude Include="Display\DisplayView.h" />
+    <ClInclude Include="Controls\Button.h" />
+    <ClInclude Include="Controls\Encoder.h" />
     <ClInclude Include="Grid.h" />
-    <ClInclude Include="Controls\DHLed.h" />
-    <ClInclude Include="MidiManager.h" />
-    <ClInclude Include="Pattern.h" />
-    <ClInclude Include="SplashScreen.h" />
-    <ClInclude Include="Step.h" />
-    <ClInclude Include="Controls\DHTempoLed.h" />
-    <ClInclude Include="Track.h" />
+    <ClInclude Include="Display\Led.h" />
+    <ClInclude Include="Midi\MidiManager.h" />
+    <ClInclude Include="Song\Pattern.h" />
+    <ClInclude Include="Display\SplashScreen.h" />
+    <ClInclude Include="Song\Step.h" />
+    <ClInclude Include="Display\TempoLed.h" />
+    <ClInclude Include="Song\Track.h" />
     <ClInclude Include="__vm\.DeadHorseBeatbox.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Clock.cpp" />
-    <ClCompile Include="Controls\DHTrellis.cpp" />
-    <ClCompile Include="Display.cpp" />
-    <ClCompile Include="Controls\DHButton.cpp" />
-    <ClCompile Include="Controls\DHEncoder.cpp" />
+    <ClCompile Include="Song\Clock.cpp" />
+    <ClCompile Include="Controls\Trellis.cpp" />
+    <ClCompile Include="Display\DisplayController.cpp" />
+    <ClCompile Include="Display\DisplayView.cpp" />
+    <ClCompile Include="Controls\Button.cpp" />
+    <ClCompile Include="Controls\Encoder.cpp" />
     <ClCompile Include="Grid.cpp" />
-    <ClCompile Include="Controls\DHLed.cpp" />
-    <ClCompile Include="MidiManager.cpp" />
-    <ClCompile Include="Pattern.cpp" />
-    <ClCompile Include="Step.cpp" />
-    <ClCompile Include="Controls\DHTempoLed.cpp" />
-    <ClCompile Include="Track.cpp" />
+    <ClCompile Include="Display\Led.cpp" />
+    <ClCompile Include="Midi\MidiManager.cpp" />
+    <ClCompile Include="Song\Pattern.cpp" />
+    <ClCompile Include="Song\Step.cpp" />
+    <ClCompile Include="Display\TempoLed.cpp" />
+    <ClCompile Include="Song\Track.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>

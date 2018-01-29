@@ -1,8 +1,8 @@
-#include "DHButton.h"
+#include "Button.h"
 
 namespace Controls 
 {
-	DHButton::DHButton(USHORT pin) 
+	Button::Button(USHORT pin) 
 	{
 		pin_ = pin;
 		pinMode(pin_, INPUT);
@@ -10,9 +10,9 @@ namespace Controls
 		debouncer_.interval(5);
 	}
 
-	DHButton::~DHButton() {}
+	Button::~Button() {}
 
-	void DHButton::CheckForPress() 
+	void Button::CheckForPress() 
 	{
 		debouncer_.update();
 		bool current_state = debouncer_.read();

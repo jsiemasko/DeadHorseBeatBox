@@ -5,14 +5,14 @@
 #include "DHBB_Types.h"
 #include "arduino.h"
 #include <Wire.h>
-#include "Clock.h"
+#include "Song/Clock.h"
 #include "Song/Pattern.h"
 #include "Song/Track.h"
-#include "Controls/DHButton.h"
-#include "Controls/DHEncoder.h"
-#include "Controls/DHTrellis.h"
-#include "Controls/DHLed.h"
-#include "Controls/DHTempoLed.h"
+#include "Controls/Button.h"
+#include "Controls/Encoder.h"
+#include "Controls/Trellis.h"
+#include "Display/Led.h"
+#include "Display/TempoLed.h"
 
 enum GridMode {
 	kGridModeSelectTrack,
@@ -28,18 +28,18 @@ class Grid
 {
  private:
 	 Song::Pattern * p_pattern_ = 0;			//Pointer to the current pattern object
-	 Clock * p_clock_ = 0;				//Pointer to the current clock object
-	 DHMidi::MidiManager * p_midi_manager_ = 0; //Pointer to the current Midi Manager object
+	 Song::Clock * p_clock_ = 0;				//Pointer to the current clock object
+	 Midi::MidiManager * p_midi_manager_ = 0; //Pointer to the current Midi Manager object
 	 ULONG current_pulse_ = 0;			//Current pulse that is being processed
 	 long throttle_previous_ms_ = 0;	//Throttle counter for control reads
 	 
 	 //Controls Setup
-	 Controls::DHTempoLed tempo_led_ = Controls::DHTempoLed(TEMPO_LED_PIN);
-	 Controls::DHLed track_select_led_ = Controls::DHLed(TRACK_SELECT_LED_PIN);
-	 Controls::DHButton track_select_button_ = Controls::DHButton(TRACK_SELECT_BTN_PIN);
-	 Controls::DHButton function_select_button_ = Controls::DHButton(FUNCTION_SELECT_BTN_PIN);
-	 Controls::DHEncoder encoder_ = Controls::DHEncoder();
-	 Controls::DHTrellis trellis_ = Controls::DHTrellis();
+	 Display::TempoLed tempo_led_ = Display::TempoLed(TEMPO_LED_PIN);
+	 Display::Led track_select_led_ = Display::Led(TRACK_SELECT_LED_PIN);
+	 Controls::Button track_select_button_ = Controls::Button(TRACK_SELECT_BTN_PIN);
+	 Controls::Button function_select_button_ = Controls::Button(FUNCTION_SELECT_BTN_PIN);
+	 Controls::Encoder encoder_ = Controls::Encoder();
+	 Controls::Trellis trellis_ = Controls::Trellis();
 
 	 //Current grid mode and grid mode to return to after an action
 	 GridMode default_grid_mode_ = kGridModeAccentEdit;
@@ -51,7 +51,7 @@ class Grid
 	 void CheckForModeSwitch();
 
  public:
-	Grid(DHMidi::MidiManager * p_midi_manager, Song::Pattern * p_pattern, Clock * p_clock);
+	Grid(Midi::MidiManager * p_midi_manager, Song::Pattern * p_pattern, Song::Clock * p_clock);
 	~Grid();
 	inline void SetGridMode(GridMode grid_mode) { current_grid_mode_ = grid_mode; }
 	inline GridMode GetGridMode() { return current_grid_mode_; }

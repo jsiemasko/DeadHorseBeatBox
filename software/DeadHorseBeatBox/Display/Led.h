@@ -7,14 +7,14 @@
 #include "../DHBB_Types.h"
 #include "arduino.h"
 
-namespace Controls {
+namespace Display {
 	enum LedMode {
 		kLedModeSolid,
 		kLedModeFlash,
 		kLedModeOff
 	};
 
-	class DHLed {
+	class Led {
 	protected:
 		//Pin numbers
 		USHORT pin_ = 0;
@@ -28,8 +28,8 @@ namespace Controls {
 
 	public:
 		//Constructor
-		DHLed(USHORT pin);
-		~DHLed();
+		Led(USHORT pin);
+		~Led();
 
 		//Display
 		inline void SetMode(LedMode mode) { mode_ = mode; }

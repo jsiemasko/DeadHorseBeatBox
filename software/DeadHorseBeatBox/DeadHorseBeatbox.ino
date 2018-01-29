@@ -3,21 +3,22 @@
 #include "DHBB_Options.h"
 #include "DHBB_Types.h"
 #include "Grid.h"
-#include "DHDisplay/Display.h"
-#include "DHMidi/MidiManager.h"
-#include "Song/Step.h"
-#include "Song/Pattern.h"
-#include "Clock.h"
 #include <TimerThree.h>
 #include <Arduino.h>
+#include "Display/DisplayController.h"
+#include "Display/DisplayView.h"
+#include "Midi/MidiManager.h"
+#include "Song/Clock.h"
+#include "Song/Step.h"
+#include "Song/Pattern.h"
 
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
-DHMidi::MidiManager midi_manager(&MIDI);
-Clock clock(CLOCK_DEFAULT_TEMPO);
+Midi::MidiManager midi_manager(&MIDI);
+Song::Clock clock(CLOCK_DEFAULT_TEMPO);
 Song::Pattern pattern(&midi_manager);
 Grid grid(&midi_manager, &pattern, &clock);
-DHDisplay::Display display(&midi_manager, &grid, &pattern, &clock);
+Display::DisplayView display(&midi_manager, &grid, &pattern, &clock);
 
 void setup(void) 
 {

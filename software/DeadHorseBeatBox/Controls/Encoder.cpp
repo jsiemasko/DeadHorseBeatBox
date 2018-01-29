@@ -1,11 +1,11 @@
-#include "DHEncoder.h"
+#include "Encoder.h"
 
 namespace Controls {
-	DHEncoder::DHEncoder() { }
+	Encoder::Encoder() { }
 
-	DHEncoder::~DHEncoder() { }
+	Encoder::~Encoder() { }
 
-	void DHEncoder::Update() {
+	void Encoder::Update() {
 		button_.CheckForPress();
 
 		//Zero out the encoder every time through

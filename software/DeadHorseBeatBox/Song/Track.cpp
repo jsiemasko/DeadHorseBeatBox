@@ -71,7 +71,7 @@ namespace Song {
 
 		// Check all the values to see if we need a new note
 		if (note_check_needed && current_step.GetEnableState() && !current_step.GetSkipState() && probability_trigger_) {
-			DHMidi::MidiEvent midi_event;
+			Midi::MidiEvent midi_event;
 			midi_event.RootNote = midi_root_note_ + (current_step.GetNoteState() ? current_step.GetNoteOffset() : 0);
 			midi_event.Velocity = current_step.GetAccentState() ? current_step.GetAccentVelocity() : 100;
 			midi_event.Channel = midi_channel_;

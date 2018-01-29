@@ -1,7 +1,7 @@
 #include "Pattern.h"
 
 namespace Song {
-	Pattern::Pattern(DHMidi::MidiManager * p_midi_manager) {
+	Pattern::Pattern(Midi::MidiManager * p_midi_manager) {
 		for (USHORT trackNum = 0; trackNum < NUM_OF_TRACKS; trackNum++) {
 			tracks_[trackNum].SetMidiManager(p_midi_manager);
 		}

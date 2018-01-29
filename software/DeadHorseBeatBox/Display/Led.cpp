@@ -1,15 +1,15 @@
-#include "DHLed.h"
+#include "Led.h"
 
-namespace Controls {
-	DHLed::DHLed(USHORT pin) {
+namespace Display {
+	Led::Led(USHORT pin) {
 		pin_ = pin;
 		pinMode(pin_, OUTPUT);
 		digitalWrite(pin_, true);
 	}
 
-	DHLed::~DHLed() {}
+	Led::~Led() {}
 
-	void DHLed::UpdateDisplay(ULONG pulse) {
+	void Led::UpdateDisplay(ULONG pulse) {
 		if (mode_ == kLedModeSolid) {
 			TurnLightOn();
 		}

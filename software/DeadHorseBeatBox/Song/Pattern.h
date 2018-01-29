@@ -12,7 +12,7 @@ namespace Song {
 	class Pattern
 	{
 	public:
-		Pattern(DHMidi::MidiManager * p_midi_manager);
+		Pattern(Midi::MidiManager * p_midi_manager);
 		~Pattern();
 
 

@@ -1,19 +1,24 @@
-@startuml
+@startuml Dead Horse Beatbox
+Title "Dead Horse Beatbox"
 hide empty members
+skinparam monochrome true
+skinparam packageStyle rect
+skinparam defaultFontName FG Virgil
+skinparam shadowing false
 
-enum Controls.LedMode
-enum DHDisplay.DisplayMode
-class Controls.DHButton{
-    +DHButton(pin)
-    +~DHButton()
+enum Display.LedMode
+enum Display.DisplayMode
+class Controls.Button{
+    +Button(pin)
+    +~Button()
     +CheckForPress()
     +IsPressed()
     +JustPressed()
     +JustReleased()
 }
-class Controls.DHEncoder{
-    +DHEncoder()
-    +~DHEncoder()
+class Controls.Encoder{
+    +Encoder()
+    +~Encoder()
     +IsPressed()
     +JustPressed()
     +JustReleased()
@@ -21,29 +26,29 @@ class Controls.DHEncoder{
     +HasValue()
     +Update()
 }
-class Controls.DHLed{
+class Display.Led{
     #TurnLightOn()
     #TurnLightOff()
-    +DHLed()
-    +~DHLed()
+    +Led()
+    +~Led()
     +SetMode(mode)
     +UpdateDisplay(pulse)
 }
-class Controls.DHTempoLed{
-    +DHTempoLed()
-    +~DHTempoLed()
+class Display.TempoLed{
+    +TempoLed()
+    +~TempoLed()
     +UpdateDisplay(pulse)
 }
-class Controls.DHTrellis{
+class Controls.Trellis{
     -ClearBuffer()
-    +DHTrellis()
-    +~DHTrellis()
+    +Trellis()
+    +~Trellis()
     +SetBuffer(row, step, state)
     +JustReleased(button)
     +ReadSwitches()
     +UpdateDisplay()
 }
-class Clock{
+class Song.Clock{
     +Clock(bpm)
     +~Clock()
     +SetTempo(bpm)
@@ -62,18 +67,20 @@ class Clock{
 	+TogglePlayState()
 	+GetPlayState()
 }
-class DHDisplay.Display{
+class Display.DisplayView{
+}
+class Display.DisplayController{
+    +DisplayController(p_midi_manager)
+    +~DisplayController()
     -ShowPatternProperties()
     -ShowTrackSelectDisplay()
     -ShowPageHeader()
-    -ShowSteps(y_offset, track)
+    -ShowSteps(y_offsdet, track)
     -ShowTracks(y_offset, current_track)
     -ShowBargraph(y_offset, accent_height, std_height, fall_speed)
     -DrawStepBox(x, y, step_accented, step_chance_set, step_retriggered)
-    +Display(p_midi_manager)
-    +~Display()
-    +GraphicsSetup()
     +SplashHorse()
+    +GraphicsSetup()
     +UpdateDisplay(pulse)
     +SetDisplayMode(display_mode)
 }
@@ -91,7 +98,7 @@ class Grid{
 	+ReadSwitches()
 	+UpdateDisplay(pulse)
 }
-class DHMidi.MidiManager{
+class Midi.MidiManager{
     -NoteOn(midi_event)
     -NoteOff(midi_event)
     +MidiManager(p_midi)
@@ -102,7 +109,7 @@ class DHMidi.MidiManager{
 	+GetEvent(track)
 
 }
-Class DHMidi.MidiEvent
+Class Midi.MidiEvent
 Class Song.Pattern{
     +Pattern(p_midi_manager)
 	+~Pattern()
@@ -157,23 +164,24 @@ Class Song.Track{
 	+ ProcessPulse(pulse)
 }
 
-Controls.DHEncoder o-- Controls.DHButton
-Controls.DHTempoLed <|-- Controls.DHLed
-DHDisplay.Display o-- DHMidi.MidiManager
-DHDisplay.Display o-- Song.Pattern
-DHDisplay.Display o-- Clock
-DHDisplay.Display o-- Grid
+Controls.Encoder o-- Controls.Button
+Display.TempoLed <|-- Display.Led
+Display.DisplayView o-- Midi.MidiManager
+Display.DisplayController o-- Song.Pattern
+Display.DisplayController o-- Song.Clock
+Display.DisplayController o-- Grid
 Song.Pattern o-- Song.Track
 Song.Track o-- Song.Step
-Song.Track o-- DHMidi.MidiManager
-Grid o-- Controls.DHTempoLed
-Grid o-- Controls.DHLed
-Grid o-- Controls.DHButton
-Grid o-- Controls.DHEncoder
-Grid o-- Controls.DHTrellis
-Grid o-- Clock
-DHMidi.MidiManager o-- DHMidi.MidiEvent
-Controls.DHLed o-- Controls.LedMode
-DHDisplay.Display o-- DHDisplay.DisplayMode
+Song.Track o-- Midi.MidiManager
+Grid o-- Display.TempoLed
+Grid o-- Display.Led
+Grid o-- Controls.Button
+Grid o-- Controls.Encoder
+Grid o-- Controls.Trellis
+Grid o-- Song.Clock
+Midi.MidiManager o-- Midi.MidiEvent
+Display.Led o-- Display.LedMode
+Display.DisplayController o-- Display.DisplayMode
+Display.DisplayView o-- Display.DisplayController
 
 @enduml

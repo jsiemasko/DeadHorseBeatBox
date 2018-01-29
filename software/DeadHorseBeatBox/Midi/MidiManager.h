@@ -8,7 +8,7 @@
 #include "arduino.h"
 #include <MIDI.h>
 
-namespace DHMidi {
+namespace Midi {
 	struct MidiEvent {
 		USHORT Track = 0;
 		USHORT RootNote = 60;

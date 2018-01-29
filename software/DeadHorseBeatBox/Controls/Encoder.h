@@ -8,20 +8,20 @@
 #endif
 
 #include <Encoder.h>
-#include "DHButton.h"
+#include "Button.h"
 
 namespace Controls {
-	class DHEncoder {
+	class Encoder {
 	private:
 		//Encoder Setup
-		DHButton button_ = DHButton(ENCODER_BTN_PIN);
-		Encoder encoder_ = Encoder(ENCODER_PIN_1, ENCODER_PIN_2);
+		Button button_ = Button(ENCODER_BTN_PIN);
+		::Encoder encoder_ = ::Encoder(ENCODER_PIN_1, ENCODER_PIN_2);
 		USHORT scale_ = ENCODER_SCALE;
 		long value_ = 0;
 
 	public:
-		DHEncoder();
-		~DHEncoder();
+		Encoder();
+		~Encoder();
 		inline bool IsPressed() { return button_.IsPressed(); }
 		inline bool JustPressed() { return button_.JustPressed(); }
 		inline bool JustReleased() { return button_.JustReleased(); }
