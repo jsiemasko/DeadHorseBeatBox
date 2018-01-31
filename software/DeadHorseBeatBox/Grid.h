@@ -13,6 +13,7 @@
 #include "Controls/Trellis.h"
 #include "Display/Led.h"
 #include "Display/TempoLed.h"
+#include "string.h"
 
 enum GridMode {
 	kGridModeSelectTrack,
@@ -59,6 +60,7 @@ class Grid
 	void ProcessGridButton(USHORT button_num);
 	void ReadSwitches();
 	void UpdateDisplay(ULONG pulse);
+	String GetCurrentEditParameter();
 };
 
 #endif

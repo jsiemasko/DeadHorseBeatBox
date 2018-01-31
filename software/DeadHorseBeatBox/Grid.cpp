@@ -69,6 +69,22 @@ void Grid::UpdateDisplay(ULONG pulse) {
 	tempo_led_.UpdateDisplay(pulse);
 }
 
+String Grid::GetCurrentEditParameter()
+{
+	String current_edit_parameter;
+	switch (current_grid_mode_)
+	{
+		case kGridModeAccentEdit: current_edit_parameter = "Accent"; break;
+		case kGridModeChanceEdit: current_edit_parameter = "Chance"; break;
+		case kGridModeSkipEdit: current_edit_parameter = "Skip"; break;
+		case kGridModeJumpEdit: current_edit_parameter = "Jump"; break;
+		case kGridModeRetriggerEdit: current_edit_parameter = "Retrig"; break;
+		case kGridModeNoteEdit: current_edit_parameter = "Note"; break;
+		default: break;
+	}
+	return current_edit_parameter;
+}
+
 void Grid::ProcessGridButton(USHORT button_num){
 	Song::Track& r_current_track = p_pattern_->GetCurrentTrack();
 	if (current_grid_mode_ == kGridModeSelectTrack) { //Track Select

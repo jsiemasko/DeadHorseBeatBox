@@ -6,7 +6,6 @@
 #include <TimerThree.h>
 #include <Arduino.h>
 #include "Display/DisplayController.h"
-#include "Display/DisplayView.h"
 #include "Midi/MidiManager.h"
 #include "Song/Clock.h"
 #include "Song/Step.h"
@@ -14,11 +13,11 @@
 
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
-Midi::MidiManager midi_manager(&MIDI);
-Song::Clock clock(CLOCK_DEFAULT_TEMPO);
-Song::Pattern pattern(&midi_manager);
-Grid grid(&midi_manager, &pattern, &clock);
-Display::DisplayView display(&midi_manager, &grid, &pattern, &clock);
+Midi::MidiManager midi_manager = Midi::MidiManager(&MIDI);
+Song::Clock clock = Song::Clock(CLOCK_DEFAULT_TEMPO);
+Song::Pattern pattern = Song::Pattern(&midi_manager);
+Grid grid = Grid(&midi_manager, &pattern, &clock);
+Display::DisplayController display = Display::DisplayController(&midi_manager, &grid, &pattern, &clock);
 
 void setup(void) 
 {
@@ -26,11 +25,7 @@ void setup(void)
 	Serial.begin(9600);
 	Serial.println("");
 	Serial.println("Deadhorse Beatbox Start");
-	
-	//Setup the OLED
-	display.GraphicsSetup();
-	display.SplashHorse();
-	
+		
 	//Set up the timer interupt
 	Timer3.initialize(clock.GetPeriod());
 	Timer3.attachInterrupt(clockPulse);
