@@ -24,7 +24,7 @@ namespace Song {
 		USHORT cursor_position_ = 0;			// Keep track of current cursor location
 		USHORT next_cursor_position_ = 0;		// If <> kNoNextPosition force to cursor this position on next advance, else use TrackDirection
 		USHORT num_steps_ = STEPS_PER_PATTERN;	// Number of steps that are not set to skip, defaults to steps in pattern
-		USHORT midi_channel_ = 0;				// MIDI channel is set per track
+		USHORT midi_channel_ = 12;				// MIDI channel is set per track
 		USHORT midi_root_note_ = 60;			// MIDI root note, step offsets from this based off scale settings
 		TrackDirection direction_ = kTrackDirectionForward;	// Controls how the cursor advances
 		bool probability_trigger_ = true;		// Boolean results of current probability check. Storing so we check it only once per step, not on each burst.

@@ -98,4 +98,44 @@ namespace Display {
 		USHORT x = step * kCharWidth;
 		oled_.drawHLine(x + 1, y + kCharHeight + 1, 5);
 	}
+
+	void DisplayView::DisplayTrackNumbers(USHORT y, USHORT current_track) {
+		oled_.setFont(u8g2_font_pressstart2p_8f);
+		for (USHORT track = 0; track < NUM_OF_TRACKS; track++) {
+			USHORT x_offset = track * kCharWidth;
+			oled_.setDrawColor(1);
+			if (current_track == track) {
+				//if track is selected use the main color for the box and invert the color for drawing text
+				oled_.drawBox(x_offset, y, kCharWidth, kCharHeight);
+				oled_.setDrawColor(0);
+			}
+			oled_.setCursor(x_offset, y);
+			oled_.print(track_labels[track]);
+		}
+	}
+
+	void DisplayView::DisplayBargraphBackground(USHORT y, USHORT graph_height) {
+		USHORT y_offset = graph_height / 4;
+		for (USHORT x = 1; x < 4; x++)
+		{
+			for (USHORT current_y = 1; current_y < 4; current_y++)
+			{
+				oled_.drawPixel(x * 32, y + (current_y * y_offset));
+			}
+		}
+	}
+
+	void DisplayView::DisplayBar(USHORT y, USHORT graph_height, USHORT bar_number, USHORT bar_value, bool bar_filled)
+	{
+		oled_.setDrawColor(1);
+		USHORT x = bar_number * kCharWidth + 1;
+		if (bar_filled)
+		{
+			oled_.drawBox(x, (y + graph_height) - bar_value, kCharWidth - 2, bar_value);
+		}
+		else
+		{
+			oled_.drawFrame(x, (y + graph_height) - bar_value, kCharWidth - 2, bar_value);
+		}
+	}
 }

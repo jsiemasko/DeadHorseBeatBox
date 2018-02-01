@@ -7,6 +7,7 @@ namespace Song {
 		}
 
 		if (GENERATE_TEST_BEAT) {
+			/*
 			tracks_[0].SetMidiChannel(0);
 			tracks_[1].SetMidiChannel(1);
 			tracks_[2].SetMidiChannel(2);
@@ -23,6 +24,16 @@ namespace Song {
 			tracks_[13].SetMidiChannel(13);
 			tracks_[14].SetMidiChannel(14);
 			tracks_[15].SetMidiChannel(15);
+			*/
+
+			tracks_[0].SetMidiRootNote(60);
+			tracks_[1].SetMidiRootNote(62);
+			tracks_[2].SetMidiRootNote(64);
+			tracks_[3].SetMidiRootNote(65);
+			tracks_[4].SetMidiRootNote(67);
+			tracks_[5].SetMidiRootNote(69);
+			tracks_[6].SetMidiRootNote(71);
+			tracks_[7].SetMidiRootNote(72);
 
 			tracks_[0].GetStep(0).ToggleEnableState();
 			tracks_[0].GetStep(0).ToggleAccentState();
@@ -68,7 +79,6 @@ namespace Song {
 			tracks_[3].GetStep(10).ToggleEnableState();
 			tracks_[3].GetStep(13).ToggleEnableState();
 			tracks_[3].GetStep(15).ToggleEnableState();
-			tracks_[3].GetStep(15).ToggleSkipState();
 		}
 	}
 

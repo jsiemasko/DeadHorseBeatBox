@@ -40,7 +40,7 @@ namespace Midi {
 		p_midi_->sendNoteOn(
 			r_midi_event.RootNote,
 			r_midi_event.Velocity,
-			r_midi_event.Channel + 1 /*Midi library starts channel numbering at 1*/
+			r_midi_event.Channel
 		);
 		r_midi_event.Playing = true;
 	}
@@ -54,7 +54,7 @@ namespace Midi {
 		p_midi_->sendNoteOff(
 			r_midi_event.RootNote,
 			r_midi_event.Velocity,
-			r_midi_event.Channel + 1 /*Midi library starts channel numbering at 1*/
+			r_midi_event.Channel
 		);
 		r_midi_event.Playing = false;
 	}

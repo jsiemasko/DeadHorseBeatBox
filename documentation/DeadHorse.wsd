@@ -68,21 +68,28 @@ class Song.Clock{
 	+GetPlayState()
 }
 class Display.DisplayView{
+   	+DisplayView()
+	+~DisplayView()
+	+ClearBuffer()
+	+SendBuffer()
+	+DisplayPageHeader(x, y, current_parameter, tempo)
+	+DisplaySplashScreen()
+	+DisplayStepBox(step, y, step_enabled, step_accented, step_chance_set, step_retriggered)
+	+DisplayStepBackground(y)
+	+DisplayStepCursor(step, y)
+	+DisplayTrackNumbers(y, current_track)
+	+DisplayBargraphBackground(y, height)
+	+DisplayBar(y, graph_height, bar_number, bar_value, bar_filled)
 }
 class Display.DisplayController{
-    +DisplayController(p_midi_manager)
-    +~DisplayController()
-    -ShowPatternProperties()
-    -ShowTrackSelectDisplay()
-    -ShowPageHeader()
-    -ShowSteps(y_offsdet, track)
-    -ShowTracks(y_offset, current_track)
-    -ShowBargraph(y_offset, accent_height, std_height, fall_speed)
-    -DrawStepBox(x, y, step_accented, step_chance_set, step_retriggered)
-    +SplashHorse()
-    +GraphicsSetup()
+    +DisplayController(p_midi_manager, p_grid, p_pattern, p_clock)
+	+~DisplayController()
     +UpdateDisplay(pulse)
-    +SetDisplayMode(display_mode)
+    -DisplayTrack(track_number, y)
+	-DisplayTrackPlayingBargraph(y, graph_height)
+	-DisplaySingleTrackView(track_number)
+	-DisplayFourTrackView(track_number)
+	-ProcessTrackPlayingBargraphFall()
 }
 class Grid{
     -DisplayPlayingTracks()
@@ -166,7 +173,7 @@ Class Song.Track{
 
 Controls.Encoder o-- Controls.Button
 Display.TempoLed <|-- Display.Led
-Display.DisplayView o-- Midi.MidiManager
+Display.DisplayController o-- Midi.MidiManager
 Display.DisplayController o-- Song.Pattern
 Display.DisplayController o-- Song.Clock
 Display.DisplayController o-- Grid
