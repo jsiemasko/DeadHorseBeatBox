@@ -1,5 +1,5 @@
-#ifndef _DISPLAYVIEW_h
-#define _DISPLAYVIEW_h
+#ifndef _DISPLAY_DISPLAYVIEW_h
+#define _DISPLAY_DISPLAYVIEW_h
 
 #include "arduino.h"
 #include "SplashScreen.h"

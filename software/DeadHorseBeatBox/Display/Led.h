@@ -1,7 +1,5 @@
-// Led.h
-
-#ifndef _DHLED_h
-#define _DHLED_h
+#ifndef _DISPLAY_LED_h
+#define _DISPLAY_LED_h
 
 #include "../DHBB_Options.h"
 #include "../DHBB_Types.h"

@@ -1,5 +1,5 @@
-#ifndef _DHTEMPOLED_h
-#define _DHTEMPOLED_h
+#ifndef _DISPLAY_TEMPOLED_h
+#define _DISPLAY_TEMPOLED_h
 
 #include "../DHBB_Options.h"
 #include "../DHBB_Types.h"

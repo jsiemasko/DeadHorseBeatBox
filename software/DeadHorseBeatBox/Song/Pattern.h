@@ -1,7 +1,7 @@
 // Pattern.h
 
-#ifndef _PATTERN_h
-#define _PATTERN_h
+#ifndef _SONG_PATTERN_h
+#define _SONG_PATTERN_h
 
 #include "../DHBB_Options.h"
 #include "../DHBB_Types.h"

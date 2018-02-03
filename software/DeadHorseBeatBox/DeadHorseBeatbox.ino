@@ -1,3 +1,4 @@
+#include "TrellisDisplay.h"
 #include <MIDI.h>
 #include <Encoder.h>
 #include "DHBB_Options.h"

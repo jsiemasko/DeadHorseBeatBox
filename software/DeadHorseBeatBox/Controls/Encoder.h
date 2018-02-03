@@ -1,5 +1,5 @@
-#ifndef _DHENCODER_h
-#define _DHENCODER_h
+#ifndef _CONTROLS_ENCODER_h
+#define _CONTROLS_ENCODER_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"

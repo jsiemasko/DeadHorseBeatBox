@@ -1,5 +1,5 @@
-#ifndef _DHTrellis_h
-#define _DHTrellis_h
+#ifndef _CONTROLS_TRELLIS_h
+#define _CONTROLS_TRELLIS_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "arduino.h"

@@ -90,11 +90,11 @@ class Display.DisplayController{
 	-DisplaySingleTrackView(track_number)
 	-DisplayFourTrackView(track_number)
 	-ProcessTrackPlayingBargraphFall()
+	-UpdateSelectButtonDisplay()
 }
 class Grid{
     -DisplayPlayingTracks()
 	-DisplaySingleTrackEditMode()
-	-UpdateSelectButtonDisplay()
 	-CheckForModeSwitch()
 	+Grid(p_midi_manager)
 	+~Grid()
@@ -104,6 +104,7 @@ class Grid{
 	+ProcessGridButton(button_num)
 	+ReadSwitches()
 	+UpdateDisplay(pulse)
+	+TrackSelectButtonIsPressed()
 }
 class Midi.MidiManager{
     -NoteOn(midi_event)
@@ -172,23 +173,24 @@ Class Song.Track{
 }
 
 Controls.Encoder o-- Controls.Button
-Display.TempoLed <|-- Display.Led
-Display.DisplayController o-- Midi.MidiManager
+Display.DisplayController o-- Display.DisplayMode
+Display.DisplayController o-- Display.Led
+Display.DisplayController o-- Display.TempoLed
+Display.DisplayController o-- Grid
+Display.DisplayController o-- Midi.MidiManager : View Track Playing State
 Display.DisplayController o-- Song.Pattern
 Display.DisplayController o-- Song.Clock
-Display.DisplayController o-- Grid
-Song.Pattern o-- Song.Track
-Song.Track o-- Song.Step
-Song.Track o-- Midi.MidiManager
-Grid o-- Display.TempoLed
-Grid o-- Display.Led
+Display.DisplayView o-- Display.DisplayController
+Display.Led o-- Display.LedMode
+Display.Led <|-- Display.TempoLed
 Grid o-- Controls.Button
 Grid o-- Controls.Encoder
 Grid o-- Controls.Trellis
 Grid o-- Song.Clock
+Grid o-- Song.Pattern
 Midi.MidiManager o-- Midi.MidiEvent
-Display.Led o-- Display.LedMode
-Display.DisplayController o-- Display.DisplayMode
-Display.DisplayView o-- Display.DisplayController
+Song.Pattern "1" o-- "many" Song.Track
+Song.Track "1" o-- "many" Song.Step
+Song.Track o-- Midi.MidiManager : Trigger MIDI Note
 
 @enduml

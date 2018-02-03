@@ -1,5 +1,5 @@
-#ifndef _TRACK_h
-#define _TRACK_h
+#ifndef _SONG_TRACK_h
+#define _SONG_TRACK_h
 
 #include "arduino.h"
 #include "Step.h"

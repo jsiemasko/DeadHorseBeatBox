@@ -11,8 +11,6 @@
 #include "Controls/Button.h"
 #include "Controls/Encoder.h"
 #include "Controls/Trellis.h"
-#include "Display/Led.h"
-#include "Display/TempoLed.h"
 #include "string.h"
 
 enum GridMode {
@@ -35,8 +33,6 @@ class Grid
 	 long throttle_previous_ms_ = 0;	//Throttle counter for control reads
 	 
 	 //Controls Setup
-	 Display::TempoLed tempo_led_ = Display::TempoLed(TEMPO_LED_PIN);
-	 Display::Led track_select_led_ = Display::Led(TRACK_SELECT_LED_PIN);
 	 Controls::Button track_select_button_ = Controls::Button(TRACK_SELECT_BTN_PIN);
 	 Controls::Button function_select_button_ = Controls::Button(FUNCTION_SELECT_BTN_PIN);
 	 Controls::Encoder encoder_ = Controls::Encoder();
@@ -48,7 +44,6 @@ class Grid
 	 	 
 	 void DisplayPlayingTracks();
 	 void DisplaySingleTrackEditMode();
-	 void UpdateSelectButtonDisplay();
 	 void CheckForModeSwitch();
 
  public:
@@ -57,6 +52,7 @@ class Grid
 	inline void SetGridMode(GridMode grid_mode) { current_grid_mode_ = grid_mode; }
 	inline GridMode GetGridMode() { return current_grid_mode_; }
 	inline GridMode GetDefaultGridMode() { return default_grid_mode_; }
+	inline bool TrackSelectButtonIsPressed() { return track_select_button_.IsPressed(); }
 	void ProcessGridButton(USHORT button_num);
 	void ReadSwitches();
 	void UpdateDisplay(ULONG pulse);

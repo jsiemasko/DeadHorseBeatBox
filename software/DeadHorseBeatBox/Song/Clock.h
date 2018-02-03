@@ -1,5 +1,5 @@
-#ifndef _CLOCK_h
-#define _CLOCK_h
+#ifndef _SONG_CLOCK_h
+#define _SONG_CLOCK_h
 
 #include "../DHBB_Options.h"
 #include "../DHBB_Types.h"

@@ -79,10 +79,18 @@ namespace Display
 
 	void DisplayController::UpdateDisplay(ULONG pulse)
 	{
+		tempo_led_.UpdateDisplay(pulse);
 		ProcessTrackPlayingBargraphFall();
+		UpdateSelectButtonDisplay(pulse);
 		view.ClearBuffer();
 		DisplaySingleTrackView(p_pattern_->GetCurrentTrackNumber());
 		//DisplayFourTrackView(p_pattern_->GetCurrentTrackNumber());
 		view.SendBuffer();
+	}
+
+	void DisplayController::UpdateSelectButtonDisplay(ULONG pulse) {
+		Display::LedMode current_led_mode = (p_grid_->TrackSelectButtonIsPressed()) ? Display::kLedModeFlash : Display::kLedModeOff;
+		track_select_led_.SetMode(current_led_mode);
+		track_select_led_.UpdateDisplay(pulse);
 	}
 }

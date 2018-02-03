@@ -1,5 +1,5 @@
-#ifndef _DHBUTTON_h
-#define _DHBUTTON_h
+#ifndef _CONTROLS_BUTTON_h
+#define _CONTROLS_BUTTON_h
 
 #include "../DHBB_Options.h"
 #include "../DHBB_Types.h"

@@ -1,5 +1,5 @@
-#ifndef _STEP_h
-#define _STEP_h
+#ifndef _SONG_STEP_h
+#define _SONG_STEP_h
 
 #include "../DHBB_Options.h"
 #include "../DHBB_Types.h"

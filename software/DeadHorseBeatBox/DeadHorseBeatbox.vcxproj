@@ -100,6 +100,7 @@
     <ClInclude Include="Song\Step.h" />
     <ClInclude Include="Display\TempoLed.h" />
     <ClInclude Include="Song\Track.h" />
+    <ClInclude Include="Display\TrellisDisplay.h" />
     <ClInclude Include="__vm\.DeadHorseBeatbox.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +117,7 @@
     <ClCompile Include="Song\Step.cpp" />
     <ClCompile Include="Display\TempoLed.cpp" />
     <ClCompile Include="Song\Track.cpp" />
+    <ClCompile Include="Display\TrellisDisplay.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>

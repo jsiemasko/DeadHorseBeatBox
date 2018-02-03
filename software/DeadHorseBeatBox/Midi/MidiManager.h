@@ -1,7 +1,7 @@
 // MidiManager.h
 
-#ifndef _MIDIMANAGER_h
-#define _MIDIMANAGER_h
+#ifndef _MIDI_MIDIMANAGER_h
+#define _MIDI_MIDIMANAGER_h
 
 #include "../DHBB_Options.h"
 #include "../DHBB_Types.h"

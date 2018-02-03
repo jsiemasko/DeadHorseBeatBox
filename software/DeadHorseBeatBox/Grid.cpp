@@ -57,7 +57,6 @@ void Grid::DisplayPlayingTracks() {
 
 void Grid::UpdateDisplay(ULONG pulse) {
 	current_pulse_ = pulse;
-	UpdateSelectButtonDisplay();
 
 	//Update grid
 	switch (current_grid_mode_) {
@@ -66,7 +65,6 @@ void Grid::UpdateDisplay(ULONG pulse) {
 	}
 
 	trellis_.UpdateDisplay();
-	tempo_led_.UpdateDisplay(pulse);
 }
 
 String Grid::GetCurrentEditParameter()
@@ -190,10 +188,4 @@ void Grid::ReadSwitches() {
 		}
 		*/
 			
-}
-
-void Grid::UpdateSelectButtonDisplay() {
-	Display::LedMode current_led_mode = (current_grid_mode_ == kGridModeSelectTrack) ? Display::kLedModeFlash : Display::kLedModeOff;
-	track_select_led_.SetMode(current_led_mode);
-	track_select_led_.UpdateDisplay(current_pulse_);
 }
